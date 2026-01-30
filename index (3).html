@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IELTS Vocab Stream</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Crimson+Pro:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg: #fdfcfa;
+            --text: #1a1614;
+            --primary: #2d5016;
+            --primary-light: #4a7c2e;
+            --accent: #f59e0b;
+            --accent-light: #fbbf24;
+            --surface: #ffffff;
+            --surface-elevated: #f8f7f5;
+            --border: #e8e6e3;
+            --success: #10b981;
+            --shadow: rgba(26, 22, 20, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0e0d;
+            --text: #e8e6e3;
+            --primary: #6b9b4d;
+            --primary-light: #8bb56a;
+            --accent: #fbbf24;
+            --accent-light: #fcd34d;
+            --surface: #1a1614;
+            --surface-elevated: #252220;
+            --border: #3a3632;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .theme-switch {
+            width: 56px;
+            height: 30px;
+            background: var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .theme-switch::before {
+            content: '☀️';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        [data-theme="dark"] .theme-switch::before {
+            content: '🌙';
+            left: 30px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .main-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            background: var(--surface);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-item:not(.active):hover {
+            background: var(--surface-elevated);
+        }
+
+        /* ===== LESSON SELECTOR ===== */
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .lesson-btn {
+            padding: 18px 12px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text);
+            position: relative;
+        }
+
+        .lesson-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .lesson-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .lesson-btn.has-progress::after {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 18px;
+            height: 18px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== TYPE SELECTOR ===== */
+        .type-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 12px 32px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .type-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .type-btn:hover:not(.active) {
+            border-color: var(--accent-light);
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        /* ===== VOCAB GRID ===== */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .vocab-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .vocab-card.viewed {
+            opacity: 0.7;
+        }
+
+        .vocab-card.viewed::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 22px;
+            height: 22px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+        }
+
+        .vocab-card.viewed:hover {
+            opacity: 1;
+        }
+
+        .vocab-word {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            animation: fadeInOverlay 0.25s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 92%;
+            max-width: 500px;
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 40px 32px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+            animation: modalEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--surface-elevated);
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+            transform: rotate(90deg);
+        }
+
+        .modal-word {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal-type {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .modal-ipa {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            color: var(--primary-light);
+            margin-bottom: 24px;
+            text-align: center;
+            background: var(--surface-elevated);
+            padding: 10px 16px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .modal-meaning {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .modal-paraphrase {
+            font-size: 16px;
+            line-height: 1.7;
+            opacity: 0.85;
+            margin-bottom: 30px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        /* ===== PROGRESS VIEW ===== */
+        .progress-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .progress-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 16px;
+        }
+
+        .progress-label {
+            min-width: 120px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 32px;
+            background: var(--surface-elevated);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-count {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .export-section {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            opacity: 0.6;
+        }
+
+        .empty-icon {
+            font-size: 72px;
+            margin-bottom: 16px;
+        }
+
+        .empty-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 8px 24px var(--shadow);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            opacity: 0;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .lesson-grid {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            }
+
+            .vocab-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+
+            .modal {
+                padding: 32px 24px;
+            }
+
+            .modal-word {
+                font-size: 30px;
+            }
+            
+            .type-selector {
+                flex-direction: column;
+            }
+            
+            .type-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="vocabModal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+</div>
+
+<div class="app-container">
+    <header>
+        <div class="logo">IELTS Vocab</div>
+        <div class="header-controls">
+            <div class="theme-switch" id="themeToggle"></div>
+        </div>
+    </header>
+
+    <nav class="main-nav" id="mainNav">
+        <button class="nav-item active" data-view="reading">📖 Reading</button>
+        <button class="nav-item" data-view="listening">🎧 Listening</button>
+        <button class="nav-item" data-view="progress">📊 Progress</button>
+    </nav>
+
+    <div id="mainContent"></div>
+</div>
+
+<!-- Load data first -->
+<script src="vocab-data.js"></script>
+
+<!-- Main application -->
+<script>
+// ==========================================
+// URL HASH MANAGER (inline for immediate availability)
+// ==========================================
+const URLHashManager = {
+    update: function(view, lesson, type) {
+        const hash = `${view}-${lesson}-${type}`;
+        window.history.replaceState(null, '', `#${hash}`);
+    },
+    
+    load: function() {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return null;
+        
+        const parts = hash.split('-');
+        if (parts.length !== 3) return null;
+        
+        const [view, lesson, type] = parts;
+        const lessonNum = parseInt(lesson);
+        
+        // Validate (VOCAB_DATA already loaded from external script)
+        if ((view !== 'reading' && view !== 'listening') ||
+            isNaN(lessonNum) ||
+            !VOCAB_DATA[view][lessonNum] ||
+            (type !== 'inclass' && type !== 'homework')) {
+            return null;
+        }
+        
+        return { view, lesson: lessonNum, type };
+    }
+};
+
+// ==========================================
+// STATE MANAGEMENT
+// ==========================================
+
+let state = {
+    currentView: 'reading',
+    currentLesson: 1,
+    currentType: 'inclass',
+    viewedWords: new Set(),
+    currentModalWord: null
+};
+
+// ==========================================
+// STORAGE
+// ==========================================
+
+function saveState() {
+    const data = {
+        viewedWords: Array.from(state.viewedWords)
+    };
+    localStorage.setItem('ieltsVocabProgress', JSON.stringify(data));
+}
+
+function loadState() {
+    const saved = localStorage.getItem('ieltsVocabProgress');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            state.viewedWords = new Set(data.viewedWords || []);
+        } catch (err) {
+            console.error('Error loading saved data:', err);
+        }
+    }
+}
+
+// ==========================================
+// AUDIO - UK FEMALE ONLY
+// ==========================================
+
+let speechSynthesisVoices = [];
+
+function loadVoices() {
+    if ('speechSynthesis' in window) {
+        speechSynthesisVoices = window.speechSynthesis.getVoices();
+    }
+}
+
+function speak(text) {
+    if (!('speechSynthesis' in window)) {
+        showToast('⚠️ Browser không hỗ trợ phát âm. Vui lòng dùng Chrome!');
+        return;
+    }
+    
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-GB';
+    utterance.rate = 0.85;
+    
+    // Find UK Female voice
+    if (speechSynthesisVoices.length > 0) {
+        const ukVoice = speechSynthesisVoices.find(v => 
+            v.lang.includes('GB') && 
+            (v.name.includes('Google') || v.name.includes('Female'))
+        ) || speechSynthesisVoices.find(v => v.lang.includes('GB'));
+        
+        if (ukVoice) {
+            utterance.voice = ukVoice;
+        }
+    }
+    
+    window.speechSynthesis.speak(utterance);
+}
+
+// ==========================================
+// THEME
+// ==========================================
+
+function toggleTheme() {
+    const current = document.body.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', newTheme === 'dark' ? 'dark' : '');
+    localStorage.setItem('theme', newTheme);
+}
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+function setView(view) {
+    state.currentView = view;
+    
+    // Update nav UI
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.view === view);
+    });
+    
+    // Update URL hash
+    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
+    
+    render();
+}
+
+function setLesson(num) {
+    state.currentLesson = num;
+    
+    // Update URL hash
+    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
+    
+    render();
+}
+
+function setType(type) {
+    state.currentType = type;
+    
+    // Update URL hash
+    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
+    
+    render();
+}
+
+// ==========================================
+// RENDERING
+// ==========================================
+
+function render() {
+    const content = document.getElementById('mainContent');
+    
+    if (state.currentView === 'progress') {
+        renderProgress(content);
+    } else {
+        renderVocabView(content);
+    }
+}
+
+function renderVocabView(container) {
+    const maxLessons = state.currentView === 'reading' ? 7 : 8;
+    
+    // Clear container
+    container.innerHTML = '';
+    
+    // Lesson selector
+    const lessonsDiv = document.createElement('div');
+    lessonsDiv.className = 'lesson-grid';
+    
+    for (let i = 1; i <= maxLessons; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'lesson-btn';
+        btn.textContent = `L${i}`;
+        
+        if (i === state.currentLesson) {
+            btn.classList.add('active');
+        }
+        
+        if (hasLessonProgress(state.currentView, i)) {
+            btn.classList.add('has-progress');
+        }
+        
+        btn.addEventListener('click', () => setLesson(i));
+        lessonsDiv.appendChild(btn);
+    }
+    
+    container.appendChild(lessonsDiv);
+    
+    // Type selector
+    const typeDiv = document.createElement('div');
+    typeDiv.className = 'type-selector';
+    
+    const inclassBtn = document.createElement('button');
+    inclassBtn.className = 'type-btn';
+    inclassBtn.textContent = 'In-Class';
+    if (state.currentType === 'inclass') inclassBtn.classList.add('active');
+    inclassBtn.addEventListener('click', () => setType('inclass'));
+    
+    const homeworkBtn = document.createElement('button');
+    homeworkBtn.className = 'type-btn';
+    homeworkBtn.textContent = 'Homework';
+    if (state.currentType === 'homework') homeworkBtn.classList.add('active');
+    homeworkBtn.addEventListener('click', () => setType('homework'));
+    
+    typeDiv.appendChild(inclassBtn);
+    typeDiv.appendChild(homeworkBtn);
+    container.appendChild(typeDiv);
+    
+    // Get vocab data
+    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType] || {};
+    const words = Object.keys(data);
+    const viewedCount = words.filter(w => state.viewedWords.has(w)).length;
+    
+    // Stats
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'stats-bar';
+    statsDiv.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-value">${words.length}</div>
+            <div class="stat-label">Total Words</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${viewedCount}</div>
+            <div class="stat-label">Viewed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${state.currentView.toUpperCase()} L${state.currentLesson}</div>
+            <div class="stat-label">Current Set</div>
+        </div>
+    `;
+    container.appendChild(statsDiv);
+    
+    // Vocab grid
+    const gridDiv = document.createElement('div');
+    
+    if (words.length === 0) {
+        gridDiv.className = 'empty-state';
+        gridDiv.innerHTML = `
+            <div class="empty-icon">📭</div>
+            <div class="empty-text">No vocabulary available for this lesson</div>
+        `;
+    } else {
+        gridDiv.className = 'vocab-grid';
+        
+        // Create cards with safe event delegation
+        words.forEach(word => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            if (state.viewedWords.has(word)) {
+                card.classList.add('viewed');
+            }
+            
+            // Store word safely in data attribute
+            card.dataset.word = word;
+            
+            const wordDiv = document.createElement('div');
+            wordDiv.className = 'vocab-word';
+            wordDiv.textContent = word; // Auto-escaped
+            
+            card.appendChild(wordDiv);
+            gridDiv.appendChild(card);
+        });
+        
+        // Single event listener for entire grid (event delegation)
+        gridDiv.addEventListener('click', (e) => {
+            const card = e.target.closest('.vocab-card');
+            if (card && card.dataset.word) {
+                showWord(card.dataset.word);
+            }
+        });
+    }
+    
+    container.appendChild(gridDiv);
+}
+
+function renderProgress(container) {
+    const totalWords = getTotalWords();
+    const viewedWords = state.viewedWords.size;
+    const percentage = totalWords > 0 ? Math.round((viewedWords / totalWords) * 100) : 0;
+    
+    // Category breakdown
+    const readingTotal = getCategoryTotal('reading');
+    const listeningTotal = getCategoryTotal('listening');
+    const readingViewed = getCategoryViewed('reading');
+    const listeningViewed = getCategoryViewed('listening');
+    
+    const readingPct = readingTotal > 0 ? Math.round((readingViewed/readingTotal)*100) : 0;
+    const listeningPct = listeningTotal > 0 ? Math.round((listeningViewed/listeningTotal)*100) : 0;
+    
+    container.innerHTML = `
+        <div class="progress-container">
+            <div class="progress-section">
+                <div class="progress-title">📊 Overall Progress</div>
+                <div class="progress-row">
+                    <div class="progress-label">Total</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percentage}%">
+                            ${percentage}%
+                        </div>
+                    </div>
+                    <div class="progress-count">${viewedWords}/${totalWords}</div>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-title">📚 Category Breakdown</div>
+                <div class="progress-row">
+                    <div class="progress-label">📖 Reading</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${readingPct}%">
+                            ${readingViewed}/${readingTotal}
+                        </div>
+                    </div>
+                    <div class="progress-count">${readingViewed}</div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-label">🎧 Listening</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${listeningPct}%">
+                            ${listeningViewed}/${listeningTotal}
+                        </div>
+                    </div>
+                    <div class="progress-count">${listeningViewed}</div>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-title">💾 Export/Import</div>
+                <div class="export-section">
+                    <button class="btn btn-primary" id="exportBtn">📤 Export Progress</button>
+                    <button class="btn btn-secondary" id="importBtn">📥 Import Progress</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Attach event listeners
+    document.getElementById('exportBtn').addEventListener('click', exportProgress);
+    document.getElementById('importBtn').addEventListener('click', importProgress);
+}
+
+// ==========================================
+// MODAL
+// ==========================================
+
+function showWord(word) {
+    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType]?.[word];
+    if (!data) return;
+    
+    // Mark as viewed
+    state.viewedWords.add(word);
+    saveState();
+    
+    // Store current word
+    state.currentModalWord = word;
+    
+    // Get YouGlish URL
+    const youglishUrl = `https://youglish.com/pronounce/${encodeURIComponent(word)}/english/uk`;
+    
+    // Build modal content safely
+    const content = document.getElementById('modalContent');
+    content.innerHTML = '';
+    
+    const wrapper = document.createElement('div');
+    wrapper.style.textAlign = 'center';
+    
+    const wordElem = document.createElement('div');
+    wordElem.className = 'modal-word';
+    wordElem.textContent = word; // Auto-escaped
+    
+    const typeElem = document.createElement('span');
+    typeElem.className = 'modal-type';
+    typeElem.textContent = data.type; // Auto-escaped
+    
+    const ipaElem = document.createElement('div');
+    ipaElem.className = 'modal-ipa';
+    ipaElem.textContent = data.ipa; // Auto-escaped
+    
+    const meaningElem = document.createElement('div');
+    meaningElem.className = 'modal-meaning';
+    meaningElem.textContent = data.meaning; // Auto-escaped
+    
+    const paraphraseElem = document.createElement('div');
+    paraphraseElem.className = 'modal-paraphrase';
+    paraphraseElem.textContent = data.paraphrase; // Auto-escaped
+    
+    wrapper.appendChild(wordElem);
+    wrapper.appendChild(typeElem);
+    wrapper.appendChild(ipaElem);
+    wrapper.appendChild(meaningElem);
+    wrapper.appendChild(paraphraseElem);
+    
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'modal-actions';
+    
+    const listenBtn = document.createElement('button');
+    listenBtn.className = 'btn btn-primary';
+    listenBtn.innerHTML = '🔊 Listen';
+    listenBtn.addEventListener('click', () => speak(word));
+    
+    const youglishBtn = document.createElement('button');
+    youglishBtn.className = 'btn btn-secondary';
+    youglishBtn.innerHTML = '▶️ YouGlish';
+    youglishBtn.addEventListener('click', () => window.open(youglishUrl, '_blank'));
+    
+    actionsDiv.appendChild(listenBtn);
+    actionsDiv.appendChild(youglishBtn);
+    
+    content.appendChild(wrapper);
+    content.appendChild(actionsDiv);
+    
+    // Show modal
+    document.getElementById('modalOverlay').classList.add('active');
+    document.getElementById('vocabModal').classList.add('active');
+    
+    // Auto-play on open
+    setTimeout(() => speak(word), 100);
+    
+    // Re-render to show checkmark
+    render();
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.getElementById('vocabModal').classList.remove('active');
+}
+
+// ==========================================
+// UTILITIES
+// ==========================================
+
+function hasLessonProgress(category, lesson) {
+    const inclass = VOCAB_DATA[category]?.[lesson]?.inclass || {};
+    const homework = VOCAB_DATA[category]?.[lesson]?.homework || {};
+    const words = [...Object.keys(inclass), ...Object.keys(homework)];
+    return words.some(w => state.viewedWords.has(w));
+}
+
+function getTotalWords() {
+    let total = 0;
+    ['reading', 'listening'].forEach(cat => {
+        Object.keys(VOCAB_DATA[cat]).forEach(lesson => {
+            ['inclass', 'homework'].forEach(type => {
+                const words = VOCAB_DATA[cat][lesson][type];
+                total += Object.keys(words).length;
+            });
+        });
+    });
+    return total;
+}
+
+function getCategoryTotal(category) {
+    let total = 0;
+    Object.keys(VOCAB_DATA[category]).forEach(lesson => {
+        ['inclass', 'homework'].forEach(type => {
+            const words = VOCAB_DATA[category][lesson][type];
+            total += Object.keys(words).length;
+        });
+    });
+    return total;
+}
+
+function getCategoryViewed(category) {
+    let viewed = 0;
+    Object.keys(VOCAB_DATA[category]).forEach(lesson => {
+        ['inclass', 'homework'].forEach(type => {
+            const words = Object.keys(VOCAB_DATA[category][lesson][type]);
+            words.forEach(w => {
+                if (state.viewedWords.has(w)) viewed++;
+            });
+        });
+    });
+    return viewed;
+}
+
+function exportProgress() {
+    const data = {
+        viewedWords: Array.from(state.viewedWords),
+        exportDate: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ielts-vocab-progress-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function importProgress() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const data = JSON.parse(event.target.result);
+                state.viewedWords = new Set(data.viewedWords || []);
+                saveState();
+                render();
+                showToast('✅ Progress imported successfully!');
+            } catch (err) {
+                showToast('❌ Error importing file. Please check the file format.');
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+function showToast(message) {
+    // Remove existing toast if any
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    
+    // Load from URL hash if present
+    const hashState = URLHashManager.load();
+    if (hashState) {
+        state.currentView = hashState.view;
+        state.currentLesson = hashState.lesson;
+        state.currentType = hashState.type;
+    }
+    
+    // Load theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+    }
+    
+    // Load voices for speech synthesis
+    if ('speechSynthesis' in window) {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    
+    // Event listeners
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', closeModal);
+    
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
+    
+    // Initial render
+    render();
+});
+</script>
+
+</body>
+</html>
