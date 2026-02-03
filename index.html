@@ -220,6 +220,72 @@
             border-color: var(--accent-light);
         }
 
+        /* ===== PASSAGE SELECTOR ===== */
+        .passage-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .passage-btn {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .passage-btn.active {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        .passage-btn:hover:not(.active) {
+            border-color: var(--primary-light);
+            background: var(--surface-elevated);
+        }
+
+        /* ===== PARAGRAPH BADGE ===== */
+        .paragraph-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Distinct colors for each paragraph */
+        .paragraph-badge[data-para="A"] { background: #e74c3c; }
+        .paragraph-badge[data-para="B"] { background: #3498db; }
+        .paragraph-badge[data-para="C"] { background: #2ecc71; }
+        .paragraph-badge[data-para="D"] { background: #f39c12; }
+        .paragraph-badge[data-para="E"] { background: #9b59b6; }
+        .paragraph-badge[data-para="F"] { background: #1abc9c; }
+        .paragraph-badge[data-para="G"] { background: #e67e22; }
+        .paragraph-badge[data-para="H"] { background: #34495e; }
+        .paragraph-badge[data-para="I"] { background: #c0392b; }
+        .paragraph-badge[data-para="J"] { background: #16a085; }
+
+        .vocab-card {
+            position: relative;
+        }
+
         /* ===== STATS BAR ===== */
         .stats-bar {
             display: grid;
@@ -391,7 +457,7 @@
 
         .modal-word {
             font-family: 'Crimson Pro', serif;
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 8px;
@@ -424,7 +490,7 @@
         }
 
         .modal-meaning {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 16px;
@@ -432,12 +498,16 @@
         }
 
         .modal-paraphrase {
-            font-size: 16px;
-            line-height: 1.7;
-            opacity: 0.85;
+            font-size: 17px;
+            line-height: 1.8;
+            opacity: 0.9;
             margin-bottom: 30px;
             text-align: center;
-            font-style: italic;
+            font-style: normal;
+            background: var(--surface-elevated);
+            padding: 16px 20px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
         }
 
         .modal-actions {
@@ -690,6 +760,7 @@ let state = {
     currentView: 'reading',
     currentLesson: 1,
     currentType: 'inclass',
+    currentPassage: null, // null = show all passages
     viewedWords: new Set(),
     currentModalWord: null
 };
@@ -796,11 +867,57 @@ function setLesson(num) {
 
 function setType(type) {
     state.currentType = type;
+    state.currentPassage = null; // Reset passage when changing type
     
     // Update URL hash
     URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
     
     render();
+}
+
+function setPassage(passageName) {
+    state.currentPassage = passageName;
+    render();
+}
+
+// Helper function to check if lesson data has nested passages
+function hasNestedPassages(category, lesson, type) {
+    const data = VOCAB_DATA[category]?.[lesson]?.[type];
+    if (!data || Object.keys(data).length === 0) return false;
+    
+    // Check if first key points to an object with vocab structure
+    const firstKey = Object.keys(data)[0];
+    const firstValue = data[firstKey];
+    
+    // If first value doesn't have 'ipa' field, it's likely a passage container
+    return firstValue && !firstValue.ipa;
+}
+
+// Helper function to get all vocab from current selection
+function getCurrentVocabData() {
+    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
+    if (!data) return {};
+    
+    // Check if nested (has passages)
+    if (hasNestedPassages(state.currentView, state.currentLesson, state.currentType)) {
+        if (state.currentPassage) {
+            // Return specific passage
+            return data[state.currentPassage] || {};
+        } else {
+            // Return all passages combined
+            let combined = {};
+            Object.keys(data).forEach(passageName => {
+                const passageData = data[passageName];
+                Object.keys(passageData).forEach(word => {
+                    combined[word] = passageData[word];
+                });
+            });
+            return combined;
+        }
+    } else {
+        // Flat structure - return as is
+        return data;
+    }
 }
 
 // ==========================================
@@ -866,8 +983,37 @@ function renderVocabView(container) {
     typeDiv.appendChild(homeworkBtn);
     container.appendChild(typeDiv);
     
-    // Get vocab data
-    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType] || {};
+    // Passage selector (only if nested structure exists)
+    const rawData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
+    const isNested = hasNestedPassages(state.currentView, state.currentLesson, state.currentType);
+    
+    if (isNested && rawData) {
+        const passageDiv = document.createElement('div');
+        passageDiv.className = 'passage-selector';
+        
+        // "All Passages" button
+        const allBtn = document.createElement('button');
+        allBtn.className = 'passage-btn';
+        allBtn.textContent = '📚 All Passages';
+        if (state.currentPassage === null) allBtn.classList.add('active');
+        allBtn.addEventListener('click', () => setPassage(null));
+        passageDiv.appendChild(allBtn);
+        
+        // Individual passage buttons
+        Object.keys(rawData).forEach(passageName => {
+            const btn = document.createElement('button');
+            btn.className = 'passage-btn';
+            btn.textContent = passageName;
+            if (state.currentPassage === passageName) btn.classList.add('active');
+            btn.addEventListener('click', () => setPassage(passageName));
+            passageDiv.appendChild(btn);
+        });
+        
+        container.appendChild(passageDiv);
+    }
+    
+    // Get vocab data (handles both nested and flat structures)
+    const data = getCurrentVocabData();
     const words = Object.keys(data);
     const viewedCount = words.filter(w => state.viewedWords.has(w)).length;
     
@@ -902,8 +1048,15 @@ function renderVocabView(container) {
     } else {
         gridDiv.className = 'vocab-grid';
         
+        // Sort words by paragraph (A, B, C, D, E, F, G, H...)
+        const sortedWords = words.sort((a, b) => {
+            const paraA = data[a]?.paragraph || 'Z'; // Words without paragraph go last
+            const paraB = data[b]?.paragraph || 'Z';
+            return paraA.localeCompare(paraB);
+        });
+        
         // Create cards with safe event delegation
-        words.forEach(word => {
+        sortedWords.forEach(word => {
             const card = document.createElement('div');
             card.className = 'vocab-card';
             if (state.viewedWords.has(word)) {
@@ -918,6 +1071,17 @@ function renderVocabView(container) {
             wordDiv.textContent = word; // Auto-escaped
             
             card.appendChild(wordDiv);
+            
+            // Add paragraph badge if exists
+            const wordData = data[word];
+            if (wordData && wordData.paragraph) {
+                const badge = document.createElement('div');
+                badge.className = 'paragraph-badge';
+                badge.setAttribute('data-para', wordData.paragraph); // For color styling
+                badge.textContent = wordData.paragraph;
+                card.appendChild(badge);
+            }
+            
             gridDiv.appendChild(card);
         });
         
@@ -1004,7 +1168,9 @@ function renderProgress(container) {
 // ==========================================
 
 function showWord(word) {
-    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType]?.[word];
+    // Get data from current vocab (handles both nested and flat)
+    const vocabData = getCurrentVocabData();
+    const data = vocabData[word];
     if (!data) return;
     
     // Mark as viewed
@@ -1090,10 +1256,51 @@ function closeModal() {
 // ==========================================
 
 function hasLessonProgress(category, lesson) {
-    const inclass = VOCAB_DATA[category]?.[lesson]?.inclass || {};
-    const homework = VOCAB_DATA[category]?.[lesson]?.homework || {};
-    const words = [...Object.keys(inclass), ...Object.keys(homework)];
-    return words.some(w => state.viewedWords.has(w));
+    const savedState = { 
+        currentView: state.currentView,
+        currentLesson: state.currentLesson,
+        currentType: state.currentType,
+        currentPassage: state.currentPassage
+    };
+    
+    // Temporarily change state to check both inclass and homework
+    state.currentView = category;
+    state.currentLesson = lesson;
+    
+    let allWords = [];
+    ['inclass', 'homework'].forEach(type => {
+        state.currentType = type;
+        const vocabData = getCurrentVocabData();
+        allWords = [...allWords, ...Object.keys(vocabData)];
+    });
+    
+    // Restore state
+    Object.assign(state, savedState);
+    
+    return allWords.some(w => state.viewedWords.has(w));
+}
+
+function getAllWordsFromData(data) {
+    let words = [];
+    
+    // Check if first value has ipa (flat structure) or is nested
+    if (Object.keys(data).length === 0) return words;
+    
+    const firstKey = Object.keys(data)[0];
+    const firstValue = data[firstKey];
+    
+    if (firstValue && firstValue.ipa) {
+        // Flat structure
+        words = Object.keys(data);
+    } else {
+        // Nested structure (passages)
+        Object.keys(data).forEach(passageName => {
+            const passageWords = Object.keys(data[passageName]);
+            words = [...words, ...passageWords];
+        });
+    }
+    
+    return words;
 }
 
 function getTotalWords() {
@@ -1101,8 +1308,9 @@ function getTotalWords() {
     ['reading', 'listening'].forEach(cat => {
         Object.keys(VOCAB_DATA[cat]).forEach(lesson => {
             ['inclass', 'homework'].forEach(type => {
-                const words = VOCAB_DATA[cat][lesson][type];
-                total += Object.keys(words).length;
+                const data = VOCAB_DATA[cat][lesson][type];
+                const words = getAllWordsFromData(data);
+                total += words.length;
             });
         });
     });
@@ -1113,8 +1321,9 @@ function getCategoryTotal(category) {
     let total = 0;
     Object.keys(VOCAB_DATA[category]).forEach(lesson => {
         ['inclass', 'homework'].forEach(type => {
-            const words = VOCAB_DATA[category][lesson][type];
-            total += Object.keys(words).length;
+            const data = VOCAB_DATA[category][lesson][type];
+            const words = getAllWordsFromData(data);
+            total += words.length;
         });
     });
     return total;
@@ -1124,7 +1333,8 @@ function getCategoryViewed(category) {
     let viewed = 0;
     Object.keys(VOCAB_DATA[category]).forEach(lesson => {
         ['inclass', 'homework'].forEach(type => {
-            const words = Object.keys(VOCAB_DATA[category][lesson][type]);
+            const data = VOCAB_DATA[category][lesson][type];
+            const words = getAllWordsFromData(data);
             words.forEach(w => {
                 if (state.viewedWords.has(w)) viewed++;
             });
