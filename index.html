@@ -344,31 +344,55 @@
         }
 
         .vocab-word {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
+            .vocab-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+}
 
-        .vocab-type {
-            display: inline-block;
-            padding: 3px 10px;
-            background: var(--accent-light);
-            color: #78350f;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.vocab-word {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    flex-shrink: 0;
+}
 
-        .vocab-ipa {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--primary-light);
-            margin-bottom: 10px;
-        }
+.vocab-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* Màu theo loại từ - tránh trùng với badge A-I */
+.vocab-type {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+[data-theme="dark"] .vocab-type {
+    background: #312e81;
+    color: #a5b4fc;
+}
+
+/* Màu riêng cho từng loại */
+.vocab-card:has(.vocab-type:contains("verb")) .vocab-type,
+.vocab-card .vocab-type:first-of-type {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.vocab-ipa {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--primary-light);
+    display: none; /* Ẩn luôn để card siêu gọn */
+}
 
         .vocab-meaning {
             font-size: 14px;
@@ -948,12 +972,13 @@ function render() {
     ? `<div class="paragraph-badge para-${data.paragraph}">${data.paragraph}</div>` 
     : '';
         
-        html += `
-            <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="openModal('${word}')">
-                ${paragraphBadge}
-                <div class="vocab-word">${word}</div>
-                <div class="vocab-type">${data.type}</div>
-                <div class="vocab-ipa">${data.ipa}</div>
+         html += `
+    <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="openModal('${word}')">
+        ${paragraphBadge}
+        <div class="vocab-header">
+            <div class="vocab-word">${word}</div>
+            <div class="vocab-type">${data.type}</div>
+        </div>
                         
             </div>
         `;
