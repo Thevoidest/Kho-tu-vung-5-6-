@@ -271,183 +271,166 @@
         }
 
         /* Distinct colors for each paragraph */
-        .paragraph-badge[data-para="A"] { background: #e74c3c; }
-        .paragraph-badge[data-para="B"] { background: #3498db; }
-        .paragraph-badge[data-para="C"] { background: #2ecc71; }
-        .paragraph-badge[data-para="D"] { background: #f39c12; }
-        .paragraph-badge[data-para="E"] { background: #9b59b6; }
-        .paragraph-badge[data-para="F"] { background: #1abc9c; }
-        .paragraph-badge[data-para="G"] { background: #e67e22; }
-        .paragraph-badge[data-para="H"] { background: #34495e; }
-        .paragraph-badge[data-para="I"] { background: #c0392b; }
-        .paragraph-badge[data-para="J"] { background: #16a085; }
+        .paragraph-badge.para-A { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .paragraph-badge.para-B { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .paragraph-badge.para-C { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .paragraph-badge.para-D { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .paragraph-badge.para-E { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .paragraph-badge.para-F { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .paragraph-badge.para-G { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .paragraph-badge.para-H { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .paragraph-badge.para-I { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
 
-        .vocab-card {
-            position: relative;
-        }
-
-        /* ===== STATS BAR ===== */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            opacity: 0.7;
-            font-weight: 500;
-        }
-
-        /* ===== VOCAB GRID ===== */
+        /* ===== VOCAB CARD ===== */
         .vocab-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
         }
 
         .vocab-card {
             background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
             position: relative;
-            min-height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
+        }
+
+        .vocab-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .vocab-card:hover::before {
+            transform: scaleX(1);
         }
 
         .vocab-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 12px 30px var(--shadow);
-            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px var(--shadow);
+            border-color: var(--primary-light);
         }
 
         .vocab-card.viewed {
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
-        .vocab-card.viewed::before {
+        .vocab-card.viewed::after {
             content: '✓';
             position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 22px;
-            height: 22px;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
             background: var(--success);
             color: white;
             border-radius: 50%;
-            font-size: 13px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
-        }
-
-        .vocab-card.viewed:hover {
-            opacity: 1;
         }
 
         .vocab-word {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .vocab-type {
+            display: inline-block;
+            padding: 3px 10px;
+            background: var(--accent-light);
+            color: #78350f;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .vocab-ipa {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--primary-light);
+            margin-bottom: 10px;
+        }
+
+        .vocab-meaning {
+            font-size: 14px;
             color: var(--text);
-            line-height: 1.3;
+            line-height: 1.5;
         }
 
         /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 999;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
             display: none;
-            animation: fadeInOverlay 0.25s ease-out;
+            z-index: 998;
         }
 
         .modal-overlay.active {
             display: block;
         }
 
-        @keyframes fadeInOverlay {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal {
+        .vocab-modal {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.9);
-            width: 92%;
-            max-width: 500px;
             background: var(--surface);
-            border-radius: 24px;
-            padding: 40px 32px;
-            z-index: 1000;
-            display: none;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
-            animation: modalEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .modal.active {
-            display: block;
-        }
-
-        @keyframes modalEnter {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
+        .vocab-modal.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .modal-close {
             position: absolute;
             top: 16px;
             right: 16px;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: none;
             background: var(--surface-elevated);
+            border: none;
             cursor: pointer;
-            font-size: 20px;
-            transition: all 0.2s;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s;
         }
 
         .modal-close:hover {
@@ -456,78 +439,67 @@
         }
 
         .modal-word {
-            font-family: 'Crimson Pro', serif;
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 8px;
-            text-align: center;
+            margin-bottom: 12px;
         }
 
         .modal-type {
             display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
+            padding: 4px 14px;
+            background: var(--accent-light);
+            color: #78350f;
+            border-radius: 14px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 600;
+            margin-bottom: 16px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 16px;
         }
 
         .modal-ipa {
             font-family: 'JetBrains Mono', monospace;
             font-size: 16px;
             color: var(--primary-light);
-            margin-bottom: 24px;
-            text-align: center;
-            background: var(--surface-elevated);
-            padding: 10px 16px;
-            border-radius: 8px;
-            display: inline-block;
+            margin-bottom: 16px;
         }
 
         .modal-meaning {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 16px;
+            line-height: 1.7;
             color: var(--text);
             margin-bottom: 16px;
-            text-align: center;
+            padding: 16px;
+            background: var(--surface-elevated);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
         }
 
         .modal-paraphrase {
-            font-size: 17px;
-            line-height: 1.8;
-            opacity: 0.9;
-            margin-bottom: 30px;
-            text-align: center;
-            font-style: normal;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            padding: 16px;
             background: var(--surface-elevated);
-            padding: 16px 20px;
             border-radius: 12px;
-            border-left: 3px solid var(--accent);
+            font-style: italic;
+            opacity: 0.9;
         }
-.modal-paraphrase strong {
-    color: var(--primary);
-    font-weight: 700;
-    background: rgba(45, 80, 22, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
+
         .modal-actions {
             display: flex;
+            flex-direction: column;
             gap: 12px;
+            margin-top: 24px;
         }
 
         .btn {
-            flex: 1;
-            padding: 16px 24px;
+            padding: 14px 24px;
             border: none;
             border-radius: 12px;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -544,119 +516,85 @@
         .btn-primary:hover {
             background: var(--primary-light);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--shadow);
+            box-shadow: 0 6px 16px var(--shadow);
         }
 
         .btn-secondary {
-            background: var(--accent);
-            color: white;
+            background: var(--surface-elevated);
+            color: var(--text);
+            border: 2px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: var(--accent-light);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--shadow);
+            background: var(--border);
+            border-color: var(--primary-light);
         }
 
-        /* ===== PROGRESS VIEW ===== */
-        .progress-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .progress-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
+        /* ===== STATS ===== */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
             margin-bottom: 30px;
         }
 
-        .progress-title {
-            font-size: 20px;
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 20px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .progress-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 16px;
-        }
-
-        .progress-label {
-            min-width: 120px;
-            font-weight: 600;
-            font-size: 14px;
+        .stat-label {
+            font-size: 13px;
+            color: var(--text);
+            opacity: 0.7;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .progress-bar {
-            flex: 1;
-            height: 32px;
-            background: var(--surface-elevated);
-            border-radius: 16px;
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 10px;
             overflow: hidden;
-            border: 1px solid var(--border);
+            margin-top: 12px;
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 13px;
+            border-radius: 10px;
             transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .progress-count {
-            min-width: 50px;
-            text-align: right;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .export-section {
-            display: flex;
-            gap: 12px;
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            opacity: 0.6;
-        }
-
-        .empty-icon {
-            font-size: 72px;
-            margin-bottom: 16px;
-        }
-
-        .empty-text {
-            font-size: 18px;
-            font-weight: 600;
         }
 
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: var(--primary);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            z-index: 9999;
+            background: var(--surface);
+            color: var(--text);
+            padding: 16px 28px;
+            border-radius: 50px;
             box-shadow: 0 8px 24px var(--shadow);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 1000;
+            border: 1px solid var(--border);
             opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .toast.show {
@@ -664,97 +602,139 @@
             opacity: 1;
         }
 
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .header-controls {
-                flex-direction: column;
-                gap: 8px;
+            .app-container {
+                padding: 16px;
+            }
+
+            header {
+                margin-bottom: 24px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .vocab-grid {
+                grid-template-columns: 1fr;
             }
 
             .lesson-grid {
                 grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
             }
 
-            .vocab-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            }
-
-            .modal {
-                padding: 32px 24px;
+            .vocab-modal {
+                padding: 24px;
+                width: 95%;
             }
 
             .modal-word {
-                font-size: 30px;
-            }
-            
-            .type-selector {
-                flex-direction: column;
-            }
-            
-            .type-btn {
-                width: 100%;
+                font-size: 26px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="modal-overlay" id="modalOverlay"></div>
-<div class="modal" id="vocabModal">
-    <button class="modal-close" id="modalClose">✕</button>
-    <div id="modalContent"></div>
-</div>
-
 <div class="app-container">
     <header>
-        <div class="logo">IELTS Vocab</div>
+        <div class="logo">IELTS Vocab Stream</div>
         <div class="header-controls">
             <div class="theme-switch" id="themeToggle"></div>
         </div>
     </header>
 
-    <nav class="main-nav" id="mainNav">
+    <!-- Main Navigation -->
+    <nav class="main-nav">
         <button class="nav-item active" data-view="reading">📖 Reading</button>
         <button class="nav-item" data-view="listening">🎧 Listening</button>
-        <button class="nav-item" data-view="progress">📊 Progress</button>
+        <button class="nav-item" data-view="stats">📊 Stats</button>
     </nav>
 
-    <div id="mainContent"></div>
+    <!-- Content Area -->
+    <div id="contentArea"></div>
 </div>
 
-<!-- Load data first -->
-<script src="vocab-data.js"></script>
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="vocab-modal" id="vocabModal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+</div>
 
-<!-- Main application -->
 <script>
 // ==========================================
-// URL HASH MANAGER (inline for immediate availability)
+// DATA STRUCTURE
 // ==========================================
-const URLHashManager = {
-    update: function(view, lesson, type) {
-        const hash = `${view}-${lesson}-${type}`;
-        window.history.replaceState(null, '', `#${hash}`);
-    },
-    
-    load: function() {
-        const hash = window.location.hash.slice(1);
-        if (!hash) return null;
-        
-        const parts = hash.split('-');
-        if (parts.length !== 3) return null;
-        
-        const [view, lesson, type] = parts;
-        const lessonNum = parseInt(lesson);
-        
-        // Validate (VOCAB_DATA already loaded from external script)
-        if ((view !== 'reading' && view !== 'listening') ||
-            isNaN(lessonNum) ||
-            !VOCAB_DATA[view][lessonNum] ||
-            (type !== 'inclass' && type !== 'homework')) {
-            return null;
+
+const VOCAB_DATA = {
+    reading: {
+        lesson1: {
+            inclass: {
+                passage1: {
+                    "abundant": { ipa: "/əˈbʌn.dənt/", type: "adj", meaning: "có nhiều, dồi dào", paraphrase: "existing or available in large quantities; plentiful", paragraph: "A" },
+                    "activate": { ipa: "/ˈæk.tɪ.veɪt/", type: "v", meaning: "kích hoạt", paraphrase: "to make something start working or become active", paragraph: "B" }
+                },
+                passage2: {
+                    "chronic": { ipa: "/ˈkrɒn.ɪk/", type: "adj", meaning: "kinh niên, mãn tính", paraphrase: "continuing for a long time; constant", paragraph: "C" }
+                }
+            },
+            homework: {
+                passage1: {
+                    "acquire": { ipa: "/əˈkwaɪər/", type: "v", meaning: "đạt được, có được", paraphrase: "to obtain or get something", paragraph: "A" }
+                }
+            }
+        },
+        lesson2: {
+            inclass: {
+                passage1: {
+                    "benefit": { ipa: "/ˈben.ɪ.fɪt/", type: "n", meaning: "lợi ích", paraphrase: "an advantage or something that is good", paragraph: "D" }
+                }
+            },
+            homework: {
+                passage1: {
+                    "complex": { ipa: "/ˈkɒm.pleks/", type: "adj", meaning: "phức tạp", paraphrase: "involving many different and connected parts", paragraph: "E" }
+                }
+            }
         }
-        
-        return { view, lesson: lessonNum, type };
+    },
+    listening: {
+        lesson1: {
+            inclass: {
+                "determine": { ipa: "/dɪˈtɜː.mɪn/", type: "v", meaning: "xác định", paraphrase: "to find out or decide something" },
+                "enhance": { ipa: "/ɪnˈhɑːns/", type: "v", meaning: "nâng cao, tăng cường", paraphrase: "to improve the quality, amount, or strength of something" }
+            },
+            homework: {
+                "factor": { ipa: "/ˈfæk.tər/", type: "n", meaning: "yếu tố", paraphrase: "a fact or situation that influences a result" }
+            }
+        },
+        lesson2: {
+            inclass: {
+                "generate": { ipa: "/ˈdʒen.ə.reɪt/", type: "v", meaning: "tạo ra", paraphrase: "to produce or create something" }
+            },
+            homework: {
+                "implement": { ipa: "/ˈɪm.plɪ.ment/", type: "v", meaning: "thực hiện", paraphrase: "to put a plan or system into operation" }
+            }
+        }
     }
 };
 
@@ -762,98 +742,128 @@ const URLHashManager = {
 // STATE MANAGEMENT
 // ==========================================
 
-let state = {
+const state = {
     currentView: 'reading',
-    currentLesson: 1,
+    currentLesson: 'lesson1',
     currentType: 'inclass',
-    currentPassage: null, // null = show all passages
-    viewedWords: new Set(),
-    currentModalWord: null
+    currentPassage: null,
+    viewedWords: new Set()
 };
 
-// ==========================================
-// STORAGE
-// ==========================================
+const URLHashManager = {
+    save(view, lesson, type) {
+        window.location.hash = `${view}/${lesson}/${type}`;
+    },
+    load() {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return null;
+        const [view, lesson, type] = hash.split('/');
+        if (view && lesson && type) {
+            return { view, lesson, type };
+        }
+        return null;
+    }
+};
 
 function saveState() {
-    const data = {
+    localStorage.setItem('ielts_vocab_state', JSON.stringify({
         viewedWords: Array.from(state.viewedWords)
-    };
-    localStorage.setItem('ieltsVocabProgress', JSON.stringify(data));
+    }));
 }
 
 function loadState() {
-    const saved = localStorage.getItem('ieltsVocabProgress');
+    const saved = localStorage.getItem('ielts_vocab_state');
     if (saved) {
-        try {
-            const data = JSON.parse(saved);
-            state.viewedWords = new Set(data.viewedWords || []);
-        } catch (err) {
-            console.error('Error loading saved data:', err);
-        }
+        const data = JSON.parse(saved);
+        state.viewedWords = new Set(data.viewedWords || []);
     }
 }
-
-// ==========================================
-// AUDIO - UK FEMALE ONLY
-// ==========================================
-
-let speechSynthesisVoices = [];
-    let currentVoiceRegion = 'UK'; // Default UK
-
-function loadVoices() {
-    if ('speechSynthesis' in window) {
-        speechSynthesisVoices = window.speechSynthesis.getVoices();
-    }
-}
-
-function speak(text) {
-    if (!('speechSynthesis' in window)) {
-        showToast('⚠️ Browser không hỗ trợ phát âm. Vui lòng dùng Chrome!');
-        return;
-    }
-    
-    window.speechSynthesis.cancel();
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.85;
-    
-    // Determine lang code based on currentVoiceRegion
-    const langCode = currentVoiceRegion === 'UK' ? 'en-GB' : 'en-US';
-    utterance.lang = langCode;
-    
-    // Find appropriate voice
-    if (speechSynthesisVoices.length > 0) {
-        const targetVoice = speechSynthesisVoices.find(v => 
-            v.lang.includes(currentVoiceRegion === 'UK' ? 'GB' : 'US') && 
-            (v.name.includes('Google') || v.name.includes('Female') || v.name.includes('Male'))
-        ) || speechSynthesisVoices.find(v => 
-            v.lang.includes(currentVoiceRegion === 'UK' ? 'GB' : 'US')
-        );
-        
-        if (targetVoice) {
-            utterance.voice = targetVoice;
-        }
-    }
-    
-    // Fallback: force load voices if empty
-    if (speechSynthesisVoices.length === 0) {
-        loadVoices();
-        setTimeout(() => window.speechSynthesis.speak(utterance), 200);
-    } else {
-        window.speechSynthesis.speak(utterance);
-    }
-}
-
-// ==========================================
-// THEME
-// ==========================================
 
 function toggleTheme() {
-    const current = document.body.getAttribute('data-theme');
-    const newTheme = current === 'dark' ? 'light' : 'dark';
-    document.body.setAttribute('data-theme', newTheme === 'dark' ? 'dark' : '');
-    localStorage.setItem('theme', newTheme);
+    const currentTheme = document.body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    if (newTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// ==========================================
+// SPEECH SYNTHESIS - IMPROVED
+// ==========================================
+
+let availableVoices = [];
+let currentVoiceRegion = 'US'; // Default to US
+
+function loadVoices() {
+    availableVoices = window.speechSynthesis.getVoices();
+}
+
+function speak(word) {
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.rate = 0.85;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    // Improved voice selection with better US voices
+    let selectedVoice = null;
+    
+    if (currentVoiceRegion === 'US') {
+        // Priority order for US voices - prefer higher quality voices
+        const usVoicePriority = [
+            'Samantha',           // macOS - excellent quality
+            'Google US English',  // Chrome/Android
+            'Microsoft David',    // Windows
+            'Microsoft Zira',     // Windows
+            'Alex',              // macOS alternative
+            'en-US'              // Fallback pattern
+        ];
+        
+        for (const voiceName of usVoicePriority) {
+            selectedVoice = availableVoices.find(v => 
+                v.name.includes(voiceName) || 
+                (v.lang.startsWith('en-US') && v.name.includes(voiceName.split(' ')[0]))
+            );
+            if (selectedVoice) break;
+        }
+        
+        // If still no voice found, get any en-US voice
+        if (!selectedVoice) {
+            selectedVoice = availableVoices.find(v => v.lang.startsWith('en-US'));
+        }
+    } else {
+        // UK voice selection
+        const ukVoicePriority = [
+            'Daniel',             // macOS
+            'Google UK English',  // Chrome
+            'Microsoft Hazel',    // Windows
+            'en-GB'              // Fallback
+        ];
+        
+        for (const voiceName of ukVoicePriority) {
+            selectedVoice = availableVoices.find(v => 
+                v.name.includes(voiceName) || 
+                (v.lang.startsWith('en-GB') && v.name.includes(voiceName.split(' ')[0]))
+            );
+            if (selectedVoice) break;
+        }
+        
+        if (!selectedVoice) {
+            selectedVoice = availableVoices.find(v => v.lang.startsWith('en-GB'));
+        }
+    }
+    
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    }
+    
+    window.speechSynthesis.speak(utterance);
 }
 
 // ==========================================
@@ -863,79 +873,31 @@ function toggleTheme() {
 function setView(view) {
     state.currentView = view;
     
-    // Update nav UI
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.toggle('active', item.dataset.view === view);
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
     });
-    
-    // Update URL hash
-    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
     
     render();
 }
 
-function setLesson(num) {
-    state.currentLesson = num;
-    
-    // Update URL hash
-    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
-    
+function setLesson(lesson) {
+    state.currentLesson = lesson;
+    state.currentType = 'inclass';
+    state.currentPassage = null;
+    URLHashManager.save(state.currentView, state.currentLesson, state.currentType);
     render();
 }
 
 function setType(type) {
     state.currentType = type;
-    state.currentPassage = null; // Reset passage when changing type
-    
-    // Update URL hash
-    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
-    
+    state.currentPassage = null;
+    URLHashManager.save(state.currentView, state.currentLesson, state.currentType);
     render();
 }
 
-function setPassage(passageName) {
-    state.currentPassage = passageName;
+function setPassage(passage) {
+    state.currentPassage = passage;
     render();
-}
-
-// Helper function to check if lesson data has nested passages
-function hasNestedPassages(category, lesson, type) {
-    const data = VOCAB_DATA[category]?.[lesson]?.[type];
-    if (!data || Object.keys(data).length === 0) return false;
-    
-    // Check if first key points to an object with vocab structure
-    const firstKey = Object.keys(data)[0];
-    const firstValue = data[firstKey];
-    
-    // If first value doesn't have 'ipa' field, it's likely a passage container
-    return firstValue && !firstValue.ipa;
-}
-
-// Helper function to get all vocab from current selection
-function getCurrentVocabData() {
-    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
-    if (!data) return {};
-    
-    // Check if nested (has passages)
-    if (hasNestedPassages(state.currentView, state.currentLesson, state.currentType)) {
-        if (state.currentPassage) {
-            // Return specific passage
-            return data[state.currentPassage] || {};
-        } else {
-            // Return all passages combined
-            let combined = {};
-            Object.keys(data).forEach(passageName => {
-                const passageData = data[passageName];
-                Object.keys(passageData).forEach(word => {
-                    combined[word] = passageData[word];
-                });
-            });
-            return combined;
-        }
-    } else {
-        // Flat structure - return as is
-        return data;
-    }
 }
 
 // ==========================================
@@ -943,290 +905,249 @@ function getCurrentVocabData() {
 // ==========================================
 
 function render() {
-    const content = document.getElementById('mainContent');
+    const contentArea = document.getElementById('contentArea');
     
-    if (state.currentView === 'progress') {
-        renderProgress(content);
-    } else {
-        renderVocabView(content);
+    if (state.currentView === 'stats') {
+        renderStats(contentArea);
+        return;
     }
-}
-
-function renderVocabView(container) {
-    const maxLessons = state.currentView === 'reading' ? 7 : 8;
     
-    // Clear container
-    container.innerHTML = '';
+    const category = VOCAB_DATA[state.currentView];
+    const lessons = Object.keys(category);
+    
+    let html = '';
     
     // Lesson selector
-    const lessonsDiv = document.createElement('div');
-    lessonsDiv.className = 'lesson-grid';
-    
-    for (let i = 1; i <= maxLessons; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'lesson-btn';
-        btn.textContent = `L${i}`;
-        
-        if (i === state.currentLesson) {
-            btn.classList.add('active');
-        }
-        
-        if (hasLessonProgress(state.currentView, i)) {
-            btn.classList.add('has-progress');
-        }
-        
-        btn.addEventListener('click', () => setLesson(i));
-        lessonsDiv.appendChild(btn);
-    }
-    
-    container.appendChild(lessonsDiv);
+    html += '<div class="lesson-grid">';
+    lessons.forEach(lesson => {
+        const isActive = lesson === state.currentLesson;
+        const hasProgress = hasLessonProgress(state.currentView, lesson);
+        html += `
+            <button 
+                class="lesson-btn ${isActive ? 'active' : ''} ${hasProgress ? 'has-progress' : ''}"
+                onclick="setLesson('${lesson}')"
+            >
+                ${lesson.replace('lesson', 'Lesson ')}
+            </button>
+        `;
+    });
+    html += '</div>';
     
     // Type selector
-    const typeDiv = document.createElement('div');
-    typeDiv.className = 'type-selector';
-    
-    const inclassBtn = document.createElement('button');
-    inclassBtn.className = 'type-btn';
-    inclassBtn.textContent = 'In-Class';
-    if (state.currentType === 'inclass') inclassBtn.classList.add('active');
-    inclassBtn.addEventListener('click', () => setType('inclass'));
-    
-    const homeworkBtn = document.createElement('button');
-    homeworkBtn.className = 'type-btn';
-    homeworkBtn.textContent = 'Homework';
-    if (state.currentType === 'homework') homeworkBtn.classList.add('active');
-    homeworkBtn.addEventListener('click', () => setType('homework'));
-    
-    typeDiv.appendChild(inclassBtn);
-    typeDiv.appendChild(homeworkBtn);
-    container.appendChild(typeDiv);
-    
-    // Passage selector (only if nested structure exists)
-    const rawData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
-    const isNested = hasNestedPassages(state.currentView, state.currentLesson, state.currentType);
-    
-    if (isNested && rawData) {
-        const passageDiv = document.createElement('div');
-        passageDiv.className = 'passage-selector';
-        
-        // "All Passages" button
-        const allBtn = document.createElement('button');
-        allBtn.className = 'passage-btn';
-        allBtn.textContent = '📚 All Passages';
-        if (state.currentPassage === null) allBtn.classList.add('active');
-        allBtn.addEventListener('click', () => setPassage(null));
-        passageDiv.appendChild(allBtn);
-        
-        // Individual passage buttons
-        Object.keys(rawData).forEach(passageName => {
-            const btn = document.createElement('button');
-            btn.className = 'passage-btn';
-            btn.textContent = passageName;
-            if (state.currentPassage === passageName) btn.classList.add('active');
-            btn.addEventListener('click', () => setPassage(passageName));
-            passageDiv.appendChild(btn);
-        });
-        
-        container.appendChild(passageDiv);
-    }
-    
-    // Get vocab data (handles both nested and flat structures)
-    const data = getCurrentVocabData();
-    const words = Object.keys(data);
-    const viewedCount = words.filter(w => state.viewedWords.has(w)).length;
-    
-    // Stats
-    const statsDiv = document.createElement('div');
-    statsDiv.className = 'stats-bar';
-    statsDiv.innerHTML = `
-        <div class="stat-card">
-            <div class="stat-value">${words.length}</div>
-            <div class="stat-label">Total Words</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${viewedCount}</div>
-            <div class="stat-label">Viewed</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${state.currentView.toUpperCase()} L${state.currentLesson}</div>
-            <div class="stat-label">Current Set</div>
+    html += `
+        <div class="type-selector">
+            <button 
+                class="type-btn ${state.currentType === 'inclass' ? 'active' : ''}"
+                onclick="setType('inclass')"
+            >
+                📚 In-Class
+            </button>
+            <button 
+                class="type-btn ${state.currentType === 'homework' ? 'active' : ''}"
+                onclick="setType('homework')"
+            >
+                📝 Homework
+            </button>
         </div>
     `;
-    container.appendChild(statsDiv);
     
-    // Vocab grid
-    const gridDiv = document.createElement('div');
-    
-    if (words.length === 0) {
-        gridDiv.className = 'empty-state';
-        gridDiv.innerHTML = `
-            <div class="empty-icon">📭</div>
-            <div class="empty-text">No vocabulary available for this lesson</div>
-        `;
-    } else {
-        gridDiv.className = 'vocab-grid';
-        
-        // Sort words by paragraph (A, B, C, D, E, F, G, H...)
-        const sortedWords = words.sort((a, b) => {
-            const paraA = data[a]?.paragraph || 'Z'; // Words without paragraph go last
-            const paraB = data[b]?.paragraph || 'Z';
-            return paraA.localeCompare(paraB);
-        });
-        
-        // Create cards with safe event delegation
-        sortedWords.forEach(word => {
-            const card = document.createElement('div');
-            card.className = 'vocab-card';
-            if (state.viewedWords.has(word)) {
-                card.classList.add('viewed');
-            }
-            
-            // Store word safely in data attribute
-            card.dataset.word = word;
-            
-            const wordDiv = document.createElement('div');
-            wordDiv.className = 'vocab-word';
-            wordDiv.textContent = word; // Auto-escaped
-            
-            card.appendChild(wordDiv);
-            
-            // Add paragraph badge if exists
-            const wordData = data[word];
-           if (wordData && wordData.paragraph && state.currentView === 'reading') {
-                const badge = document.createElement('div');
-                badge.className = 'paragraph-badge';
-                badge.setAttribute('data-para', wordData.paragraph); // For color styling
-                badge.textContent = wordData.paragraph;
-                card.appendChild(badge);
-            }
-            
-            gridDiv.appendChild(card);
-        });
-        
-        // Single event listener for entire grid (event delegation)
-        gridDiv.addEventListener('click', (e) => {
-            const card = e.target.closest('.vocab-card');
-            if (card && card.dataset.word) {
-                showWord(card.dataset.word);
-            }
-        });
+    // Passage selector (for Reading)
+    const vocabData = getCurrentVocabData();
+    if (state.currentView === 'reading' && vocabData) {
+        const passages = Object.keys(vocabData);
+        if (passages.length > 1 && passages.every(p => p.startsWith('passage'))) {
+            html += '<div class="passage-selector">';
+            passages.forEach(passage => {
+                const isActive = passage === state.currentPassage;
+                html += `
+                    <button 
+                        class="passage-btn ${isActive ? 'active' : ''}"
+                        onclick="setPassage('${passage}')"
+                    >
+                        ${passage.replace('passage', 'Passage ')}
+                    </button>
+                `;
+            });
+            html += '</div>';
+        }
     }
     
-    container.appendChild(gridDiv);
+    // Vocab cards
+    html += '<div class="vocab-grid">';
+    const words = getWordsToDisplay();
+    words.forEach(([word, data]) => {
+        const isViewed = state.viewedWords.has(word);
+        const paragraphBadge = data.paragraph 
+            ? `<div class="paragraph-badge para-${data.paragraph}">${data.paragraph}</div>` 
+            : '';
+        
+        html += `
+            <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="openModal('${word}')">
+                ${paragraphBadge}
+                <div class="vocab-word">${word}</div>
+                <div class="vocab-type">${data.type}</div>
+                <div class="vocab-ipa">${data.ipa}</div>
+                <div class="vocab-meaning">${data.meaning}</div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    
+    contentArea.innerHTML = html;
 }
 
-function renderProgress(container) {
+function renderStats(container) {
     const totalWords = getTotalWords();
-    const viewedWords = state.viewedWords.size;
-    const percentage = totalWords > 0 ? Math.round((viewedWords / totalWords) * 100) : 0;
+    const viewedCount = state.viewedWords.size;
+    const percentage = totalWords > 0 ? Math.round((viewedCount / totalWords) * 100) : 0;
     
-    // Category breakdown
     const readingTotal = getCategoryTotal('reading');
-    const listeningTotal = getCategoryTotal('listening');
     const readingViewed = getCategoryViewed('reading');
-    const listeningViewed = getCategoryViewed('listening');
+    const readingPercent = readingTotal > 0 ? Math.round((readingViewed / readingTotal) * 100) : 0;
     
-    const readingPct = readingTotal > 0 ? Math.round((readingViewed/readingTotal)*100) : 0;
-    const listeningPct = listeningTotal > 0 ? Math.round((listeningViewed/listeningTotal)*100) : 0;
+    const listeningTotal = getCategoryTotal('listening');
+    const listeningViewed = getCategoryViewed('listening');
+    const listeningPercent = listeningTotal > 0 ? Math.round((listeningViewed / listeningTotal) * 100) : 0;
     
     container.innerHTML = `
-        <div class="progress-container">
-            <div class="progress-section">
-                <div class="progress-title">📊 Overall Progress</div>
-                <div class="progress-row">
-                    <div class="progress-label">Total</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${percentage}%">
-                            ${percentage}%
-                        </div>
-                    </div>
-                    <div class="progress-count">${viewedWords}/${totalWords}</div>
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">${viewedCount}</div>
+                <div class="stat-label">Words Learned</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${percentage}%"></div>
                 </div>
             </div>
             
-            <div class="progress-section">
-                <div class="progress-title">📚 Category Breakdown</div>
-                <div class="progress-row">
-                    <div class="progress-label">📖 Reading</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${readingPct}%">
-                            ${readingViewed}/${readingTotal}
-                        </div>
-                    </div>
-                    <div class="progress-count">${readingViewed}</div>
-                </div>
-                <div class="progress-row">
-                    <div class="progress-label">🎧 Listening</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${listeningPct}%">
-                            ${listeningViewed}/${listeningTotal}
-                        </div>
-                    </div>
-                    <div class="progress-count">${listeningViewed}</div>
+            <div class="stat-card">
+                <div class="stat-value">${totalWords}</div>
+                <div class="stat-label">Total Words</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">${percentage}%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">${readingViewed}/${readingTotal}</div>
+                <div class="stat-label">📖 Reading</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${readingPercent}%"></div>
                 </div>
             </div>
             
-            <div class="progress-section">
-                <div class="progress-title">💾 Export/Import</div>
-                <div class="export-section">
-                    <button class="btn btn-primary" id="exportBtn">📤 Export Progress</button>
-                    <button class="btn btn-secondary" id="importBtn">📥 Import Progress</button>
+            <div class="stat-card">
+                <div class="stat-value">${listeningViewed}/${listeningTotal}</div>
+                <div class="stat-label">🎧 Listening</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${listeningPercent}%"></div>
                 </div>
             </div>
         </div>
+        
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button class="btn btn-primary" onclick="exportProgress()" style="flex: 1;">
+                📥 Export Progress
+            </button>
+            <button class="btn btn-secondary" onclick="importProgress()" style="flex: 1;">
+                📤 Import Progress
+            </button>
+        </div>
     `;
+}
+
+function getCurrentVocabData() {
+    const category = VOCAB_DATA[state.currentView];
+    if (!category) return {};
     
-    // Attach event listeners
-    document.getElementById('exportBtn').addEventListener('click', exportProgress);
-    document.getElementById('importBtn').addEventListener('click', importProgress);
+    const lesson = category[state.currentLesson];
+    if (!lesson) return {};
+    
+    return lesson[state.currentType] || {};
+}
+
+function getWordsToDisplay() {
+    const vocabData = getCurrentVocabData();
+    
+    if (!vocabData || Object.keys(vocabData).length === 0) {
+        return [];
+    }
+    
+    const firstKey = Object.keys(vocabData)[0];
+    const firstValue = vocabData[firstKey];
+    
+    if (firstValue && firstValue.ipa) {
+        return Object.entries(vocabData);
+    }
+    
+    if (state.currentPassage && vocabData[state.currentPassage]) {
+        return Object.entries(vocabData[state.currentPassage]);
+    }
+    
+    let allWords = [];
+    Object.keys(vocabData).forEach(passageName => {
+        const passageWords = Object.entries(vocabData[passageName]);
+        allWords = [...allWords, ...passageWords];
+    });
+    
+    return allWords;
 }
 
 // ==========================================
 // MODAL
 // ==========================================
 
-function showWord(word) {
-    // Get data from current vocab (handles both nested and flat)
+function openModal(word) {
     const vocabData = getCurrentVocabData();
-    const data = vocabData[word];
+    let data = null;
+    
+    const firstKey = Object.keys(vocabData)[0];
+    const firstValue = vocabData[firstKey];
+    
+    if (firstValue && firstValue.ipa) {
+        data = vocabData[word];
+    } else {
+        Object.keys(vocabData).forEach(passageName => {
+            if (vocabData[passageName][word]) {
+                data = vocabData[passageName][word];
+            }
+        });
+    }
+    
     if (!data) return;
     
-    // Mark as viewed
     state.viewedWords.add(word);
     saveState();
     
-    // Store current word
-    state.currentModalWord = word;
+    const youglishUrl = `https://youglish.com/pronounce/${encodeURIComponent(word)}/english`;
     
-    // Get YouGlish URL
-    const youglishUrl = `https://youglish.com/pronounce/${encodeURIComponent(word)}/english/uk`;
-    
-    // Build modal content safely
     const content = document.getElementById('modalContent');
     content.innerHTML = '';
     
     const wrapper = document.createElement('div');
-    wrapper.style.textAlign = 'center';
     
     const wordElem = document.createElement('div');
     wordElem.className = 'modal-word';
-    wordElem.textContent = word; // Auto-escaped
+    wordElem.textContent = word;
     
-    const typeElem = document.createElement('span');
+    const typeElem = document.createElement('div');
     typeElem.className = 'modal-type';
-    typeElem.textContent = data.type; // Auto-escaped
+    typeElem.textContent = data.type;
     
     const ipaElem = document.createElement('div');
     ipaElem.className = 'modal-ipa';
-    ipaElem.textContent = data.ipa; // Auto-escaped
+    ipaElem.textContent = data.ipa;
     
     const meaningElem = document.createElement('div');
     meaningElem.className = 'modal-meaning';
-    meaningElem.textContent = data.meaning; // Auto-escaped
+    meaningElem.innerHTML = data.meaning;
     
     const paraphraseElem = document.createElement('div');
     paraphraseElem.className = 'modal-paraphrase';
-    paraphraseElem.innerHTML = data.paraphrase; // Auto-escaped
+    paraphraseElem.innerHTML = data.paraphrase;
     
     wrapper.appendChild(wordElem);
     wrapper.appendChild(typeElem);
@@ -1237,20 +1158,9 @@ function showWord(word) {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'modal-actions';
     
-    const listenBtn = document.createElement('button');
-    listenBtn.className = 'btn btn-primary';
-    listenBtn.innerHTML = '🔊 Listen';
-    listenBtn.addEventListener('click', () => speak(word));
-    
-    const youglishBtn = document.createElement('button');
-    youglishBtn.className = 'btn btn-secondary';
-    youglishBtn.innerHTML = '▶️ YouGlish';
-    youglishBtn.addEventListener('click', () => window.open(youglishUrl, '_blank'));
-    
-    actionsDiv.appendChild(listenBtn);
-    // Voice selector
+    // Voice selector - bỏ nút Listen, chỉ giữ UK/US
     const voiceSelector = document.createElement('div');
-    voiceSelector.style.cssText = 'display: flex; gap: 8px; margin-top: 12px; justify-content: center;';
+    voiceSelector.style.cssText = 'display: flex; gap: 8px;';
     
     const ukBtn = document.createElement('button');
     ukBtn.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
@@ -1259,7 +1169,6 @@ function showWord(word) {
     ukBtn.addEventListener('click', () => {
         currentVoiceRegion = 'UK';
         speak(word);
-        // Update button styles
         ukBtn.className = 'btn btn-primary';
         usBtn.className = 'btn btn-secondary';
     });
@@ -1271,27 +1180,30 @@ function showWord(word) {
     usBtn.addEventListener('click', () => {
         currentVoiceRegion = 'US';
         speak(word);
-        // Update button styles
         usBtn.className = 'btn btn-primary';
         ukBtn.className = 'btn btn-secondary';
     });
     
     voiceSelector.appendChild(ukBtn);
     voiceSelector.appendChild(usBtn);
+    
+    const youglishBtn = document.createElement('button');
+    youglishBtn.className = 'btn btn-secondary';
+    youglishBtn.innerHTML = '▶️ YouGlish';
+    youglishBtn.addEventListener('click', () => window.open(youglishUrl, '_blank'));
+    
     actionsDiv.appendChild(voiceSelector);
     actionsDiv.appendChild(youglishBtn);
     
     content.appendChild(wrapper);
     content.appendChild(actionsDiv);
     
-    // Show modal
     document.getElementById('modalOverlay').classList.add('active');
     document.getElementById('vocabModal').classList.add('active');
     
-    // Auto-play on open
+    // Auto-play with US voice on open
     setTimeout(() => speak(word), 100);
     
-    // Re-render to show checkmark
     render();
 }
 
@@ -1312,7 +1224,6 @@ function hasLessonProgress(category, lesson) {
         currentPassage: state.currentPassage
     };
     
-    // Temporarily change state to check both inclass and homework
     state.currentView = category;
     state.currentLesson = lesson;
     
@@ -1323,7 +1234,6 @@ function hasLessonProgress(category, lesson) {
         allWords = [...allWords, ...Object.keys(vocabData)];
     });
     
-    // Restore state
     Object.assign(state, savedState);
     
     return allWords.some(w => state.viewedWords.has(w));
@@ -1332,17 +1242,14 @@ function hasLessonProgress(category, lesson) {
 function getAllWordsFromData(data) {
     let words = [];
     
-    // Check if first value has ipa (flat structure) or is nested
     if (Object.keys(data).length === 0) return words;
     
     const firstKey = Object.keys(data)[0];
     const firstValue = data[firstKey];
     
     if (firstValue && firstValue.ipa) {
-        // Flat structure
         words = Object.keys(data);
     } else {
-        // Nested structure (passages)
         Object.keys(data).forEach(passageName => {
             const passageWords = Object.keys(data[passageName]);
             words = [...words, ...passageWords];
@@ -1432,7 +1339,6 @@ function importProgress() {
 }
 
 function showToast(message) {
-    // Remove existing toast if any
     const existingToast = document.querySelector('.toast');
     if (existingToast) {
         existingToast.remove();
@@ -1458,7 +1364,6 @@ function showToast(message) {
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
     
-    // Load from URL hash if present
     const hashState = URLHashManager.load();
     if (hashState) {
         state.currentView = hashState.view;
@@ -1466,32 +1371,28 @@ document.addEventListener('DOMContentLoaded', () => {
         state.currentType = hashState.type;
     }
     
-    // Load theme
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
     }
     
     // Load voices for speech synthesis
-      if ('speechSynthesis' in window) {
-        // Load voices multiple times to ensure compatibility
+    if ('speechSynthesis' in window) {
         loadVoices();
         setTimeout(loadVoices, 100);
         setTimeout(loadVoices, 500);
+        setTimeout(loadVoices, 1000);
         window.speechSynthesis.onvoiceschanged = loadVoices;
     }
     
-    // Event listeners
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('modalOverlay').addEventListener('click', closeModal);
     
-    // Navigation
     document.querySelectorAll('.nav-item').forEach(btn => {
         btn.addEventListener('click', () => setView(btn.dataset.view));
     });
     
-    // Initial render
     render();
 });
 </script>
