@@ -799,6 +799,7 @@ function loadState() {
 // ==========================================
 
 let speechSynthesisVoices = [];
+    let currentVoiceRegion = 'UK'; // Default UK
 
 function loadVoices() {
     if ('speechSynthesis' in window) {
@@ -815,22 +816,33 @@ function speak(text) {
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-GB';
     utterance.rate = 0.85;
     
-    // Find UK Female voice
+    // Determine lang code based on currentVoiceRegion
+    const langCode = currentVoiceRegion === 'UK' ? 'en-GB' : 'en-US';
+    utterance.lang = langCode;
+    
+    // Find appropriate voice
     if (speechSynthesisVoices.length > 0) {
-        const ukVoice = speechSynthesisVoices.find(v => 
-            v.lang.includes('GB') && 
-            (v.name.includes('Google') || v.name.includes('Female'))
-        ) || speechSynthesisVoices.find(v => v.lang.includes('GB'));
+        const targetVoice = speechSynthesisVoices.find(v => 
+            v.lang.includes(currentVoiceRegion === 'UK' ? 'GB' : 'US') && 
+            (v.name.includes('Google') || v.name.includes('Female') || v.name.includes('Male'))
+        ) || speechSynthesisVoices.find(v => 
+            v.lang.includes(currentVoiceRegion === 'UK' ? 'GB' : 'US')
+        );
         
-        if (ukVoice) {
-            utterance.voice = ukVoice;
+        if (targetVoice) {
+            utterance.voice = targetVoice;
         }
     }
     
-    window.speechSynthesis.speak(utterance);
+    // Fallback: force load voices if empty
+    if (speechSynthesisVoices.length === 0) {
+        loadVoices();
+        setTimeout(() => window.speechSynthesis.speak(utterance), 200);
+    } else {
+        window.speechSynthesis.speak(utterance);
+    }
 }
 
 // ==========================================
@@ -1080,7 +1092,7 @@ function renderVocabView(container) {
             
             // Add paragraph badge if exists
             const wordData = data[word];
-            if (wordData && wordData.paragraph) {
+           if (wordData && wordData.paragraph && state.currentView === 'reading') {
                 const badge = document.createElement('div');
                 badge.className = 'paragraph-badge';
                 badge.setAttribute('data-para', wordData.paragraph); // For color styling
@@ -1236,6 +1248,37 @@ function showWord(word) {
     youglishBtn.addEventListener('click', () => window.open(youglishUrl, '_blank'));
     
     actionsDiv.appendChild(listenBtn);
+    // Voice selector
+    const voiceSelector = document.createElement('div');
+    voiceSelector.style.cssText = 'display: flex; gap: 8px; margin-top: 12px; justify-content: center;';
+    
+    const ukBtn = document.createElement('button');
+    ukBtn.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
+    ukBtn.innerHTML = '🇬🇧 UK';
+    ukBtn.style.flex = '1';
+    ukBtn.addEventListener('click', () => {
+        currentVoiceRegion = 'UK';
+        speak(word);
+        // Update button styles
+        ukBtn.className = 'btn btn-primary';
+        usBtn.className = 'btn btn-secondary';
+    });
+    
+    const usBtn = document.createElement('button');
+    usBtn.className = 'btn ' + (currentVoiceRegion === 'US' ? 'btn-primary' : 'btn-secondary');
+    usBtn.innerHTML = '🇺🇸 US';
+    usBtn.style.flex = '1';
+    usBtn.addEventListener('click', () => {
+        currentVoiceRegion = 'US';
+        speak(word);
+        // Update button styles
+        usBtn.className = 'btn btn-primary';
+        ukBtn.className = 'btn btn-secondary';
+    });
+    
+    voiceSelector.appendChild(ukBtn);
+    voiceSelector.appendChild(usBtn);
+    actionsDiv.appendChild(voiceSelector);
     actionsDiv.appendChild(youglishBtn);
     
     content.appendChild(wrapper);
@@ -1430,8 +1473,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Load voices for speech synthesis
-    if ('speechSynthesis' in window) {
+      if ('speechSynthesis' in window) {
+        // Load voices multiple times to ensure compatibility
         loadVoices();
+        setTimeout(loadVoices, 100);
+        setTimeout(loadVoices, 500);
         window.speechSynthesis.onvoiceschanged = loadVoices;
     }
     
