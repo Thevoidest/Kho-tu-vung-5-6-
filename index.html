@@ -681,70 +681,17 @@
     <div id="modalContent"></div>
 </div>
 
+<!-- ✅ SỬA QUAN TRỌNG: Load dữ liệu từ file vocab-data.js bên ngoài -->
+<script src="vocab-data.js"></script>
+
 <script>
-// ==========================================
-// DATA STRUCTURE
-// ==========================================
-
-const VOCAB_DATA = {
-    reading: {
-        lesson1: {
-            inclass: {
-                passage1: {
-                    "abundant": { ipa: "/əˈbʌn.dənt/", type: "adj", meaning: "có nhiều, dồi dào", paraphrase: "existing or available in large quantities; plentiful", paragraph: "A" },
-                    "activate": { ipa: "/ˈæk.tɪ.veɪt/", type: "v", meaning: "kích hoạt", paraphrase: "to make something start working or become active", paragraph: "B" }
-                },
-                passage2: {
-                    "chronic": { ipa: "/ˈkrɒn.ɪk/", type: "adj", meaning: "kinh niên, mãn tính", paraphrase: "continuing for a long time; constant", paragraph: "C" }
-                }
-            },
-            homework: {
-                passage1: {
-                    "acquire": { ipa: "/əˈkwaɪər/", type: "v", meaning: "đạt được, có được", paraphrase: "to obtain or get something", paragraph: "A" }
-                }
-            }
-        },
-        lesson2: {
-            inclass: {
-                passage1: {
-                    "benefit": { ipa: "/ˈben.ɪ.fɪt/", type: "n", meaning: "lợi ích", paraphrase: "an advantage or something that is good", paragraph: "D" }
-                }
-            },
-            homework: {
-                passage1: {
-                    "complex": { ipa: "/ˈkɒm.pleks/", type: "adj", meaning: "phức tạp", paraphrase: "involving many different and connected parts", paragraph: "E" }
-                }
-            }
-        }
-    },
-    listening: {
-        lesson1: {
-            inclass: {
-                "determine": { ipa: "/dɪˈtɜː.mɪn/", type: "v", meaning: "xác định", paraphrase: "to find out or decide something" },
-                "enhance": { ipa: "/ɪnˈhɑːns/", type: "v", meaning: "nâng cao, tăng cường", paraphrase: "to improve the quality, amount, or strength of something" }
-            },
-            homework: {
-                "factor": { ipa: "/ˈfæk.tər/", type: "n", meaning: "yếu tố", paraphrase: "a fact or situation that influences a result" }
-            }
-        },
-        lesson2: {
-            inclass: {
-                "generate": { ipa: "/ˈdʒen.ə.reɪt/", type: "v", meaning: "tạo ra", paraphrase: "to produce or create something" }
-            },
-            homework: {
-                "implement": { ipa: "/ˈɪm.plɪ.ment/", type: "v", meaning: "thực hiện", paraphrase: "to put a plan or system into operation" }
-            }
-        }
-    }
-};
-
 // ==========================================
 // STATE MANAGEMENT
 // ==========================================
 
 const state = {
     currentView: 'reading',
-    currentLesson: 'lesson1',
+    currentLesson: 1, // ✅ Đổi lại số thay vì 'lesson1'
     currentType: 'inclass',
     currentPassage: null,
     viewedWords: new Set()
@@ -759,7 +706,8 @@ const URLHashManager = {
         if (!hash) return null;
         const [view, lesson, type] = hash.split('/');
         if (view && lesson && type) {
-            return { view, lesson, type };
+            const lessonNum = parseInt(lesson);
+            return { view, lesson: lessonNum, type };
         }
         return null;
     }
@@ -811,18 +759,16 @@ function speak(word) {
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
     
-    // Improved voice selection with better US voices
     let selectedVoice = null;
     
     if (currentVoiceRegion === 'US') {
-        // Priority order for US voices - prefer higher quality voices
         const usVoicePriority = [
-            'Samantha',           // macOS - excellent quality
-            'Google US English',  // Chrome/Android
-            'Microsoft David',    // Windows
-            'Microsoft Zira',     // Windows
-            'Alex',              // macOS alternative
-            'en-US'              // Fallback pattern
+            'Samantha',
+            'Google US English',
+            'Microsoft David',
+            'Microsoft Zira',
+            'Alex',
+            'en-US'
         ];
         
         for (const voiceName of usVoicePriority) {
@@ -833,17 +779,15 @@ function speak(word) {
             if (selectedVoice) break;
         }
         
-        // If still no voice found, get any en-US voice
         if (!selectedVoice) {
             selectedVoice = availableVoices.find(v => v.lang.startsWith('en-US'));
         }
     } else {
-        // UK voice selection
         const ukVoicePriority = [
-            'Daniel',             // macOS
-            'Google UK English',  // Chrome
-            'Microsoft Hazel',    // Windows
-            'en-GB'              // Fallback
+            'Daniel',
+            'Google UK English',
+            'Microsoft Hazel',
+            'en-GB'
         ];
         
         for (const voiceName of ukVoicePriority) {
@@ -880,8 +824,8 @@ function setView(view) {
     render();
 }
 
-function setLesson(lesson) {
-    state.currentLesson = lesson;
+function setLesson(num) {
+    state.currentLesson = num;
     state.currentType = 'inclass';
     state.currentPassage = null;
     URLHashManager.save(state.currentView, state.currentLesson, state.currentType);
@@ -913,21 +857,23 @@ function render() {
     }
     
     const category = VOCAB_DATA[state.currentView];
-    const lessons = Object.keys(category);
+    if (!category) return;
+    
+    const lessons = Object.keys(category).map(Number).sort((a, b) => a - b);
     
     let html = '';
     
     // Lesson selector
     html += '<div class="lesson-grid">';
-    lessons.forEach(lesson => {
-        const isActive = lesson === state.currentLesson;
-        const hasProgress = hasLessonProgress(state.currentView, lesson);
+    lessons.forEach(lessonNum => {
+        const isActive = lessonNum === state.currentLesson;
+        const hasProgress = hasLessonProgress(state.currentView, lessonNum);
         html += `
             <button 
                 class="lesson-btn ${isActive ? 'active' : ''} ${hasProgress ? 'has-progress' : ''}"
-                onclick="setLesson('${lesson}')"
+                onclick="setLesson(${lessonNum})"
             >
-                ${lesson.replace('lesson', 'Lesson ')}
+                L${lessonNum}
             </button>
         `;
     });
@@ -953,22 +899,43 @@ function render() {
     
     // Passage selector (for Reading)
     const vocabData = getCurrentVocabData();
-    if (state.currentView === 'reading' && vocabData) {
-        const passages = Object.keys(vocabData);
-        if (passages.length > 1 && passages.every(p => p.startsWith('passage'))) {
-            html += '<div class="passage-selector">';
-            passages.forEach(passage => {
-                const isActive = passage === state.currentPassage;
+    if (state.currentView === 'reading' && vocabData && Object.keys(vocabData).length > 0) {
+        const firstKey = Object.keys(vocabData)[0];
+        const firstValue = vocabData[firstKey];
+        
+        // Check if nested structure
+        if (firstValue && firstValue.ipa) {
+            // Flat structure - no passage selector needed
+        } else {
+            // Nested structure - show passage selector
+            const passages = Object.keys(vocabData);
+            if (passages.length > 1) {
+                html += '<div class="passage-selector">';
+                
+                // "All Passages" button
                 html += `
                     <button 
-                        class="passage-btn ${isActive ? 'active' : ''}"
-                        onclick="setPassage('${passage}')"
+                        class="passage-btn ${state.currentPassage === null ? 'active' : ''}"
+                        onclick="setPassage(null)"
                     >
-                        ${passage.replace('passage', 'Passage ')}
+                        📚 All Passages
                     </button>
                 `;
-            });
-            html += '</div>';
+                
+                // Individual passage buttons
+                passages.forEach(passageName => {
+                    const isActive = passageName === state.currentPassage;
+                    html += `
+                        <button 
+                            class="passage-btn ${isActive ? 'active' : ''}"
+                            onclick="setPassage('${passageName}')"
+                        >
+                            ${passageName}
+                        </button>
+                    `;
+                });
+                html += '</div>';
+            }
         }
     }
     
@@ -987,7 +954,7 @@ function render() {
                 <div class="vocab-word">${word}</div>
                 <div class="vocab-type">${data.type}</div>
                 <div class="vocab-ipa">${data.ipa}</div>
-                <div class="vocab-meaning">${data.meaning}</div>
+                               <div class="vocab-meaning">${data.meaning}</div>
             </div>
         `;
     });
@@ -1079,14 +1046,17 @@ function getWordsToDisplay() {
     const firstKey = Object.keys(vocabData)[0];
     const firstValue = vocabData[firstKey];
     
+    // Check if flat structure (direct word data)
     if (firstValue && firstValue.ipa) {
         return Object.entries(vocabData);
     }
     
+    // Nested structure (with passages)
     if (state.currentPassage && vocabData[state.currentPassage]) {
         return Object.entries(vocabData[state.currentPassage]);
     }
     
+    // All passages combined
     let allWords = [];
     Object.keys(vocabData).forEach(passageName => {
         const passageWords = Object.entries(vocabData[passageName]);
@@ -1097,7 +1067,7 @@ function getWordsToDisplay() {
 }
 
 // ==========================================
-// MODAL
+// MODAL - ĐÃ SỬA: BỎ NÚT LISTEN, TỰ ĐỘNG PHÁT GIỌNG US
 // ==========================================
 
 function openModal(word) {
@@ -1158,7 +1128,7 @@ function openModal(word) {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'modal-actions';
     
-    // Voice selector - bỏ nút Listen, chỉ giữ UK/US
+    // ✅ ĐÃ BỎ NÚT "🔊 Listen" - Chỉ còn UK/US
     const voiceSelector = document.createElement('div');
     voiceSelector.style.cssText = 'display: flex; gap: 8px;';
     
@@ -1169,6 +1139,7 @@ function openModal(word) {
     ukBtn.addEventListener('click', () => {
         currentVoiceRegion = 'UK';
         speak(word);
+        // Update button styles
         ukBtn.className = 'btn btn-primary';
         usBtn.className = 'btn btn-secondary';
     });
@@ -1180,6 +1151,7 @@ function openModal(word) {
     usBtn.addEventListener('click', () => {
         currentVoiceRegion = 'US';
         speak(word);
+        // Update button styles
         usBtn.className = 'btn btn-primary';
         ukBtn.className = 'btn btn-secondary';
     });
@@ -1201,7 +1173,7 @@ function openModal(word) {
     document.getElementById('modalOverlay').classList.add('active');
     document.getElementById('vocabModal').classList.add('active');
     
-    // Auto-play with US voice on open
+    // ✅ TỰ ĐỘNG PHÁT GIỌNG US KHI MỞ MODAL
     setTimeout(() => speak(word), 100);
     
     render();
@@ -1376,7 +1348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.setAttribute('data-theme', 'dark');
     }
     
-    // Load voices for speech synthesis
+    // ✅ CẢI THIỆN: Load voices cho speech synthesis
     if ('speechSynthesis' in window) {
         loadVoices();
         setTimeout(loadVoices, 100);
