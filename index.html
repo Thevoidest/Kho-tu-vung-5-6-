@@ -343,61 +343,105 @@
             font-weight: 700;
         }
 
+        /* ✅ SỬA LỖI: Bỏ .vocab-word { bị lồng sai */
+        .vocab-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
         .vocab-word {
-            .vocab-header {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 8px;
-}
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
 
-.vocab-word {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--primary);
-    flex-shrink: 0;
-}
+        .vocab-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: lowercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
 
-.vocab-type {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-}
+        /* ✅ SỬA LỖI: Màu từ loại - dùng attribute selector thay vì :contains() */
+        /* Default */
+        .vocab-type {
+            background: #f3f4f6;
+            color: #374151;
+        }
 
-/* Màu theo loại từ - tránh trùng với badge A-I */
-.vocab-type {
-    background: #e0e7ff;
-    color: #4338ca;
-}
+        /* Verb - Xanh dương */
+        .type-verb {
+            background: #dbeafe;
+            color: #1e40af;
+        }
 
-[data-theme="dark"] .vocab-type {
-    background: #312e81;
-    color: #a5b4fc;
-}
+        /* Noun - Xanh lá */
+        .type-noun {
+            background: #d1fae5;
+            color: #065f46;
+        }
 
-/* Màu riêng cho từng loại */
-.vocab-card:has(.vocab-type:contains("verb")) .vocab-type,
-.vocab-card .vocab-type:first-of-type {
-    background: #dbeafe;
-    color: #1e40af;
-}
+        /* Adjective - Tím */
+        .type-adjective {
+            background: #e9d5ff;
+            color: #6b21a8;
+        }
 
-.vocab-ipa {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--primary-light);
-    display: none; /* Ẩn luôn để card siêu gọn */
-}
+        /* Adverb - Cam */
+        .type-adverb {
+            background: #fed7aa;
+            color: #9a3412;
+        }
 
-        .vocab-meaning {
-            font-size: 14px;
-            color: var(--text);
-            line-height: 1.5;
+        /* Phrase - Hồng */
+        .type-phrase {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+
+        /* Dark theme */
+        [data-theme="dark"] .vocab-type {
+            background: #374151;
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .type-verb {
+            background: #1e3a8a;
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .type-noun {
+            background: #064e3b;
+            color: #6ee7b7;
+        }
+
+        [data-theme="dark"] .type-adjective {
+            background: #581c87;
+            color: #d8b4fe;
+        }
+
+        [data-theme="dark"] .type-adverb {
+            background: #7c2d12;
+            color: #fdba74;
+        }
+
+        [data-theme="dark"] .type-phrase {
+            background: #831843;
+            color: #fbcfe8;
+        }
+
+        .vocab-ipa {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--primary-light);
+            display: none; /* Ẩn luôn để card siêu gọn */
         }
 
         /* ===== MODAL ===== */
@@ -715,7 +759,7 @@
 
 const state = {
     currentView: 'reading',
-    currentLesson: 1, // ✅ Đổi lại số thay vì 'lesson1'
+    currentLesson: 1,
     currentType: 'inclass',
     currentPassage: null,
     viewedWords: new Set()
@@ -769,7 +813,7 @@ function toggleTheme() {
 // ==========================================
 
 let availableVoices = [];
-let currentVoiceRegion = 'US'; // Default to US
+let currentVoiceRegion = 'US';
 
 function loadVoices() {
     availableVoices = window.speechSynthesis.getVoices();
@@ -969,17 +1013,19 @@ function render() {
     words.forEach(([word, data]) => {
         const isViewed = state.viewedWords.has(word);
         const paragraphBadge = (state.currentView === 'reading' && data.paragraph)
-    ? `<div class="paragraph-badge para-${data.paragraph}">${data.paragraph}</div>` 
-    : '';
+            ? `<div class="paragraph-badge para-${data.paragraph}">${data.paragraph}</div>` 
+            : '';
         
-         html += `
-    <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="openModal('${word}')">
-        ${paragraphBadge}
-        <div class="vocab-header">
-            <div class="vocab-word">${word}</div>
-            <div class="vocab-type">${data.type}</div>
-        </div>
-                        
+        // ✅ SỬA LỖI: Tạo class động cho từ loại
+        const typeClass = 'type-' + data.type.toLowerCase().split('/')[0].split(' ')[0];
+        
+        html += `
+            <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="openModal('${word}')">
+                ${paragraphBadge}
+                <div class="vocab-header">
+                    <div class="vocab-word">${word}</div>
+                    <div class="vocab-type ${typeClass}">${data.type}</div>
+                </div>
             </div>
         `;
     });
@@ -1092,7 +1138,7 @@ function getWordsToDisplay() {
 }
 
 // ==========================================
-// MODAL - ĐÃ SỬA: BỎ NÚT LISTEN, TỰ ĐỘNG PHÁT GIỌNG US
+// MODAL
 // ==========================================
 
 function openModal(word) {
@@ -1153,7 +1199,6 @@ function openModal(word) {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'modal-actions';
     
-    // ✅ ĐÃ BỎ NÚT "🔊 Listen" - Chỉ còn UK/US
     const voiceSelector = document.createElement('div');
     voiceSelector.style.cssText = 'display: flex; gap: 8px;';
     
@@ -1164,7 +1209,6 @@ function openModal(word) {
     ukBtn.addEventListener('click', () => {
         currentVoiceRegion = 'UK';
         speak(word);
-        // Update button styles
         ukBtn.className = 'btn btn-primary';
         usBtn.className = 'btn btn-secondary';
     });
@@ -1176,7 +1220,6 @@ function openModal(word) {
     usBtn.addEventListener('click', () => {
         currentVoiceRegion = 'US';
         speak(word);
-        // Update button styles
         usBtn.className = 'btn btn-primary';
         ukBtn.className = 'btn btn-secondary';
     });
@@ -1198,7 +1241,6 @@ function openModal(word) {
     document.getElementById('modalOverlay').classList.add('active');
     document.getElementById('vocabModal').classList.add('active');
     
-    // ✅ TỰ ĐỘNG PHÁT GIỌNG US KHI MỞ MODAL
     setTimeout(() => speak(word), 100);
     
     render();
@@ -1373,7 +1415,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.setAttribute('data-theme', 'dark');
     }
     
-    // ✅ CẢI THIỆN: Load voices cho speech synthesis
     if ('speechSynthesis' in window) {
         loadVoices();
         setTimeout(loadVoices, 100);
