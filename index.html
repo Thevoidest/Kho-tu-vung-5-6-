@@ -438,10 +438,12 @@
             backdrop-filter: blur(4px);
             display: none;
             z-index: 998;
+            pointer-events: none; 
         }
 
         .modal-overlay.active {
             display: block;
+            pointer-events: auto;
         }
 
         .vocab-modal {
@@ -460,11 +462,13 @@
             z-index: 999;
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
         }
 
         .vocab-modal.active {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
         }
 
         .modal-close {
