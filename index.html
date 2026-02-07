@@ -300,23 +300,7 @@
             user-select: none; /* ✅ Prevent text selection */
         }
 
-        .vocab-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s;
-            pointer-events: none;
-        }
-
-        .vocab-card:hover::before {
-            transform: scaleX(1);
-        }
+       /* hồi trước ở đây là code hover*/
 
         .vocab-card:hover {
             transform: translateY(-4px);
@@ -324,9 +308,7 @@
             border-color: var(--primary-light);
         }
 
-        .vocab-card.viewed {
-            opacity: 0.6;
-        }
+        .vocab-card.viewed {}
 
         .vocab-card.viewed::after {
             content: '✓';
@@ -1095,7 +1077,7 @@ function render() {
         const typeClass = 'type-' + data.type.toLowerCase().split('/')[0].split(' ')[0];
         
         html += `
-            <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="openModal('${word}')">
+            <div class="vocab-card ${isViewed ? 'viewed' : ''}" onclick="event.stopPropagation(); openModal('${word}')">
                 ${paragraphBadge}
                 <div class="vocab-header">
                     <div class="vocab-word">${word}</div>
