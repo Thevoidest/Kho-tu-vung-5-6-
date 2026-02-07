@@ -256,7 +256,7 @@
         .paragraph-badge {
             position: absolute;
             top: 8px;
-            right: 8px;
+            left: 8px;
             color: white;
             width: 26px;
             height: 26px;
@@ -325,6 +325,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
+            z-index: 2;
             pointer-events: none;
         }
 
@@ -335,6 +336,7 @@
             justify-content: space-between;
             gap: 12px;
             pointer-events: none; /* ✅ Prevent blocking clicks */
+            padding-left: 34px;
         }
 
         .vocab-word {
@@ -357,7 +359,8 @@
             letter-spacing: 0.3px;
             white-space: nowrap;
             flex-shrink: 0;
-             pointer-events: none;
+            margin-right: 30px;
+            pointer-events: none;
         }
 
         .vocab-type {
@@ -496,12 +499,17 @@
         /* ✅ FIXED: Layout ngang trong modal */
         .modal-header {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
-
+        .modal-word-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
         .modal-word {
             font-size: 28px; /* ✅ Giảm size */
             font-weight: 700;
@@ -525,9 +533,9 @@
 
         .modal-ipa {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--primary-light);
-            margin-bottom: 12px;
+            margin: 0;
         }
 
         /* ✅ FIXED: Font tiếng Việt lớn hơn, dễ đọc */
@@ -549,8 +557,8 @@
             padding: 12px;
             background: var(--surface-elevated);
             border-radius: 10px;
-            font-style: italic;
-            opacity: 0.9;
+            font-style: normal;
+            opacity: 1;
         }
 
         /* ✅ FIXED: Buttons nhỏ gọn hơn */
@@ -1260,23 +1268,30 @@ function openModal(word) {
     const wrapper = document.createElement('div');
     
     const headerDiv = document.createElement('div');
-    headerDiv.className = 'modal-header';
-    
-    const wordElem = document.createElement('div');
-    wordElem.className = 'modal-word';
-    wordElem.textContent = word;
-    
-    const abbrevType = abbreviateType(data.type);
-    const typeElem = document.createElement('div');
-    typeElem.className = 'modal-type';
-    typeElem.textContent = abbrevType;
-    
-    headerDiv.appendChild(wordElem);
-    headerDiv.appendChild(typeElem);
-    
-    const ipaElem = document.createElement('div');
-    ipaElem.className = 'modal-ipa';
-    ipaElem.textContent = data.ipa;
+headerDiv.className = 'modal-header';
+
+// Tạo wrapper cho từ + IPA
+const wordGroup = document.createElement('div');
+wordGroup.className = 'modal-word-group';
+
+const wordElem = document.createElement('div');
+wordElem.className = 'modal-word';
+wordElem.textContent = word;
+
+const ipaElem = document.createElement('div');
+ipaElem.className = 'modal-ipa';
+ipaElem.textContent = data.ipa;
+
+const abbrevType = abbreviateType(data.type);
+const typeElem = document.createElement('div');
+typeElem.className = 'modal-type';
+typeElem.textContent = abbrevType;
+
+// Sắp xếp: từ + IPA (trong wrapper) | loại từ (bên phải)
+wordGroup.appendChild(wordElem);
+wordGroup.appendChild(ipaElem);
+headerDiv.appendChild(wordGroup);
+headerDiv.appendChild(typeElem);
     
     const meaningElem = document.createElement('div');
     meaningElem.className = 'modal-meaning';
@@ -1287,7 +1302,6 @@ function openModal(word) {
     paraphraseElem.innerHTML = data.paraphrase;
     
     wrapper.appendChild(headerDiv);
-    wrapper.appendChild(ipaElem);
     wrapper.appendChild(meaningElem);
     wrapper.appendChild(paraphraseElem);
     
