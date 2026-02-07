@@ -878,9 +878,19 @@ let currentVoiceRegion = 'US';
 
 function loadVoices() {
     availableVoices = window.speechSynthesis.getVoices();
+    if (availableVoices.length === 0) {
+        const dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+        window.speechSynthesis.cancel();
+        availableVoices = window.speechSynthesis.getVoices();
+    }
+}
 }
 
 function speak(word) {
+    // ✅ iOS fix: Ensure voices loaded
+    if (availableVoices.length === 0) loadVoices();
+    
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(word);
@@ -888,36 +898,29 @@ function speak(word) {
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
     
-    let selectedVoice = null;
+    // ✅ Simple logic: Tìm theo region
+    let selectedVoice = availableVoices.find(v => 
+        currentVoiceRegion === 'UK' 
+            ? v.lang.startsWith('en-GB') 
+            : v.lang.startsWith('en-US')
+    );
     
-    if (currentVoiceRegion === 'US') {
-        const usVoicePriority = ['Samantha', 'Google US English', 'Microsoft David', 'Microsoft Zira', 'Alex', 'en-US'];
-        for (const voiceName of usVoicePriority) {
-            selectedVoice = availableVoices.find(v => 
-                v.name.includes(voiceName) || 
-                (v.lang.startsWith('en-US') && v.name.includes(voiceName.split(' ')[0]))
-            );
-            if (selectedVoice) break;
-        }
-        if (!selectedVoice) {
-            selectedVoice = availableVoices.find(v => v.lang.startsWith('en-US'));
-        }
-    } else {
-        const ukVoicePriority = ['Daniel', 'Google UK English', 'Microsoft Hazel', 'en-GB'];
-        for (const voiceName of ukVoicePriority) {
-            selectedVoice = availableVoices.find(v => 
-                v.name.includes(voiceName) || 
-                (v.lang.startsWith('en-GB') && v.name.includes(voiceName.split(' ')[0]))
-            );
-            if (selectedVoice) break;
-        }
-        if (!selectedVoice) {
-            selectedVoice = availableVoices.find(v => v.lang.startsWith('en-GB'));
-        }
+    // Fallback về bất kỳ giọng English nào
+    if (!selectedVoice) {
+        selectedVoice = availableVoices.find(v => v.lang.startsWith('en-'));
     }
     
     if (selectedVoice) {
         utterance.voice = selectedVoice;
+        
+        // ✅ Điều chỉnh rate cho UK (hoặc US fallback cho UK request)
+        if (selectedVoice.lang.startsWith('en-GB') || 
+            (currentVoiceRegion === 'UK' && selectedVoice.lang.startsWith('en-US'))) {
+            utterance.rate = 0.75;
+            if (selectedVoice.lang.startsWith('en-US')) {
+                utterance.pitch = 0.95; // Thấp hơn một chút khi dùng US cho UK
+            }
+        }
     }
     
     window.speechSynthesis.speak(utterance);
