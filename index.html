@@ -1323,26 +1323,24 @@
 
         function renderBrowseMode() {
             let html = '';
-            
-            if (!state.currentLesson) {
-                html += '<div class="lesson-grid">';
-                const lessons = Object.keys(VOCAB_DATA[state.currentView] || {});
-                lessons.forEach(lesson => {
-                    const hasProgress = hasLessonProgress(state.currentView, lesson);
-                    html += `
-                        <button class="lesson-btn ${hasProgress ? 'has-progress' : ''}"
-                                onclick="setLesson(${lesson})">
-                            Lesson ${lesson}
-                        </button>
-                    `;
-                });
-                html += '</div>';
-            } else {
+            const lessons = Object.keys(VOCAB_DATA[state.currentView] || {});
+
+            // Always show lesson grid
+            html += '<div class="lesson-grid">';
+            lessons.forEach(lesson => {
+                const hasProgress = hasLessonProgress(state.currentView, parseInt(lesson));
+                const isActive = state.currentLesson == lesson;
                 html += `
-                    <button class="back-btn" onclick="setLesson(null)">
-                        ← Quay lại
+                    <button class="lesson-btn ${hasProgress ? 'has-progress' : ''} ${isActive ? 'active' : ''}"
+                            onclick="setLesson(${state.currentLesson == lesson ? null : lesson})">
+                        Lesson ${lesson}
                     </button>
                 `;
+            });
+            html += '</div>';
+
+            // Expand vocab inline below the grid when a lesson is selected
+            if (state.currentLesson) {
                 html += `<div class="type-selector">
                     <button class="type-btn ${state.currentType === 'inclass' ? 'active' : ''}"
                             onclick="setType('inclass')">
@@ -1353,11 +1351,11 @@
                         Homework
                     </button>
                 </div>`;
-                
+
                 const vocabData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType] || {};
                 const firstKey = Object.keys(vocabData)[0];
                 const isNested = firstKey && vocabData[firstKey] && !vocabData[firstKey].ipa;
-                
+
                 if (isNested) {
                     html += '<div class="passage-selector">';
                     Object.keys(vocabData).forEach(passageName => {
@@ -1369,34 +1367,34 @@
                         `;
                     });
                     html += '</div>';
-                    
+
                     if (!state.currentPassage) {
                         state.currentPassage = firstKey;
                     }
                 }
-                
+
                 const words = getCurrentVocabData();
-                
+
                 if (Object.keys(words).length === 0) {
                     html += `
                         <div class="empty-state">
                             <div class="empty-icon">📚</div>
                             <div class="empty-title">Chưa có từ vựng</div>
-                            <div class="empty-desc">Lesson này chưa có từ vựng. Chọn lesson khác nhé!</div>
+                            <div class="empty-desc">Lesson này chưa có từ vựng.</div>
                         </div>
                     `;
                 } else {
                     html += '<div class="vocab-grid">';
-                    Object.keys(words).forEach((word, index) => {
+                    Object.keys(words).forEach((word) => {
                         const data = words[word];
                         const mastery = getWordMastery(word);
                         const masteryLabel = mastery === 'new' ? 'Mới' : mastery === 'learning' ? 'Đang học' : 'Thành thạo';
-                        
+
                         const paragraph = data.paragraph;
                         const colorIndex = paragraph ? paragraph.charCodeAt(0) % CONFIG.PARAGRAPH_COLORS.length : 0;
-                        
+
                         html += `
-                            <div class="vocab-card ${mastery}" onclick="openModal('${word}')" data-track="vocab-card">
+                            <div class="vocab-card ${mastery}" onclick="openModal('${word}')">
                                 ${paragraph ? `<div class="paragraph-badge" style="background: ${CONFIG.PARAGRAPH_COLORS[colorIndex]}">${paragraph}</div>` : ''}
                                 <div class="word-header">
                                     <div class="word-title">${word}</div>
@@ -1409,7 +1407,7 @@
                     html += '</div>';
                 }
             }
-            
+
             return html;
         }
 
