@@ -4,2227 +4,581 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IELTS Vocab Stream</title>
-    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Crimson+Pro:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
 
         :root {
-            --bg: #fdfcfa;
-            --text: #1a1614;
-            --primary: #2d5016;
-            --primary-light: #4a7c2e;
-            --accent: #f59e0b;
-            --accent-light: #fbbf24;
-            --surface: #ffffff;
-            --surface-elevated: #f8f7f5;
-            --border: #e8e6e3;
-            --success: #10b981;
-            --error: #ef4444;
-            --shadow: rgba(26, 22, 20, 0.08);
+            --bg: #fdfcfa; --text: #1a1614; --primary: #2d5016; --primary-light: #4a7c2e;
+            --accent: #f59e0b; --accent-light: #fbbf24; --surface: #ffffff;
+            --surface-elevated: #f8f7f5; --border: #e8e6e3; --success: #10b981;
+            --shadow: rgba(26,22,20,0.08);
         }
-
         [data-theme="dark"] {
-            --bg: #0f0e0d;
-            --text: #e8e6e3;
-            --primary: #6b9b4d;
-            --primary-light: #8bb56a;
-            --accent: #fbbf24;
-            --accent-light: #fcd34d;
-            --surface: #1a1614;
-            --surface-elevated: #252220;
-            --border: #3a3632;
-            --shadow: rgba(0, 0, 0, 0.3);
+            --bg: #0f0e0d; --text: #e8e6e3; --primary: #6b9b4d; --primary-light: #8bb56a;
+            --accent: #fbbf24; --accent-light: #fcd34d; --surface: #1a1614;
+            --surface-elevated: #252220; --border: #3a3632; --shadow: rgba(0,0,0,0.3);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
-            font-family: 'Be Vietnam Pro', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            font-size: 17px;
-            transition: background 0.3s, color 0.3s;
-            overflow-x: hidden;
+            font-family:'Be Vietnam Pro',sans-serif; background:var(--bg); color:var(--text);
+            line-height:1.6; font-size:17px; transition:background 0.3s,color 0.3s; overflow-x:hidden;
         }
-
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-        }
+        .app-container { max-width:1400px; margin:0 auto; padding:20px; min-height:100vh; }
 
         /* HEADER */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border);
-        }
+        header { display:flex; justify-content:space-between; align-items:center; margin-bottom:40px; padding-bottom:20px; border-bottom:2px solid var(--border); }
+        .logo { font-family:'Crimson Pro',serif; font-size:clamp(28px,5vw,42px); font-weight:700; color:var(--primary); letter-spacing:-1px; }
+        .theme-switch { width:56px; height:30px; background:var(--border); border-radius:15px; cursor:pointer; position:relative; transition:background 0.3s; }
+        .theme-switch::before { content:'☀️'; position:absolute; left:4px; top:50%; transform:translateY(-50%); font-size:18px; transition:all 0.3s; }
+        [data-theme="dark"] .theme-switch::before { content:'🌙'; left:30px; }
 
-        .logo {
-            font-family: 'Crimson Pro', serif;
-            font-size: clamp(24px, 5vw, 38px);
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: -1px;
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .theme-switch {
-            width: 56px;
-            height: 30px;
-            background: var(--border);
-            border-radius: 15px;
-            cursor: pointer;
-            position: relative;
-            transition: background 0.3s;
-        }
-
-        .theme-switch::before {
-            content: '☀️';
-            position: absolute;
-            left: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            transition: all 0.3s;
-        }
-
-        [data-theme="dark"] .theme-switch::before {
-            content: '🌙';
-            left: 30px;
-        }
-
-        /* STREAK & STATS BAR */
-        .stats-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .stat-card {
-            flex: 1;
-            min-width: 140px;
-            padding: 16px 20px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--text);
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-
-        .stat-card.streak {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            border-color: var(--accent);
-        }
-
-        .stat-card.streak .stat-value,
-        .stat-card.streak .stat-label {
-            color: white;
-        }
-
-        /* NAVIGATION */
-        .main-nav {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-            background: var(--surface);
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .nav-item {
-            flex: 1;
-            padding: 14px 20px;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.2s;
-            color: var(--text);
-            min-height: 44px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-
-        .nav-item.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .nav-item:not(.active):hover {
-            background: var(--surface-elevated);
-        }
+        /* NAV */
+        .main-nav { display:flex; gap:12px; margin-bottom:30px; background:var(--surface); padding:8px; border-radius:12px; border:1px solid var(--border); }
+        .nav-item { flex:1; padding:14px 20px; background:transparent; border:none; border-radius:8px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:15px; font-weight:600; transition:all 0.2s; color:var(--text); }
+        .nav-item.active { background:var(--primary); color:white; }
+        .nav-item:not(.active):hover { background:var(--surface-elevated); }
 
         /* LESSON GRID */
-        .lesson-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px;
-        }
+        .lesson-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:10px; margin-bottom:25px; }
+        .lesson-btn { padding:18px 12px; background:var(--surface); border:2px solid var(--border); border-radius:10px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:14px; font-weight:700; text-align:center; transition:all 0.25s cubic-bezier(0.4,0,0.2,1); color:var(--text); position:relative; }
+        .lesson-btn:hover { transform:translateY(-3px); box-shadow:0 6px 20px var(--shadow); }
+        .lesson-btn.active { background:var(--primary); color:white; border-color:var(--primary); transform:scale(1.05); }
+        .lesson-btn.has-progress::after { content:'✓'; position:absolute; top:6px; right:6px; width:18px; height:18px; background:var(--success); color:white; border-radius:50%; font-size:11px; display:flex; align-items:center; justify-content:center; }
 
-        .lesson-btn {
-            padding: 20px 12px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--text);
-            position: relative;
-            min-height: 44px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-
-        .lesson-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px var(--shadow);
-        }
-
-        .lesson-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .lesson-btn.has-progress::after {
-            content: '✓';
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 18px;
-            height: 18px;
-            background: var(--success);
-            color: white;
-            border-radius: 50%;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* TYPE SELECTOR */
-        .type-selector {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .type-btn {
-            flex: 1;
-            padding: 14px 32px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.2s;
-            color: var(--text);
-            min-height: 44px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-
-        .type-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
+        /* TYPE TABS */
+        .type-selector { display:flex; gap:12px; margin-bottom:25px; }
+        .type-btn { flex:1; padding:12px 32px; background:var(--surface); border:2px solid var(--border); border-radius:25px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:14px; font-weight:600; transition:all 0.2s; color:var(--text); }
+        .type-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
+        .type-btn:hover:not(.active) { border-color:var(--accent-light); }
 
         /* PASSAGE SELECTOR */
-        .passage-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
+        .passage-selector { display:flex; gap:10px; margin-bottom:25px; flex-wrap:wrap; }
+        .passage-btn { padding:10px 20px; background:var(--surface); border:2px solid var(--border); border-radius:20px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:13px; font-weight:600; transition:all 0.2s; color:var(--text); white-space:nowrap; }
+        .passage-btn.active { background:var(--primary-light); color:white; border-color:var(--primary-light); }
+        .passage-btn:hover:not(.active) { border-color:var(--primary-light); background:var(--surface-elevated); }
 
-        .passage-btn {
-            padding: 12px 20px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s;
-            color: var(--text);
-            min-height: 44px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
+        /* PARAGRAPH BADGE - left side so it doesn't cover word */
+        .paragraph-badge { position:absolute; top:8px; left:8px; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; font-family:'JetBrains Mono',monospace; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+        .paragraph-badge[data-para="A"] { background:#e74c3c; }
+        .paragraph-badge[data-para="B"] { background:#3498db; }
+        .paragraph-badge[data-para="C"] { background:#2ecc71; }
+        .paragraph-badge[data-para="D"] { background:#f39c12; }
+        .paragraph-badge[data-para="E"] { background:#9b59b6; }
+        .paragraph-badge[data-para="F"] { background:#1abc9c; }
+        .paragraph-badge[data-para="G"] { background:#e67e22; }
+        .paragraph-badge[data-para="H"] { background:#34495e; }
+        .paragraph-badge[data-para="I"] { background:#c0392b; }
+        .paragraph-badge[data-para="J"] { background:#16a085; }
 
-        .passage-btn.active {
-            background: var(--primary-light);
-            color: white;
-            border-color: var(--primary-light);
-        }
+        /* STATS */
+        .stats-bar { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:15px; margin-bottom:30px; }
+        .stat-card { background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:center; }
+        .stat-value { font-size:32px; font-weight:700; color:var(--primary); margin-bottom:5px; }
+        .stat-label { font-size:13px; opacity:0.7; font-weight:500; }
 
-        /* BACK BUTTON */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 18px;
-            background: var(--surface-elevated);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 20px;
-            transition: all 0.2s;
-            font-family: 'Be Vietnam Pro', sans-serif;
-            min-height: 44px;
-        }
+        /* VOCAB GRID */
+        .vocab-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; animation:fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-        .back-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--surface);
-        }
-
-        /* VOCAB CARDS */
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .vocab-card {
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            padding-left: 48px;
-            cursor: pointer;
-            transition: all 0.25s;
-            position: relative;
-            min-height: 72px;
-        }
-
-        .vocab-card:not(:has(.paragraph-badge)) {
-            padding-left: 18px;
-        }
-
-        .vocab-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px var(--shadow);
-            border-color: var(--primary-light);
-        }
-
-        .vocab-card.mastered {
-            border-color: var(--success);
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(16, 185, 129, 0.05) 100%);
-        }
-
-        .vocab-card.learning {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(245, 158, 11, 0.05) 100%);
-        }
-
-        .vocab-card.new {
-            border-color: var(--border);
-        }
-
-        .word-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .word-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .mastery-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .mastery-badge.new {
-            background: #e5e7eb;
-            color: #6b7280;
-        }
-
-        .mastery-badge.learning {
-            background: #fef3c7;
-            color: #d97706;
-        }
-
-        .mastery-badge.mastered {
-            background: #d1fae5;
-            color: #059669;
-        }
-
-        .word-meaning {
-            font-size: 14px;
-            color: var(--text);
-            opacity: 0.8;
-        }
-
-        /* PARAGRAPH BADGE */
-        .paragraph-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            pointer-events: none;
-        }
+        .vocab-card { background:var(--surface); border:2px solid var(--border); border-radius:12px; padding:20px 16px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4,0,0.2,1); text-align:center; position:relative; min-height:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        /* cards with a paragraph badge get left padding so badge doesn't cover text */
+        .vocab-card.has-badge { padding-left:44px; }
+        .vocab-card:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 12px 30px var(--shadow); border-color:var(--primary); }
+        .vocab-card.viewed { opacity:0.7; }
+        .vocab-card.viewed::after { content:'✓'; position:absolute; top:6px; right:6px; width:22px; height:22px; background:var(--success); color:white; border-radius:50%; font-size:13px; display:flex; align-items:center; justify-content:center; font-weight:700; }
+        .vocab-card.viewed:hover { opacity:1; }
+        .vocab-word { font-size:16px; font-weight:700; color:var(--text); line-height:1.3; }
+        .vocab-meaning { font-size:12px; color:var(--text); opacity:0.6; margin-top:4px; line-height:1.3; }
 
         /* MODAL */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:999; display:none; }
+        .modal-overlay.active { display:block; }
+        .modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.9); width:92%; max-width:500px; background:var(--surface); border-radius:24px; padding:40px 32px; z-index:1000; display:none; box-shadow:0 24px 60px rgba(0,0,0,0.2); animation:modalEnter 0.3s cubic-bezier(0.4,0,0.2,1) forwards; }
+        .modal.active { display:block; }
+        @keyframes modalEnter { from{opacity:0;transform:translate(-50%,-50%) scale(0.9)} to{opacity:1;transform:translate(-50%,-50%) scale(1)} }
+        .modal-close { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; border:none; background:var(--surface-elevated); cursor:pointer; font-size:20px; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+        .modal-close:hover { background:var(--border); transform:rotate(90deg); }
+        .modal-word { font-family:'Crimson Pro',serif; font-size:42px; font-weight:700; color:var(--primary); margin-bottom:8px; text-align:center; }
+        .modal-type { display:inline-block; background:var(--accent); color:white; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; }
+        .modal-ipa { font-family:'JetBrains Mono',monospace; font-size:16px; color:var(--primary-light); margin-bottom:24px; text-align:center; background:var(--surface-elevated); padding:10px 16px; border-radius:8px; display:inline-block; }
+        .modal-meaning { font-size:24px; font-weight:700; color:var(--text); margin-bottom:16px; text-align:center; }
+        .modal-paraphrase { font-size:17px; line-height:1.8; opacity:0.9; margin-bottom:30px; text-align:center; background:var(--surface-elevated); padding:16px 20px; border-radius:12px; border-left:3px solid var(--accent); }
+        .modal-actions { display:flex; gap:12px; }
 
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .btn { flex:1; padding:16px 24px; border:none; border-radius:12px; font-family:'Be Vietnam Pro',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .btn-primary { background:var(--primary); color:white; }
+        .btn-primary:hover { background:var(--primary-light); transform:translateY(-2px); box-shadow:0 6px 20px var(--shadow); }
+        .btn-secondary { background:var(--accent); color:white; }
+        .btn-secondary:hover { background:var(--accent-light); transform:translateY(-2px); }
 
-        .vocab-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 28px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
-        }
+        /* PROGRESS */
+        .progress-container { max-width:800px; margin:0 auto; }
+        .progress-section { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:30px; }
+        .progress-title { font-size:20px; font-weight:700; color:var(--primary); margin-bottom:20px; }
+        .progress-row { display:flex; align-items:center; gap:15px; margin-bottom:16px; }
+        .progress-label { min-width:120px; font-weight:600; font-size:14px; }
+        .progress-bar { flex:1; height:32px; background:var(--surface-elevated); border-radius:16px; overflow:hidden; border:1px solid var(--border); }
+        .progress-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--primary-light)); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:13px; transition:width 0.5s cubic-bezier(0.4,0,0.2,1); }
+        .progress-count { min-width:50px; text-align:right; font-weight:700; font-size:16px; }
+        .export-section { display:flex; gap:12px; }
 
-        .vocab-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--surface-elevated);
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background: var(--border);
-            transform: rotate(90deg);
-        }
-
-        .modal-content {
-            margin-bottom: 20px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .word-group {
-            flex: 1;
-        }
-
-        .modal-word {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-
-        .modal-ipa {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 16px;
-            color: var(--text);
-            opacity: 0.7;
-        }
-
-        .modal-type {
-            padding: 6px 12px;
-            background: var(--accent);
-            color: white;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .modal-meaning {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 16px;
-            padding: 16px;
-            background: var(--surface-elevated);
-            border-radius: 12px;
-        }
-
-        .modal-paraphrase {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text);
-            padding: 16px;
-            background: var(--bg);
-            border-radius: 12px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .modal-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 14px 24px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-height: 44px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: var(--surface-elevated);
-            color: var(--text);
-            border: 2px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            background: var(--surface);
-        }
-
-        .voice-selector {
-            display: flex;
-            gap: 8px;
-        }
-
-        .voice-selector .btn {
-            flex: 1;
-        }
-
-        /* REVIEW MODE */
-        .review-mode {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .review-card {
-            background: var(--surface);
-            border: 3px solid var(--border);
-            border-radius: 20px;
-            padding: 40px 28px;
-            text-align: center;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .review-word {
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 16px;
-        }
-
-        .review-ipa {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 18px;
-            color: var(--text);
-            opacity: 0.6;
-            margin-bottom: 32px;
-        }
-
-        .review-content {
-            font-size: 18px;
-            line-height: 1.8;
-            color: var(--text);
-            margin-bottom: 32px;
-            padding: 24px;
-            background: var(--surface-elevated);
-            border-radius: 16px;
-        }
-
-        .review-content.hidden {
-            filter: blur(12px);
-            user-select: none;
-            pointer-events: none;
-        }
-
-        /* Rating section with label */
-        .rating-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 24px;
-            align-items: center;
-        }
-
-        .rating-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            opacity: 0.55;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .review-actions {
-            display: flex;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .review-actions .btn {
-            flex: 1;
-        }
-
-        .reveal-btn {
-            background: var(--accent);
-            color: white;
-            font-size: 18px;
-        }
-
-        .reveal-btn:hover {
-            background: var(--accent-light);
-        }
-
-        /* QUIZ */
-        .quiz-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .quiz-card {
-            background: var(--surface);
-            border: 3px solid var(--primary);
-            border-radius: 20px;
-            padding: 32px;
-        }
-
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .quiz-progress {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .quiz-question {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .quiz-option {
-            padding: 18px 24px;
-            background: var(--surface-elevated);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 16px;
-            text-align: left;
-            min-height: 44px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-
-        .quiz-option:hover {
-            border-color: var(--primary);
-            background: var(--surface);
-        }
-
-        .quiz-option.selected {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: white;
-        }
-
-        .quiz-option.correct {
-            border-color: var(--success);
-            background: var(--success);
-            color: white;
-        }
-
-        .quiz-option.incorrect {
-            border-color: var(--error);
-            background: var(--error);
-            color: white;
-        }
-
-        .quiz-result {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .quiz-score {
-            font-size: 64px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 16px;
-        }
-
-        .quiz-message {
-            font-size: 20px;
-            color: var(--text);
-            margin-bottom: 32px;
-        }
-
-        /* FEEDBACK BUTTON */
-        .feedback-fab {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            z-index: 900;
-        }
-
-        .feedback-fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        .feedback-modal {
-            position: fixed;
-            bottom: 90px;
-            right: 24px;
-            width: 340px;
-            background: var(--surface);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            z-index: 901;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s;
-        }
-
-        .feedback-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .feedback-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text);
-        }
-
-        .feedback-reactions {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .feedback-reaction {
-            flex: 1;
-            padding: 12px;
-            background: var(--surface-elevated);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .feedback-reaction:hover {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .feedback-reaction.selected {
-            border-color: var(--primary);
-            background: var(--primary);
-        }
-
-        .feedback-text {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            background: var(--surface-elevated);
-            color: var(--text);
-            font-family: 'Be Vietnam Pro', sans-serif;
-            font-size: 14px;
-            resize: vertical;
-            min-height: 80px;
-            margin-bottom: 12px;
-        }
-
-        .feedback-text:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .feedback-submit {
-            width: 100%;
-        }
+        /* EMPTY */
+        .empty-state { text-align:center; padding:80px 20px; opacity:0.6; }
+        .empty-icon { font-size:72px; margin-bottom:16px; }
+        .empty-text { font-size:18px; font-weight:600; }
 
         /* TOAST */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--text);
-            color: var(--bg);
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            z-index: 2000;
-            opacity: 0;
-            transition: all 0.3s;
-        }
+        .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--primary); color:white; padding:12px 24px; border-radius:12px; font-weight:600; z-index:9999; box-shadow:0 8px 24px var(--shadow); transition:transform 0.3s,opacity 0.3s; opacity:0; }
+        .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        /* EMPTY STATE */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .empty-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-        }
-
-        .empty-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 8px;
-        }
-
-        .empty-desc {
-            font-size: 15px;
-            color: var(--text);
-            opacity: 0.6;
-        }
-
-        /* LOCKED BADGE */
-        .locked-badge {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 32px;
-            opacity: 0.3;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .app-container {
-                padding: 16px;
-            }
-
-            .stats-bar {
-                gap: 8px;
-            }
-
-            .stat-card {
-                min-width: 100px;
-                padding: 12px 16px;
-            }
-
-            .stat-value {
-                font-size: 24px;
-            }
-
-            .vocab-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .review-card {
-                padding: 28px 20px;
-                min-height: 350px;
-            }
-
-            .review-word {
-                font-size: 36px;
-            }
-
-            .feedback-modal {
-                right: 16px;
-                left: 16px;
-                width: auto;
-            }
-
-            .feedback-fab {
-                right: 16px;
-                bottom: 16px;
-            }
+        @media (max-width:768px) {
+            .lesson-grid { grid-template-columns:repeat(auto-fit,minmax(70px,1fr)); }
+            .vocab-grid { grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+            .modal { padding:32px 24px; }
+            .modal-word { font-size:30px; }
+            .type-selector { flex-direction:column; }
+            .type-btn { width:100%; }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <div class="logo">IELTS Vocab</div>
-            <div class="header-controls">
-                <div class="theme-switch" id="themeToggle"></div>
-            </div>
-        </header>
 
-        <div class="stats-bar" id="statsBar"></div>
-        <div class="main-nav" id="mainNav"></div>
-        <div id="appContent"></div>
-    </div>
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="vocabModal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+</div>
 
-    <div class="modal-overlay" id="modalOverlay"></div>
-    <div class="vocab-modal" id="vocabModal">
-        <button class="modal-close" id="modalClose">×</button>
-        <div id="modalContent"></div>
-    </div>
-
-    <button class="feedback-fab" id="feedbackBtn">💬</button>
-    <div class="feedback-modal" id="feedbackModal">
-        <div class="feedback-title">Bạn thấy app thế nào?</div>
-        <div class="feedback-reactions">
-            <button class="feedback-reaction" data-reaction="good">😊</button>
-            <button class="feedback-reaction" data-reaction="ok">🤔</button>
-            <button class="feedback-reaction" data-reaction="bad">😕</button>
+<div class="app-container">
+    <header>
+        <div class="logo">IELTS Vocab</div>
+        <div class="header-controls">
+            <div class="theme-switch" id="themeToggle"></div>
         </div>
-        <textarea class="feedback-text" id="feedbackText" placeholder="Viết thêm ý kiến... (optional)"></textarea>
-        <button class="btn btn-primary feedback-submit" id="feedbackSubmit">Gửi ẩn danh</button>
-    </div>
-
-    <script src="vocab-data.js"></script>
-    <script src="quiz-data.js"></script>
-    <script>
-        const VERSION = '2.0.1';
-        
-        const CONFIG = {
-            DAILY_GOAL: 10,
-            QUICK_REVIEW_COUNT: 5,
-            QUIZ_UNLOCK_REQUIREMENT: 50,
-            SPACED_INTERVALS: {
-                easy: [1, 3, 7, 14, 30],
-                medium: [1, 2, 4, 8, 16],
-                hard: [1, 1, 2, 4, 8]
-            },
-            MASTERY_THRESHOLDS: {
-                new: 0,
-                learning: 2,
-                mastered: 5
-            },
-            GOOGLE_FORM_URL: '',
-            PARAGRAPH_COLORS: ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4']
-        };
-
-        const FEATURES = {
-            STREAK_COUNTER: true,
-            SPACED_REPETITION: true,
-            QUIZ: true,
-            ANALYTICS: true,
-            DEBUG: false
-        };
-
-        const state = {
-            currentView: 'reading',
-            currentLesson: null,
-            currentType: 'inclass',
-            currentPassage: null,
-            currentMode: 'browse',
-            userId: localStorage.getItem('userId') || crypto.randomUUID(),
-            viewedWords: new Set(),
-            reviewSchedule: {},
-            lastVisit: null,
-            streak: 0,
-            quizProgress: {},
-            analytics: {
-                sessionStart: Date.now(),
-                clicks: [],
-                totalSessions: 0
-            }
-        };
-
-        let currentVoiceRegion = 'UK';
-        let voices = [];
-        let hasUKVoice = false;
-        let hasUSVoice = false;
-        let WORD_INDEX = null;
-
-        function log(...args) {
-            if (FEATURES.DEBUG) console.log('[DEBUG]', ...args);
-        }
-
-        function saveState() {
-            const data = {
-                userId: state.userId,
-                viewedWords: Array.from(state.viewedWords),
-                reviewSchedule: state.reviewSchedule,
-                lastVisit: new Date().toISOString(),
-                streak: state.streak,
-                quizProgress: state.quizProgress,
-                analytics: state.analytics
-            };
-            
-            try {
-                const jsonData = JSON.stringify(data);
-                const sizeKB = new Blob([jsonData]).size / 1024;
-                
-                if (sizeKB > 4000) {
-                    log('Storage near limit:', sizeKB, 'KB');
-                    state.analytics.clicks = state.analytics.clicks.slice(-50);
-                }
-                
-                localStorage.setItem('ieltsVocabState', jsonData);
-                localStorage.setItem('userId', state.userId);
-            } catch (e) {
-                if (e.name === 'QuotaExceededError') {
-                    showToast('❌ Bộ nhớ đầy! Vui lòng export tiến độ.');
-                    state.analytics.clicks = [];
-                    exportProgress();
-                } else {
-                    console.error('Save error:', e);
-                }
-            }
-        }
-
-        function loadState() {
-            const saved = localStorage.getItem('ieltsVocabState');
-            if (saved) {
-                const data = JSON.parse(saved);
-                state.viewedWords = new Set(data.viewedWords || []);
-                state.reviewSchedule = data.reviewSchedule || {};
-                state.lastVisit = data.lastVisit;
-                state.streak = data.streak || 0;
-                state.quizProgress = data.quizProgress || {};
-                state.analytics = data.analytics || state.analytics;
-                updateStreak();
-            }
-        }
-
-        function updateStreak() {
-            if (!state.lastVisit) {
-                state.streak = 1;
-                return;
-            }
-            const lastVisit = new Date(state.lastVisit);
-            const now = new Date();
-            const diffHours = (now - lastVisit) / (1000 * 60 * 60);
-            
-            if (diffHours < 24) {
-                // Same day, maintain streak
-            } else if (diffHours < 48) {
-                state.streak++;
-            } else {
-                state.streak = 1;
-            }
-            saveState();
-        }
-
-        function trackEvent(event, data = {}) {
-            if (!FEATURES.ANALYTICS) return;
-            
-            const eventData = {
-                userId: state.userId,
-                event: event,
-                timestamp: new Date().toISOString(),
-                ...data
-            };
-            
-            state.analytics.clicks.push(eventData);
-            
-            if (CONFIG.GOOGLE_FORM_URL && state.analytics.clicks.length >= 10) {
-                sendAnalytics();
-            }
-        }
-
-        function sendAnalytics() {
-            if (!CONFIG.GOOGLE_FORM_URL) return;
-            
-            state.analytics.clicks.forEach(event => {
-                const params = new URLSearchParams(event);
-                fetch(`${CONFIG.GOOGLE_FORM_URL}?${params}`, { mode: 'no-cors' });
-            });
-            
-            state.analytics.clicks = [];
-            saveState();
-        }
-
-        function scheduleNextReview(word, difficulty) {
-            const intervals = CONFIG.SPACED_INTERVALS[difficulty];
-            const currentSchedule = state.reviewSchedule[word] || { reviewCount: 0 };
-            const nextInterval = intervals[Math.min(currentSchedule.reviewCount, intervals.length - 1)];
-            
-            const nextReview = new Date();
-            nextReview.setDate(nextReview.getDate() + nextInterval);
-            
-            state.reviewSchedule[word] = {
-                lastReviewed: new Date().toISOString(),
-                nextReview: nextReview.toISOString(),
-                interval: nextInterval,
-                reviewCount: currentSchedule.reviewCount + 1,
-                difficulty: difficulty
-            };
-            
-            saveState();
-            log('Scheduled review for', word, 'in', nextInterval, 'days');
-        }
-
-        function getWordMastery(word) {
-            const schedule = state.reviewSchedule[word];
-            if (!schedule) return 'new';
-            
-            if (schedule.reviewCount >= CONFIG.MASTERY_THRESHOLDS.mastered) return 'mastered';
-            if (schedule.reviewCount >= CONFIG.MASTERY_THRESHOLDS.learning) return 'learning';
-            return 'new';
-        }
-
-        function getWordsForReview() {
-            const now = new Date();
-            const dueWords = [];
-            
-            Object.keys(state.reviewSchedule).forEach(word => {
-                const schedule = state.reviewSchedule[word];
-                const nextReview = new Date(schedule.nextReview);
-                if (nextReview <= now) {
-                    dueWords.push(word);
-                }
-            });
-            
-            return dueWords;
-        }
-
-        function getWeakWords() {
-            const weakWords = [];
-            
-            Object.keys(state.reviewSchedule).forEach(word => {
-                const schedule = state.reviewSchedule[word];
-                if (schedule.difficulty === 'hard' || schedule.reviewCount < 3) {
-                    weakWords.push(word);
-                }
-            });
-            
-            return weakWords;
-        }
-
-        function renderStatsBar() {
-            const totalWords = getTotalWords();
-            const viewedCount = state.viewedWords.size;
-            const masteredCount = Array.from(state.viewedWords).filter(w => getWordMastery(w) === 'mastered').length;
-            const dueCount = getWordsForReview().length;
-            
-            const html = `
-                <div class="stat-card streak">
-                    <span class="stat-value">🔥 ${state.streak}</span>
-                    <span class="stat-label">${state.streak === 1 ? 'ngày' : 'ngày liên tiếp'}</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value">${viewedCount}</span>
-                    <span class="stat-label">từ đã xem</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value">${masteredCount}</span>
-                    <span class="stat-label">thành thạo</span>
-                </div>
-                ${dueCount > 0 ? `
-                <div class="stat-card" style="cursor: pointer;" onclick="setMode('review')">
-                    <span class="stat-value" style="color: var(--accent);">${dueCount}</span>
-                    <span class="stat-label">cần ôn hôm nay</span>
-                </div>
-                ` : ''}
-            `;
-            
-            document.getElementById('statsBar').innerHTML = html;
-        }
-
-        function renderNav() {
-            const items = [
-                { id: 'reading',  label: 'Reading',      icon: '📖', isBrowse: true  },
-                { id: 'listening',label: 'Listening',     icon: '🎧', isBrowse: true  },
-                { id: 'review',   label: 'Quick Review',  icon: '⚡', isBrowse: false },
-                { id: 'quiz',     label: 'Quiz',          icon: '🎯', isBrowse: false }
-            ];
-
-            const html = items.map(item => {
-                const isActive = item.isBrowse
-                    ? (state.currentMode === 'browse' && state.currentView === item.id)
-                    : (state.currentMode === item.id);
-                const handler = item.isBrowse
-                    ? `setView('${item.id}')`
-                    : `setMode('${item.id}')`;
-                return `
-                    <button class="nav-item ${isActive ? 'active' : ''}" onclick="${handler}">
-                        ${item.icon} ${item.label}
-                    </button>
-                `;
-            }).join('');
-
-            document.getElementById('mainNav').innerHTML = html;
-        }
-
-        function setMode(mode) {
-            state.currentMode = mode;
-            trackEvent('mode_change', { mode });
-            render();
-        }
-
-        function setView(view) {
-            state.currentView = view;
-            state.currentMode = 'browse';
-            state.currentLesson = null;
-            state.currentPassage = null;
-            trackEvent('view_change', { view });
-            render();
-        }
-
-        function setLesson(lesson) {
-            state.currentLesson = lesson;
-            state.currentPassage = null;
-            trackEvent('lesson_select', { lesson });
-            render();
-        }
-
-        function setType(type) {
-            state.currentType = type;
-            trackEvent('type_select', { type });
-            render();
-        }
-
-        function setPassage(passage) {
-            state.currentPassage = passage;
-            trackEvent('passage_select', { passage });
-            render();
-        }
-
-        function getCurrentVocabData() {
-            if (!state.currentLesson) return {};
-            
-            const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType] || {};
-            
-            if (state.currentPassage && data[state.currentPassage]) {
-                return data[state.currentPassage];
-            }
-            
-            return data;
-        }
-
-        function renderBrowseMode() {
-            let html = '';
-            const lessons = Object.keys(VOCAB_DATA[state.currentView] || {});
-
-            // Always show lesson grid
-            html += '<div class="lesson-grid">';
-            lessons.forEach(lesson => {
-                const hasProgress = hasLessonProgress(state.currentView, parseInt(lesson));
-                const isActive = state.currentLesson == lesson;
-                html += `
-                    <button class="lesson-btn ${hasProgress ? 'has-progress' : ''} ${isActive ? 'active' : ''}"
-                            onclick="setLesson(${state.currentLesson == lesson ? null : lesson})">
-                        Lesson ${lesson}
-                    </button>
-                `;
-            });
-            html += '</div>';
-
-            // Expand vocab inline below the grid when a lesson is selected
-            if (state.currentLesson) {
-                html += `<div class="type-selector">
-                    <button class="type-btn ${state.currentType === 'inclass' ? 'active' : ''}"
-                            onclick="setType('inclass')">
-                        In Class
-                    </button>
-                    <button class="type-btn ${state.currentType === 'homework' ? 'active' : ''}"
-                            onclick="setType('homework')">
-                        Homework
-                    </button>
-                </div>`;
-
-                const vocabData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType] || {};
-                const firstKey = Object.keys(vocabData)[0];
-                const isNested = firstKey && vocabData[firstKey] && !vocabData[firstKey].ipa;
-
-                if (isNested) {
-                    html += '<div class="passage-selector">';
-                    Object.keys(vocabData).forEach(passageName => {
-                        html += `
-                            <button class="passage-btn ${state.currentPassage === passageName ? 'active' : ''}"
-                                    onclick="setPassage('${passageName}')">
-                                ${passageName}
-                            </button>
-                        `;
-                    });
-                    html += '</div>';
-
-                    if (!state.currentPassage) {
-                        state.currentPassage = firstKey;
-                    }
-                }
-
-                const words = getCurrentVocabData();
-
-                if (Object.keys(words).length === 0) {
-                    html += `
-                        <div class="empty-state">
-                            <div class="empty-icon">📚</div>
-                            <div class="empty-title">Chưa có từ vựng</div>
-                            <div class="empty-desc">Lesson này chưa có từ vựng.</div>
-                        </div>
-                    `;
-                } else {
-                    html += '<div class="vocab-grid">';
-                    Object.keys(words).forEach((word) => {
-                        const data = words[word];
-                        const mastery = getWordMastery(word);
-                        const masteryLabel = mastery === 'new' ? 'Mới' : mastery === 'learning' ? 'Đang học' : 'Thành thạo';
-
-                        const paragraph = data.paragraph;
-                        const colorIndex = paragraph ? paragraph.charCodeAt(0) % CONFIG.PARAGRAPH_COLORS.length : 0;
-
-                        html += `
-                            <div class="vocab-card ${mastery}" onclick="openModal('${word}')">
-                                ${paragraph ? `<div class="paragraph-badge" style="background: ${CONFIG.PARAGRAPH_COLORS[colorIndex]}">${paragraph}</div>` : ''}
-                                <div class="word-header">
-                                    <div class="word-title">${word}</div>
-                                    <div class="mastery-badge ${mastery}">${masteryLabel}</div>
-                                </div>
-                                <div class="word-meaning">${data.meaning}</div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                }
-            }
-
-            return html;
-        }
-
-        function renderReviewMode() {
-            const dueWords = getWordsForReview();
-            const weakWords = getWeakWords();
-            const allWords = Array.from(state.viewedWords);
-            
-            let reviewWords = dueWords.length > 0 ? dueWords : 
-                             weakWords.length > 0 ? weakWords.slice(0, CONFIG.QUICK_REVIEW_COUNT) :
-                             allWords.slice(0, CONFIG.QUICK_REVIEW_COUNT);
-            
-            if (reviewWords.length === 0) {
-                return `
-                    <div class="empty-state">
-                        <div class="empty-icon">✅</div>
-                        <div class="empty-title">Chưa có từ để ôn!</div>
-                        <div class="empty-desc">Học vài từ mới trước, rồi quay lại đây nhé.</div>
-                        <button class="btn btn-primary" onclick="setMode('reading')" style="margin-top: 20px;">
-                            Học từ mới
-                        </button>
-                    </div>
-                `;
-            }
-            
-            if (!state.reviewState) {
-                state.reviewState = {
-                    words: reviewWords,
-                    currentIndex: 0,
-                    revealed: false,
-                    results: []
-                };
-            }
-            
-            if (state.reviewState.currentIndex >= state.reviewState.words.length) {
-                const correct = state.reviewState.results.filter(r => r === 'easy').length;
-                const total = state.reviewState.results.length;
-                
-                const html = `
-                    <div class="review-mode">
-                        <div class="review-card">
-                            <div class="empty-icon">🎉</div>
-                            <div class="empty-title">Hoàn thành!</div>
-                            <div class="empty-desc">Bạn đã ôn xong ${total} từ.</div>
-                            <div class="review-actions" style="margin-top: 24px;">
-                                <button class="btn btn-primary" onclick="resetReview()">
-                                    Về trang chủ
-                                </button>
-                                <button class="btn btn-secondary" onclick="startNewReview()">
-                                    Ôn thêm
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                return html;
-            }
-            
-            const currentWord = state.reviewState.words[state.reviewState.currentIndex];
-            const wordData = findWordData(currentWord);
-            
-            if (!wordData) {
-                state.reviewState.currentIndex++;
-                return renderReviewMode();
-            }
-            
-            const html = `
-                <div class="review-mode">
-                    <div style="text-align: center; margin-bottom: 16px; color: var(--text); opacity: 0.6;">
-                        ${state.reviewState.currentIndex + 1} / ${state.reviewState.words.length}
-                    </div>
-                    <div class="review-card">
-                        <div class="review-word">${currentWord}</div>
-                        <div class="review-ipa">${wordData.ipa}</div>
-                        <div class="review-content ${state.reviewState.revealed ? '' : 'hidden'}">
-                            <div style="font-weight: 600; margin-bottom: 12px;">${wordData.meaning}</div>
-                            <div>${wordData.paraphrase}</div>
-                        </div>
-                        ${!state.reviewState.revealed ? `
-                            <button class="btn reveal-btn" onclick="revealAnswer()">
-                                Hiện đáp án
-                            </button>
-                        ` : `
-                            <div class="rating-section">
-                                <span class="rating-label">Nhớ ra từ này có khó không?</span>
-                                <div class="review-actions">
-                                    <button class="btn btn-secondary" onclick="rateWord('hard')">
-                                        😕 Khá khó
-                                    </button>
-                                    <button class="btn btn-secondary" onclick="rateWord('medium')">
-                                        🤔 Bình thường
-                                    </button>
-                                    <button class="btn btn-primary" onclick="rateWord('easy')">
-                                        😊 Thoải mái
-                                    </button>
-                                </div>
-                            </div>
-                        `}
-                    </div>
-                </div>
-            `;
-            
-            return html;
-        }
-
-        function revealAnswer() {
-            state.reviewState.revealed = true;
-            const currentWord = state.reviewState.words[state.reviewState.currentIndex];
-            speak(currentWord);
-            render();
-        }
-
-        function rateWord(difficulty) {
-            const currentWord = state.reviewState.words[state.reviewState.currentIndex];
-            scheduleNextReview(currentWord, difficulty);
-            state.reviewState.results.push(difficulty);
-            state.reviewState.currentIndex++;
-            state.reviewState.revealed = false;
-            trackEvent('review_rate', { word: currentWord, difficulty });
-            render();
-        }
-
-        function resetReview() {
-            state.reviewState = null;
-            setMode('reading');
-        }
-
-        function startNewReview() {
-            state.reviewState = null;
-            setMode('review');
-        }
-
-        function renderQuizMode() {
-            const masteredCount = Array.from(state.viewedWords).filter(w => getWordMastery(w) === 'mastered').length;
-            const isUnlocked = masteredCount >= CONFIG.QUIZ_UNLOCK_REQUIREMENT || state.streak >= 3;
-            
-            if (!isUnlocked) {
-                return `
-                    <div class="empty-state">
-                        <div class="locked-badge">🔒</div>
-                        <div class="empty-title">Quiz chưa mở khóa</div>
-                        <div class="empty-desc">
-                            Cần ${CONFIG.QUIZ_UNLOCK_REQUIREMENT} từ thành thạo hoặc streak 3 ngày.<br>
-                            Hiện tại: ${masteredCount} từ thành thạo, ${state.streak} ngày streak.
-                        </div>
-                        <button class="btn btn-primary" onclick="setMode('reading')" style="margin-top: 20px;">
-                            Tiếp tục học
-                        </button>
-                    </div>
-                `;
-            }
-            
-            if (!state.quizState) {
-                return `
-                    <div class="empty-state">
-                        <div class="empty-icon">🎯</div>
-                        <div class="empty-title">Sẵn sàng kiểm tra?</div>
-                        <div class="empty-desc">10 câu hỏi trắc nghiệm từ vựng</div>
-                        <button class="btn btn-primary" onclick="startQuiz()" style="margin-top: 20px;">
-                            Bắt đầu Quiz
-                        </button>
-                    </div>
-                `;
-            }
-            
-            if (state.quizState.finished) {
-                const score = Math.round((state.quizState.correct / state.quizState.questions.length) * 100);
-                let message = '';
-                if (score >= 90) message = 'Xuất sắc! 🎉';
-                else if (score >= 70) message = 'Tốt lắm! 👏';
-                else if (score >= 50) message = 'Ổn đấy! 💪';
-                else message = 'Cần cố gắng thêm! 📚';
-                
-                return `
-                    <div class="quiz-container">
-                        <div class="quiz-result">
-                            <div class="quiz-score">${score}%</div>
-                            <div class="quiz-message">${message}</div>
-                            <div style="margin-bottom: 24px; color: var(--text); opacity: 0.7;">
-                                ${state.quizState.correct} / ${state.quizState.questions.length} câu đúng
-                            </div>
-                            <div class="review-actions">
-                                <button class="btn btn-primary" onclick="resetQuiz()">
-                                    Làm lại
-                                </button>
-                                <button class="btn btn-secondary" onclick="setMode('reading')">
-                                    Về trang chủ
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            const currentQ = state.quizState.questions[state.quizState.currentIndex];
-            
-            let html = `
-                <div class="quiz-container">
-                    <div class="quiz-card">
-                        <div class="quiz-header">
-                            <div class="quiz-progress">
-                                Câu ${state.quizState.currentIndex + 1} / ${state.quizState.questions.length}
-                            </div>
-                            <div style="color: var(--success); font-weight: 600;">
-                                ✓ ${state.quizState.correct}
-                            </div>
-                        </div>
-                        <div class="quiz-question">${currentQ.question}</div>
-                        <div class="quiz-options">
-            `;
-            
-            currentQ.options.forEach((option, index) => {
-                let className = 'quiz-option';
-                if (state.quizState.answered) {
-                    if (index === currentQ.correct) className += ' correct';
-                    else if (index === state.quizState.selectedAnswer && index !== currentQ.correct) {
-                        className += ' incorrect';
-                    }
-                } else if (index === state.quizState.selectedAnswer) {
-                    className += ' selected';
-                }
-                
-                html += `
-                    <button class="${className}" 
-                            onclick="selectQuizAnswer(${index})"
-                            ${state.quizState.answered ? 'disabled' : ''}>
-                        ${option}
-                    </button>
-                `;
-            });
-            
-            html += `
-                        </div>
-                        ${state.quizState.answered ? `
-                            <button class="btn btn-primary" onclick="nextQuizQuestion()" style="margin-top: 24px;">
-                                Câu tiếp theo
-                            </button>
-                        ` : `
-                            <button class="btn btn-primary" 
-                                    onclick="submitQuizAnswer()"
-                                    ${state.quizState.selectedAnswer === null ? 'disabled' : ''}
-                                    style="margin-top: 24px;">
-                                Xác nhận
-                            </button>
-                        `}
-                    </div>
-                </div>
-            `;
-            
-            return html;
-        }
-
-        function startQuiz() {
-            const allWords = Array.from(state.viewedWords);
-            if (allWords.length < 10) {
-                showToast('Cần ít nhất 10 từ đã học để làm quiz');
-                return;
-            }
-            
-            const selectedWords = shuffleArray(allWords).slice(0, 10);
-            const questions = selectedWords.map(word => {
-                const wordData = findWordData(word);
-                if (!wordData) return null;
-                
-                const quizQ = QUIZ_DATA[word];
-                if (quizQ && quizQ.length > 0) {
-                    const randomQ = quizQ[Math.floor(Math.random() * quizQ.length)];
-                    const correctAnswer = randomQ.options[randomQ.correct];
-                    const shuffledOptions = shuffleArray(randomQ.options);
-                    const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
-                    
-                    return {
-                        ...randomQ,
-                        options: shuffledOptions,
-                        correct: newCorrectIndex
-                    };
-                }
-                
-                return null;
-            }).filter(q => q !== null);
-            
-            if (questions.length < 5) {
-                showToast('Không đủ câu hỏi để tạo quiz');
-                return;
-            }
-            
-            state.quizState = {
-                questions: questions,
-                currentIndex: 0,
-                selectedAnswer: null,
-                answered: false,
-                correct: 0,
-                finished: false
-            };
-            
-            trackEvent('quiz_start');
-            render();
-        }
-
-        function selectQuizAnswer(index) {
-            if (state.quizState.answered) return;
-            state.quizState.selectedAnswer = index;
-            render();
-        }
-
-        function submitQuizAnswer() {
-            if (state.quizState.selectedAnswer === null) return;
-            
-            const currentQ = state.quizState.questions[state.quizState.currentIndex];
-            const isCorrect = state.quizState.selectedAnswer === currentQ.correct;
-            
-            if (isCorrect) {
-                state.quizState.correct++;
-            }
-            
-            state.quizState.answered = true;
-            trackEvent('quiz_answer', { correct: isCorrect });
-            render();
-        }
-
-        function nextQuizQuestion() {
-            state.quizState.currentIndex++;
-            state.quizState.selectedAnswer = null;
-            state.quizState.answered = false;
-            
-            if (state.quizState.currentIndex >= state.quizState.questions.length) {
-                state.quizState.finished = true;
-                trackEvent('quiz_complete', { score: state.quizState.correct });
-            }
-            
-            render();
-        }
-
-        function resetQuiz() {
-            state.quizState = null;
-            render();
-        }
-
-        function render() {
-            renderStatsBar();
-            renderNav();
-            
-            let content = '';
-            
-            if (state.currentMode === 'review') {
-                content = renderReviewMode();
-            } else if (state.currentMode === 'quiz') {
-                content = renderQuizMode();
-            } else {
-                // browse mode: reading or listening
-                content = renderBrowseMode();
-            }
-            
-            document.getElementById('appContent').innerHTML = content;
-        }
-
-        function buildWordIndex() {
-            if (WORD_INDEX) return;
-            
-            WORD_INDEX = {};
-            
-            for (let category in VOCAB_DATA) {
-                for (let lesson in VOCAB_DATA[category]) {
-                    for (let type in VOCAB_DATA[category][lesson]) {
-                        const data = VOCAB_DATA[category][lesson][type];
-                        
-                        Object.keys(data).forEach(key => {
-                            if (data[key].ipa) {
-                                WORD_INDEX[key] = data[key];
-                            } else {
-                                Object.keys(data[key]).forEach(word => {
-                                    WORD_INDEX[word] = data[key][word];
-                                });
-                            }
-                        });
-                    }
-                }
-            }
-            
-            log('Word index built:', Object.keys(WORD_INDEX).length, 'words');
-        }
-
-        function findWordData(word) {
-            if (!WORD_INDEX) buildWordIndex();
-            return WORD_INDEX[word] || null;
-        }
-
-        function openModal(word) {
-            const data = findWordData(word);
-            if (!data) return;
-            
-            state.viewedWords.add(word);
-            
-            if (!state.reviewSchedule[word]) {
-                scheduleNextReview(word, 'medium');
-            }
-            
-            trackEvent('word_view', { word });
-            saveState();
-            
-            const youglishUrl = `https://youglish.com/pronounce/${encodeURIComponent(word)}/english`;
-            
-            const content = document.getElementById('modalContent');
-            content.innerHTML = '';
-            
-            const wrapper = document.createElement('div');
-            wrapper.className = 'modal-content';
-            
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'modal-header';
-            
-            const wordGroup = document.createElement('div');
-            wordGroup.className = 'word-group';
-            
-            const wordElem = document.createElement('div');
-            wordElem.className = 'modal-word';
-            wordElem.textContent = word;
-            
-            const ipaElem = document.createElement('div');
-            ipaElem.className = 'modal-ipa';
-            ipaElem.textContent = data.ipa;
-            
-            const typeElem = document.createElement('div');
-            typeElem.className = 'modal-type';
-            typeElem.textContent = abbreviateType(data.type);
-            
-            wordGroup.appendChild(wordElem);
-            wordGroup.appendChild(ipaElem);
-            headerDiv.appendChild(wordGroup);
-            headerDiv.appendChild(typeElem);
-            
-            const meaningElem = document.createElement('div');
-            meaningElem.className = 'modal-meaning';
-            meaningElem.innerHTML = data.meaning;
-            
-            const paraphraseElem = document.createElement('div');
-            paraphraseElem.className = 'modal-paraphrase';
-            paraphraseElem.innerHTML = data.paraphrase;
-            
-            wrapper.appendChild(headerDiv);
-            wrapper.appendChild(meaningElem);
-            wrapper.appendChild(paraphraseElem);
-            
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'modal-actions';
-
-            // Voice buttons - only show what's available on this device
-            const voiceSelector = document.createElement('div');
-            voiceSelector.className = 'voice-selector';
-
-            if (hasUKVoice || hasUSVoice) {
-                if (hasUKVoice) {
-                    const ukBtn = document.createElement('button');
-                    ukBtn.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
-                    ukBtn.innerHTML = '🇬🇧 UK';
-                    ukBtn.addEventListener('click', () => {
-                        currentVoiceRegion = 'UK';
-                        speak(word);
-                        trackEvent('voice_click', { region: 'UK' });
-                        updateVoiceBtns(ukBtn, usBtn);
-                    });
-                    voiceSelector.appendChild(ukBtn);
-                    var ukBtnRef = ukBtn;
-                }
-
-                if (hasUSVoice) {
-                    const usBtn = document.createElement('button');
-                    usBtn.className = 'btn ' + (currentVoiceRegion === 'US' ? 'btn-primary' : 'btn-secondary');
-                    usBtn.innerHTML = '🇺🇸 US';
-                    usBtn.addEventListener('click', () => {
-                        currentVoiceRegion = 'US';
-                        speak(word);
-                        trackEvent('voice_click', { region: 'US' });
-                        updateVoiceBtns(ukBtnRef, usBtn);
-                    });
-                    voiceSelector.appendChild(usBtn);
-                    var usBtnRef = usBtn;
-                }
-
-                function updateVoiceBtns(ukB, usB) {
-                    if (ukB) ukB.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
-                    if (usB) usB.className = 'btn ' + (currentVoiceRegion === 'US' ? 'btn-primary' : 'btn-secondary');
-                }
-            } else {
-                // Fallback: single pronunciation button using whatever voice is available
-                const speakBtn = document.createElement('button');
-                speakBtn.className = 'btn btn-primary';
-                speakBtn.innerHTML = '🔊 Phát âm';
-                speakBtn.addEventListener('click', () => {
-                    speak(word);
-                    trackEvent('voice_click', { region: 'default' });
-                });
-                voiceSelector.appendChild(speakBtn);
-            }
-            
-            const youglishBtn = document.createElement('button');
-            youglishBtn.className = 'btn btn-secondary';
-            youglishBtn.innerHTML = '🎬 Bối cảnh thực tế';
-            youglishBtn.addEventListener('click', () => {
-                trackEvent('youglish_click');
-                window.open(youglishUrl, '_blank');
-            });
-            
-            actionsDiv.appendChild(voiceSelector);
-            actionsDiv.appendChild(youglishBtn);
-            
-            content.appendChild(wrapper);
-            content.appendChild(actionsDiv);
-            
-            document.getElementById('modalOverlay').classList.add('active');
-            document.getElementById('vocabModal').classList.add('active');
-            
-            setTimeout(() => speak(word), 100);
-            
-            render();
-        }
-
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('active');
-            document.getElementById('vocabModal').classList.remove('active');
-        }
-
-        function abbreviateType(type) {
-            const abbrev = {
-                'noun': 'n',
-                'verb': 'v',
-                'adjective': 'adj',
-                'adverb': 'adv',
-                'phrase': 'phr',
-                'phrasal verb': 'phr v',
-                'noun phrase': 'n phr'
-            };
-            return abbrev[type] || type;
-        }
-
-        function loadVoices() {
-            voices = window.speechSynthesis.getVoices();
-
-            // Detect which accent voices are actually available
-            hasUKVoice = voices.some(v => v.lang === 'en-GB');
-            hasUSVoice = voices.some(v => v.lang === 'en-US');
-
-            // If no UK voice available, default region to US (or whatever is available)
-            if (!hasUKVoice && hasUSVoice) {
-                currentVoiceRegion = 'US';
-            }
-
-            log('Voices loaded. UK:', hasUKVoice, 'US:', hasUSVoice);
-        }
-
-        function speak(text) {
-            if (!('speechSynthesis' in window)) return;
-            
-            window.speechSynthesis.cancel();
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
-            
-            // Find the best matching voice for the selected region
-            let targetVoice = null;
-
-            if (currentVoiceRegion === 'UK' && hasUKVoice) {
-                targetVoice = voices.find(v => v.lang === 'en-GB');
-            } else if (currentVoiceRegion === 'US' && hasUSVoice) {
-                targetVoice = voices.find(v => v.lang === 'en-US');
-            } else {
-                // Fallback: use any English voice available
-                targetVoice = voices.find(v => v.lang.startsWith('en'));
-            }
-            
-            if (targetVoice) {
-                utterance.voice = targetVoice;
-                utterance.lang = targetVoice.lang;
-            }
-            
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function toggleTheme() {
-            const current = document.body.getAttribute('data-theme');
-            const next = current === 'dark' ? '' : 'dark';
-            document.body.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        }
-
-        function hasLessonProgress(category, lesson) {
-            const savedState = { 
-                currentView: state.currentView,
-                currentLesson: state.currentLesson,
-                currentType: state.currentType,
-                currentPassage: state.currentPassage
-            };
-            
-            state.currentView = category;
-            state.currentLesson = lesson;
-            
-            let allWords = [];
-            ['inclass', 'homework'].forEach(type => {
-                state.currentType = type;
-                const vocabData = getCurrentVocabData();
-                allWords = [...allWords, ...Object.keys(vocabData)];
-            });
-            
-            Object.assign(state, savedState);
-            
-            return allWords.some(w => state.viewedWords.has(w));
-        }
-
-        function getTotalWords() {
-            let total = 0;
-            ['reading', 'listening'].forEach(cat => {
-                Object.keys(VOCAB_DATA[cat] || {}).forEach(lesson => {
-                    ['inclass', 'homework'].forEach(type => {
-                        const data = VOCAB_DATA[cat][lesson][type];
-                        total += getAllWordsFromData(data).length;
-                    });
-                });
-            });
-            return total;
-        }
-
-        function getAllWordsFromData(data) {
-            let words = [];
-            if (Object.keys(data).length === 0) return words;
-            
-            const firstKey = Object.keys(data)[0];
-            const firstValue = data[firstKey];
-            
-            if (firstValue && firstValue.ipa) {
-                words = Object.keys(data);
-            } else {
-                Object.keys(data).forEach(passageName => {
-                    const passageWords = Object.keys(data[passageName]);
-                    words = [...words, ...passageWords];
-                });
-            }
-            
-            return words;
-        }
-
-        function shuffleArray(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        function exportProgress() {
-            const data = {
-                version: VERSION,
-                userId: state.userId,
-                viewedWords: Array.from(state.viewedWords),
-                reviewSchedule: state.reviewSchedule,
-                streak: state.streak,
-                quizProgress: state.quizProgress,
-                analytics: state.analytics,
-                exportDate: new Date().toISOString()
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ielts-vocab-progress-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            trackEvent('export_progress');
-            showToast('✅ Đã xuất tiến độ!');
-        }
-
-        function importProgress() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'application/json';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        state.viewedWords = new Set(data.viewedWords || []);
-                        state.reviewSchedule = data.reviewSchedule || {};
-                        state.streak = data.streak || 0;
-                        state.quizProgress = data.quizProgress || {};
-                        state.analytics = data.analytics || state.analytics;
-                        saveState();
-                        render();
-                        showToast('✅ Đã nhập tiến độ thành công!');
-                        trackEvent('import_progress');
-                    } catch (err) {
-                        showToast('❌ Lỗi: File không đúng định dạng');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function showToast(message) {
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
-            
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 10);
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 2500);
-        }
-
-        let selectedFeedbackReaction = null;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadState();
-            buildWordIndex();
-            
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
-            }
-            
-            if ('speechSynthesis' in window) {
-                loadVoices();
-                setTimeout(loadVoices, 100);
-                setTimeout(loadVoices, 500);
-                window.speechSynthesis.onvoiceschanged = loadVoices;
-            }
-            
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-            document.getElementById('modalClose').addEventListener('click', closeModal);
-            document.getElementById('modalOverlay').addEventListener('click', closeModal);
-            
-            const feedbackBtn = document.getElementById('feedbackBtn');
-            const feedbackModal = document.getElementById('feedbackModal');
-            
-            feedbackBtn.addEventListener('click', () => {
-                feedbackModal.classList.toggle('active');
-                trackEvent('feedback_open');
-            });
-            
-            document.querySelectorAll('.feedback-reaction').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.feedback-reaction').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                    selectedFeedbackReaction = btn.dataset.reaction;
-                });
-            });
-            
-            document.getElementById('feedbackSubmit').addEventListener('click', () => {
-                const text = document.getElementById('feedbackText').value;
-                
-                if (!selectedFeedbackReaction && !text) {
-                    showToast('Vui lòng chọn hoặc viết feedback!');
-                    return;
-                }
-                
-                trackEvent('feedback_submit', { 
-                    reaction: selectedFeedbackReaction, 
-                    hasText: !!text 
-                });
-                
-                if (CONFIG.GOOGLE_FORM_URL) {
-                    const params = new URLSearchParams({
-                        userId: state.userId,
-                        reaction: selectedFeedbackReaction || 'none',
-                        text: text || '',
-                        timestamp: new Date().toISOString()
-                    });
-                    fetch(`${CONFIG.GOOGLE_FORM_URL}?${params}`, { mode: 'no-cors' });
-                }
-                
-                showToast('✅ Cảm ơn góp ý của bạn!');
-                feedbackModal.classList.remove('active');
-                selectedFeedbackReaction = null;
-                document.getElementById('feedbackText').value = '';
-                document.querySelectorAll('.feedback-reaction').forEach(b => b.classList.remove('selected'));
-            });
-            
-            document.addEventListener('click', (e) => {
-                if (!feedbackModal.contains(e.target) && !feedbackBtn.contains(e.target)) {
-                    feedbackModal.classList.remove('active');
-                }
-            });
-            
-            window.addEventListener('beforeunload', () => {
-                trackEvent('session_end', { 
-                    duration: Date.now() - state.analytics.sessionStart 
-                });
-                sendAnalytics();
-            });
-            
-            render();
-            
-            console.log(`%c📚 IELTS Vocab Stream v${VERSION}`, 'font-size: 20px; font-weight: bold; color: #2d5016;');
-            console.log('%cNeed help? Check MAINTENANCE.md', 'color: #666;');
+    </header>
+    <nav class="main-nav">
+        <button class="nav-item active" data-view="reading">📖 Reading</button>
+        <button class="nav-item" data-view="listening">🎧 Listening</button>
+        <button class="nav-item" data-view="progress">📊 Progress</button>
+    </nav>
+    <div id="mainContent"></div>
+</div>
+
+<script src="vocab-data.js"></script>
+<script>
+// ==========================================
+// STATE
+// ==========================================
+const state = {
+    currentView: 'reading',
+    currentLesson: 1,
+    currentType: 'inclass',
+    currentPassage: null,
+    viewedWords: new Set()
+};
+
+// ==========================================
+// STORAGE
+// ==========================================
+function saveState() {
+    localStorage.setItem('ieltsVocabProgress', JSON.stringify({
+        viewedWords: Array.from(state.viewedWords)
+    }));
+}
+function loadState() {
+    try {
+        const saved = localStorage.getItem('ieltsVocabProgress');
+        if (saved) state.viewedWords = new Set(JSON.parse(saved).viewedWords || []);
+    } catch(e) {}
+}
+
+// ==========================================
+// AUDIO
+// ==========================================
+let voices = [];
+function loadVoices() {
+    if ('speechSynthesis' in window) voices = window.speechSynthesis.getVoices();
+}
+function speak(word) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-GB';
+    u.rate = 0.85;
+    const v = voices.find(v => v.lang.startsWith('en-GB'));
+    if (v) u.voice = v;
+    window.speechSynthesis.speak(u);
+}
+
+// ==========================================
+// THEME
+// ==========================================
+function toggleTheme() {
+    const dark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', dark ? '' : 'dark');
+    localStorage.setItem('theme', dark ? 'light' : 'dark');
+}
+
+// ==========================================
+// DATA HELPERS
+// ==========================================
+
+/**
+ * THE KEY FIX:
+ * Reading L7 homework has nested passages (keys point to objects WITHOUT 'ipa').
+ * Listening L6 homework is flat (keys point to objects WITH 'ipa').
+ * This function reliably distinguishes the two.
+ */
+function isNestedPassages(data) {
+    if (!data || Object.keys(data).length === 0) return false;
+    const firstVal = data[Object.keys(data)[0]];
+    return firstVal && typeof firstVal === 'object' && !('ipa' in firstVal);
+}
+
+function getCurrentVocabData() {
+    const raw = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
+    if (!raw) return {};
+    if (isNestedPassages(raw)) {
+        if (state.currentPassage) return raw[state.currentPassage] || {};
+        // Combine all passages
+        const combined = {};
+        Object.values(raw).forEach(p => Object.assign(combined, p));
+        return combined;
+    }
+    return raw;
+}
+
+function getAllWordsFromData(data) {
+    if (!data || Object.keys(data).length === 0) return [];
+    if (isNestedPassages(data)) return Object.values(data).flatMap(p => Object.keys(p));
+    return Object.keys(data);
+}
+
+function hasLessonProgress(view, lesson) {
+    for (const type of ['inclass', 'homework']) {
+        const words = getAllWordsFromData(VOCAB_DATA[view]?.[lesson]?.[type]);
+        if (words.some(w => state.viewedWords.has(w))) return true;
+    }
+    return false;
+}
+
+function getCategoryTotal(cat) {
+    let n = 0;
+    for (const lesson of Object.keys(VOCAB_DATA[cat]))
+        for (const type of ['inclass','homework'])
+            n += getAllWordsFromData(VOCAB_DATA[cat][lesson][type]).length;
+    return n;
+}
+function getCategoryViewed(cat) {
+    let n = 0;
+    for (const lesson of Object.keys(VOCAB_DATA[cat]))
+        for (const type of ['inclass','homework'])
+            getAllWordsFromData(VOCAB_DATA[cat][lesson][type]).forEach(w => { if (state.viewedWords.has(w)) n++; });
+    return n;
+}
+function getTotalWords() { return getCategoryTotal('reading') + getCategoryTotal('listening'); }
+
+// ==========================================
+// NAVIGATION — THE BUG FIX
+// Switching Reading ↔ Listening resets lesson to 1.
+// This prevents Listening inheriting Reading L7's nested-passage state.
+// ==========================================
+function setView(view) {
+    state.currentView = view;
+    state.currentLesson = 1;       // ← reset
+    state.currentType = 'inclass'; // ← reset
+    state.currentPassage = null;   // ← reset
+    document.querySelectorAll('.nav-item').forEach(b =>
+        b.classList.toggle('active', b.dataset.view === view)
+    );
+    render();
+}
+
+function setLesson(num) {
+    state.currentLesson = num;
+    state.currentPassage = null;
+    render();
+}
+function setType(type) {
+    state.currentType = type;
+    state.currentPassage = null;
+    render();
+}
+function setPassage(name) {
+    state.currentPassage = name;
+    render();
+}
+
+// ==========================================
+// RENDER
+// ==========================================
+function render() {
+    const content = document.getElementById('mainContent');
+    state.currentView === 'progress' ? renderProgress(content) : renderVocabView(content);
+}
+
+function renderVocabView(container) {
+    const maxLessons = state.currentView === 'reading' ? 7 : 8;
+    container.innerHTML = '';
+
+    // Lesson grid
+    const lessonsDiv = document.createElement('div');
+    lessonsDiv.className = 'lesson-grid';
+    for (let i = 1; i <= maxLessons; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'lesson-btn' + (i === state.currentLesson ? ' active' : '');
+        btn.textContent = `Lesson ${i}`;
+        if (hasLessonProgress(state.currentView, i)) btn.classList.add('has-progress');
+        btn.addEventListener('click', () => setLesson(i));
+        lessonsDiv.appendChild(btn);
+    }
+    container.appendChild(lessonsDiv);
+
+    // In Class / Homework
+    const typeDiv = document.createElement('div');
+    typeDiv.className = 'type-selector';
+    for (const [t, label] of [['inclass','In Class'],['homework','Homework']]) {
+        const btn = document.createElement('button');
+        btn.className = 'type-btn' + (state.currentType === t ? ' active' : '');
+        btn.textContent = label;
+        btn.addEventListener('click', () => setType(t));
+        typeDiv.appendChild(btn);
+    }
+    container.appendChild(typeDiv);
+
+    // Passage selector — ONLY shown when data is truly nested (has passages)
+    const rawData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
+    if (rawData && isNestedPassages(rawData)) {
+        const passageDiv = document.createElement('div');
+        passageDiv.className = 'passage-selector';
+
+        const allBtn = document.createElement('button');
+        allBtn.className = 'passage-btn' + (state.currentPassage === null ? ' active' : '');
+        allBtn.textContent = '📚 All Passages';
+        allBtn.addEventListener('click', () => setPassage(null));
+        passageDiv.appendChild(allBtn);
+
+        Object.keys(rawData).forEach(name => {
+            const btn = document.createElement('button');
+            btn.className = 'passage-btn' + (state.currentPassage === name ? ' active' : '');
+            btn.textContent = name;
+            btn.addEventListener('click', () => setPassage(name));
+            passageDiv.appendChild(btn);
         });
-    </script>
+        container.appendChild(passageDiv);
+    }
+
+    // Stats
+    const data = getCurrentVocabData();
+    const words = Object.keys(data);
+    const viewedCount = words.filter(w => state.viewedWords.has(w)).length;
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'stats-bar';
+    statsDiv.innerHTML = `
+        <div class="stat-card"><div class="stat-value">${words.length}</div><div class="stat-label">Tổng từ</div></div>
+        <div class="stat-card"><div class="stat-value">${viewedCount}</div><div class="stat-label">Đã xem</div></div>
+        <div class="stat-card"><div class="stat-value">${state.currentView === 'reading' ? 'Reading' : 'Listening'} L${state.currentLesson}</div><div class="stat-label">Bộ hiện tại</div></div>
+    `;
+    container.appendChild(statsDiv);
+
+    // Vocab grid
+    const gridDiv = document.createElement('div');
+    if (words.length === 0) {
+        gridDiv.className = 'empty-state';
+        gridDiv.innerHTML = `<div class="empty-icon">🔭</div><div class="empty-text">Chưa có từ vựng cho bài này</div>`;
+    } else {
+        gridDiv.className = 'vocab-grid';
+        const sorted = [...words].sort((a,b) => {
+            const pA = data[a]?.paragraph || 'Z';
+            const pB = data[b]?.paragraph || 'Z';
+            return pA.localeCompare(pB);
+        });
+        sorted.forEach(word => {
+            const hasBadge = !!(data[word]?.paragraph);
+            const card = document.createElement('div');
+            card.className = 'vocab-card'
+                + (state.viewedWords.has(word) ? ' viewed' : '')
+                + (hasBadge ? ' has-badge' : '');
+            card.dataset.word = word;
+
+            if (hasBadge) {
+                const badge = document.createElement('div');
+                badge.className = 'paragraph-badge';
+                badge.setAttribute('data-para', data[word].paragraph);
+                badge.textContent = data[word].paragraph;
+                card.appendChild(badge);
+            }
+
+            const wordEl = document.createElement('div');
+            wordEl.className = 'vocab-word';
+            wordEl.textContent = word;
+            card.appendChild(wordEl);
+
+            const meaningEl = document.createElement('div');
+            meaningEl.className = 'vocab-meaning';
+            meaningEl.textContent = data[word]?.meaning || '';
+            card.appendChild(meaningEl);
+
+            gridDiv.appendChild(card);
+        });
+
+        gridDiv.addEventListener('click', e => {
+            const card = e.target.closest('.vocab-card');
+            if (card?.dataset.word) showWord(card.dataset.word);
+        });
+    }
+    container.appendChild(gridDiv);
+}
+
+function renderProgress(container) {
+    const total = getTotalWords(), viewed = state.viewedWords.size;
+    const pct = total > 0 ? Math.round(viewed/total*100) : 0;
+    const rT = getCategoryTotal('reading'), lT = getCategoryTotal('listening');
+    const rV = getCategoryViewed('reading'), lV = getCategoryViewed('listening');
+    const rP = rT > 0 ? Math.round(rV/rT*100) : 0;
+    const lP = lT > 0 ? Math.round(lV/lT*100) : 0;
+    container.innerHTML = `
+        <div class="progress-container">
+            <div class="progress-section">
+                <div class="progress-title">📊 Tiến độ tổng thể</div>
+                <div class="progress-row">
+                    <div class="progress-label">Tổng</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%">${pct}%</div></div>
+                    <div class="progress-count">${viewed}/${total}</div>
+                </div>
+            </div>
+            <div class="progress-section">
+                <div class="progress-title">📚 Theo kỹ năng</div>
+                <div class="progress-row">
+                    <div class="progress-label">📖 Reading</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${rP}%">${rV}/${rT}</div></div>
+                    <div class="progress-count">${rV}</div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-label">🎧 Listening</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${lP}%">${lV}/${lT}</div></div>
+                    <div class="progress-count">${lV}</div>
+                </div>
+            </div>
+            <div class="progress-section">
+                <div class="progress-title">💾 Lưu tiến độ</div>
+                <div class="export-section">
+                    <button class="btn btn-primary" id="exportBtn">📤 Xuất tiến độ</button>
+                    <button class="btn btn-secondary" id="importBtn">📥 Nhập tiến độ</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('exportBtn').addEventListener('click', exportProgress);
+    document.getElementById('importBtn').addEventListener('click', importProgress);
+}
+
+// ==========================================
+// MODAL
+// ==========================================
+function showWord(word) {
+    const data = getCurrentVocabData()[word];
+    if (!data) return;
+    state.viewedWords.add(word);
+    saveState();
+
+    const content = document.getElementById('modalContent');
+    content.innerHTML = '';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.textAlign = 'center';
+
+    const els = {
+        word: Object.assign(document.createElement('div'), {className:'modal-word', textContent:word}),
+        type: Object.assign(document.createElement('span'), {className:'modal-type', textContent:data.type}),
+        ipa:  Object.assign(document.createElement('div'), {className:'modal-ipa', textContent:data.ipa}),
+        meaning: Object.assign(document.createElement('div'), {className:'modal-meaning', textContent:data.meaning}),
+        para: Object.assign(document.createElement('div'), {className:'modal-paraphrase', textContent:data.paraphrase})
+    };
+    Object.values(els).forEach(el => wrapper.appendChild(el));
+
+    const actions = document.createElement('div');
+    actions.className = 'modal-actions';
+
+    const listenBtn = document.createElement('button');
+    listenBtn.className = 'btn btn-primary';
+    listenBtn.textContent = '🔊 Listen';
+    listenBtn.addEventListener('click', () => speak(word));
+
+    const youglishBtn = document.createElement('button');
+    youglishBtn.className = 'btn btn-secondary';
+    youglishBtn.textContent = '▶️ YouGlish';
+    youglishBtn.addEventListener('click', () =>
+        window.open(`https://youglish.com/pronounce/${encodeURIComponent(word)}/english/uk`, '_blank'));
+
+    actions.append(listenBtn, youglishBtn);
+    content.append(wrapper, actions);
+
+    document.getElementById('modalOverlay').classList.add('active');
+    document.getElementById('vocabModal').classList.add('active');
+    setTimeout(() => speak(word), 100);
+    render();
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.getElementById('vocabModal').classList.remove('active');
+}
+
+// ==========================================
+// EXPORT / IMPORT
+// ==========================================
+function exportProgress() {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify({
+        viewedWords: Array.from(state.viewedWords),
+        exportDate: new Date().toISOString()
+    }, null, 2)], {type:'application/json'}));
+    a.download = `ielts-vocab-progress-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+}
+function importProgress() {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'application/json';
+    input.onchange = e => {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                state.viewedWords = new Set(JSON.parse(ev.target.result).viewedWords || []);
+                saveState(); render(); showToast('✅ Nhập tiến độ thành công!');
+            } catch { showToast('❌ File không hợp lệ.'); }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+function showToast(msg) {
+    document.querySelector('.toast')?.remove();
+    const t = document.createElement('div');
+    t.className = 'toast'; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.classList.add('show'), 10);
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+// ==========================================
+// INIT
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme','dark');
+    if ('speechSynthesis' in window) { loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices; }
+
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', closeModal);
+    document.querySelectorAll('.nav-item').forEach(btn =>
+        btn.addEventListener('click', () => setView(btn.dataset.view))
+    );
+    render();
+});
+</script>
 </body>
 </html>
