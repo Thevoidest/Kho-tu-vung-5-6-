@@ -6,7 +6,7 @@
     <title>IELTS Vocab Stream</title>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Crimson+Pro:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Crimson+Pro:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
 
         :root {
             --bg: #fdfcfa;
@@ -44,10 +44,11 @@
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Be Vietnam Pro', sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
+            font-size: 17px;
             transition: background 0.3s, color 0.3s;
             overflow-x: hidden;
         }
@@ -173,6 +174,7 @@
             transition: all 0.2s;
             color: var(--text);
             min-height: 44px;
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .nav-item.active {
@@ -205,6 +207,7 @@
             color: var(--text);
             position: relative;
             min-height: 44px;
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .lesson-btn:hover {
@@ -254,6 +257,7 @@
             transition: all 0.2s;
             color: var(--text);
             min-height: 44px;
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .type-btn.active {
@@ -281,12 +285,38 @@
             transition: all 0.2s;
             color: var(--text);
             min-height: 44px;
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .passage-btn.active {
             background: var(--primary-light);
             color: white;
             border-color: var(--primary-light);
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--surface-elevated);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 20px;
+            transition: all 0.2s;
+            font-family: 'Be Vietnam Pro', sans-serif;
+            min-height: 44px;
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--surface);
         }
 
         /* VOCAB CARDS */
@@ -302,10 +332,15 @@
             border: 2px solid var(--border);
             border-radius: 12px;
             padding: 18px;
+            padding-left: 48px;
             cursor: pointer;
             transition: all 0.25s;
             position: relative;
             min-height: 72px;
+        }
+
+        .vocab-card:not(:has(.paragraph-badge)) {
+            padding-left: 18px;
         }
 
         .vocab-card:hover {
@@ -530,6 +565,7 @@
             cursor: pointer;
             transition: all 0.2s;
             min-height: 44px;
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .btn-primary {
@@ -611,10 +647,28 @@
             pointer-events: none;
         }
 
+        /* Rating section with label */
+        .rating-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+            align-items: center;
+        }
+
+        .rating-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0.55;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
         .review-actions {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
+            width: 100%;
         }
 
         .review-actions .btn {
@@ -683,6 +737,7 @@
             font-size: 16px;
             text-align: left;
             min-height: 44px;
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .quiz-option:hover {
@@ -813,7 +868,7 @@
             border-radius: 10px;
             background: var(--surface-elevated);
             color: var(--text);
-            font-family: inherit;
+            font-family: 'Be Vietnam Pro', sans-serif;
             font-size: 14px;
             resize: vertical;
             min-height: 80px;
@@ -964,7 +1019,7 @@
     <script src="vocab-data.js"></script>
     <script src="quiz-data.js"></script>
     <script>
-        const VERSION = '2.0.0';
+        const VERSION = '2.0.1';
         
         const CONFIG = {
             DAILY_GOAL: 10,
@@ -1013,6 +1068,8 @@
 
         let currentVoiceRegion = 'UK';
         let voices = [];
+        let hasUKVoice = false;
+        let hasUSVoice = false;
         let WORD_INDEX = null;
 
         function log(...args) {
@@ -1235,6 +1292,7 @@
 
         function setLesson(lesson) {
             state.currentLesson = lesson;
+            state.currentPassage = null;
             trackEvent('lesson_select', { lesson });
             render();
         }
@@ -1280,6 +1338,11 @@
                 });
                 html += '</div>';
             } else {
+                html += `
+                    <button class="back-btn" onclick="setLesson(null)">
+                        ← Quay lại
+                    </button>
+                `;
                 html += `<div class="type-selector">
                     <button class="type-btn ${state.currentType === 'inclass' ? 'active' : ''}"
                             onclick="setType('inclass')">
@@ -1391,7 +1454,7 @@
                             <div class="empty-icon">🎉</div>
                             <div class="empty-title">Hoàn thành!</div>
                             <div class="empty-desc">Bạn đã ôn xong ${total} từ.</div>
-                            <div class="review-actions">
+                            <div class="review-actions" style="margin-top: 24px;">
                                 <button class="btn btn-primary" onclick="resetReview()">
                                     Về trang chủ
                                 </button>
@@ -1430,16 +1493,19 @@
                                 Hiện đáp án
                             </button>
                         ` : `
-                            <div class="review-actions">
-                                <button class="btn btn-secondary" onclick="rateWord('hard')">
-                                    😕 Khó
-                                </button>
-                                <button class="btn btn-secondary" onclick="rateWord('medium')">
-                                    🤔 Được
-                                </button>
-                                <button class="btn btn-primary" onclick="rateWord('easy')">
-                                    😊 Dễ
-                                </button>
+                            <div class="rating-section">
+                                <span class="rating-label">Nhớ ra từ này có khó không?</span>
+                                <div class="review-actions">
+                                    <button class="btn btn-secondary" onclick="rateWord('hard')">
+                                        😕 Khá khó
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="rateWord('medium')">
+                                        🤔 Bình thường
+                                    </button>
+                                    <button class="btn btn-primary" onclick="rateWord('easy')">
+                                        😊 Thoải mái
+                                    </button>
+                                </div>
                             </div>
                         `}
                     </div>
@@ -1788,34 +1854,55 @@
             
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'modal-actions';
-            
+
+            // Voice buttons - only show what's available on this device
             const voiceSelector = document.createElement('div');
             voiceSelector.className = 'voice-selector';
-            
-            const ukBtn = document.createElement('button');
-            ukBtn.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
-            ukBtn.innerHTML = '🇬🇧 UK';
-            ukBtn.addEventListener('click', () => {
-                currentVoiceRegion = 'UK';
-                speak(word);
-                trackEvent('voice_click', { region: 'UK' });
-                ukBtn.className = 'btn btn-primary';
-                usBtn.className = 'btn btn-secondary';
-            });
-            
-            const usBtn = document.createElement('button');
-            usBtn.className = 'btn ' + (currentVoiceRegion === 'US' ? 'btn-primary' : 'btn-secondary');
-            usBtn.innerHTML = '🇺🇸 US';
-            usBtn.addEventListener('click', () => {
-                currentVoiceRegion = 'US';
-                speak(word);
-                trackEvent('voice_click', { region: 'US' });
-                usBtn.className = 'btn btn-primary';
-                ukBtn.className = 'btn btn-secondary';
-            });
-            
-            voiceSelector.appendChild(ukBtn);
-            voiceSelector.appendChild(usBtn);
+
+            if (hasUKVoice || hasUSVoice) {
+                if (hasUKVoice) {
+                    const ukBtn = document.createElement('button');
+                    ukBtn.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
+                    ukBtn.innerHTML = '🇬🇧 UK';
+                    ukBtn.addEventListener('click', () => {
+                        currentVoiceRegion = 'UK';
+                        speak(word);
+                        trackEvent('voice_click', { region: 'UK' });
+                        updateVoiceBtns(ukBtn, usBtn);
+                    });
+                    voiceSelector.appendChild(ukBtn);
+                    var ukBtnRef = ukBtn;
+                }
+
+                if (hasUSVoice) {
+                    const usBtn = document.createElement('button');
+                    usBtn.className = 'btn ' + (currentVoiceRegion === 'US' ? 'btn-primary' : 'btn-secondary');
+                    usBtn.innerHTML = '🇺🇸 US';
+                    usBtn.addEventListener('click', () => {
+                        currentVoiceRegion = 'US';
+                        speak(word);
+                        trackEvent('voice_click', { region: 'US' });
+                        updateVoiceBtns(ukBtnRef, usBtn);
+                    });
+                    voiceSelector.appendChild(usBtn);
+                    var usBtnRef = usBtn;
+                }
+
+                function updateVoiceBtns(ukB, usB) {
+                    if (ukB) ukB.className = 'btn ' + (currentVoiceRegion === 'UK' ? 'btn-primary' : 'btn-secondary');
+                    if (usB) usB.className = 'btn ' + (currentVoiceRegion === 'US' ? 'btn-primary' : 'btn-secondary');
+                }
+            } else {
+                // Fallback: single pronunciation button using whatever voice is available
+                const speakBtn = document.createElement('button');
+                speakBtn.className = 'btn btn-primary';
+                speakBtn.innerHTML = '🔊 Phát âm';
+                speakBtn.addEventListener('click', () => {
+                    speak(word);
+                    trackEvent('voice_click', { region: 'default' });
+                });
+                voiceSelector.appendChild(speakBtn);
+            }
             
             const youglishBtn = document.createElement('button');
             youglishBtn.className = 'btn btn-secondary';
@@ -1859,6 +1946,17 @@
 
         function loadVoices() {
             voices = window.speechSynthesis.getVoices();
+
+            // Detect which accent voices are actually available
+            hasUKVoice = voices.some(v => v.lang === 'en-GB');
+            hasUSVoice = voices.some(v => v.lang === 'en-US');
+
+            // If no UK voice available, default region to US (or whatever is available)
+            if (!hasUKVoice && hasUSVoice) {
+                currentVoiceRegion = 'US';
+            }
+
+            log('Voices loaded. UK:', hasUKVoice, 'US:', hasUSVoice);
         }
 
         function speak(text) {
@@ -1870,14 +1968,21 @@
             utterance.rate = 0.9;
             utterance.pitch = 1;
             
-            const targetVoice = voices.find(v => 
-                currentVoiceRegion === 'UK' ? 
-                v.lang === 'en-GB' : 
-                v.lang === 'en-US'
-            );
+            // Find the best matching voice for the selected region
+            let targetVoice = null;
+
+            if (currentVoiceRegion === 'UK' && hasUKVoice) {
+                targetVoice = voices.find(v => v.lang === 'en-GB');
+            } else if (currentVoiceRegion === 'US' && hasUSVoice) {
+                targetVoice = voices.find(v => v.lang === 'en-US');
+            } else {
+                // Fallback: use any English voice available
+                targetVoice = voices.find(v => v.lang.startsWith('en'));
+            }
             
             if (targetVoice) {
                 utterance.voice = targetVoice;
+                utterance.lang = targetVoice.lang;
             }
             
             window.speechSynthesis.speak(utterance);
