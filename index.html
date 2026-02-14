@@ -346,16 +346,14 @@
             pointer-events: none;
         }
 
-        .mastery-new    { background: var(--surface-elevated); color: var(--text); border: 1px solid var(--border); opacity: 0.6; }
+        .mastery-new      { background: var(--surface-elevated); color: var(--text); border: 1px solid var(--border); opacity: 0.6; }
         .mastery-learning { background: rgba(245,158,11,0.15); color: #b45309; border: 1px solid rgba(245,158,11,0.35); }
         .mastery-mastered { background: rgba(16,185,129,0.15); color: #047857; border: 1px solid rgba(16,185,129,0.4); }
 
         [data-theme="dark"] .mastery-learning { color: var(--accent-light); }
         [data-theme="dark"] .mastery-mastered { color: #34d399; }
 
-        .vocab-card {
-            position: relative;
-        }
+        .vocab-card { position: relative; }
 
         /* ===== STATS BAR ===== */
         .stats-bar {
@@ -396,14 +394,14 @@
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .vocab-card {
             background: var(--surface);
             border: 2px solid var(--border);
             border-radius: 12px;
-            padding: 20px 16px 30px; /* extra bottom for mastery badge */
+            padding: 20px 16px 30px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
@@ -420,17 +418,10 @@
             border-color: var(--primary);
         }
 
-        /* Mastery border tints */
-        .vocab-card.card-learning  { border-color: rgba(245,158,11,0.45); }
-        .vocab-card.card-mastered  { border-color: rgba(16,185,129,0.5); }
-
-        .vocab-card.viewed {
-            opacity: 0.75;
-        }
-
-        .vocab-card.viewed:hover {
-            opacity: 1;
-        }
+        .vocab-card.card-learning { border-color: rgba(245,158,11,0.45); }
+        .vocab-card.card-mastered { border-color: rgba(16,185,129,0.5); }
+        .vocab-card.viewed        { opacity: 0.75; }
+        .vocab-card.viewed:hover  { opacity: 1; }
 
         .vocab-word {
             font-size: 16px;
@@ -450,13 +441,11 @@
             animation: fadeInOverlay 0.25s ease-out;
         }
 
-        .modal-overlay.active {
-            display: block;
-        }
+        .modal-overlay.active { display: block; }
 
         @keyframes fadeInOverlay {
             from { opacity: 0; }
-            to { opacity: 1; }
+            to   { opacity: 1; }
         }
 
         .modal {
@@ -475,9 +464,7 @@
             animation: modalEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        .modal.active {
-            display: block;
-        }
+        .modal.active { display: block; }
 
         @keyframes modalEnter {
             from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
@@ -558,6 +545,13 @@
             padding: 16px 20px;
             border-radius: 12px;
             border-left: 3px solid var(--accent);
+        }
+
+        /* Bold word inside paraphrase */
+        .modal-paraphrase strong,
+        .review-paraphrase strong {
+            font-weight: 700;
+            color: var(--primary);
         }
 
         .modal-actions {
@@ -704,7 +698,6 @@
             width: 100%;
         }
 
-        /* hidden until revealed */
         .review-answer { display: none; width: 100%; }
         .review-answer.visible { display: contents; animation: fadeIn 0.25s ease; }
 
@@ -725,6 +718,37 @@
             background: var(--primary-light);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        /* ===== RECALL QUESTION LABEL ===== */
+        .recall-question {
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0.75;
+            margin-bottom: 4px;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: none;
+        }
+
+        .recall-question.visible {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .recall-question span {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-top: 4px;
         }
 
         /* Rating buttons — 3 col */
@@ -754,37 +778,30 @@
 
         .rating-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
 
-        .rating-hard  { border-color: rgba(239,68,68,0.4);  color: #dc2626; }
-        .rating-hard:hover  { background: rgba(239,68,68,0.08); }
-        .rating-ok    { border-color: rgba(245,158,11,0.4); color: #b45309; }
-        .rating-ok:hover    { background: rgba(245,158,11,0.08); }
-        .rating-easy  { border-color: rgba(16,185,129,0.4); color: #047857; }
-        .rating-easy:hover  { background: rgba(16,185,129,0.08); }
+        /* FIX: renamed from Khó/Được/Dễ → Hơi lâu / Bình thường / Rất nhanh */
+        .rating-slow   { border-color: rgba(239,68,68,0.4);   color: #dc2626; }
+        .rating-slow:hover   { background: rgba(239,68,68,0.08); }
+        .rating-normal { border-color: rgba(245,158,11,0.4);  color: #b45309; }
+        .rating-normal:hover { background: rgba(245,158,11,0.08); }
+        .rating-fast   { border-color: rgba(16,185,129,0.4);  color: #047857; }
+        .rating-fast:hover   { background: rgba(16,185,129,0.08); }
 
-        [data-theme="dark"] .rating-ok   { color: var(--accent-light); }
-        [data-theme="dark"] .rating-easy { color: #34d399; }
+        [data-theme="dark"] .rating-normal { color: var(--accent-light); }
+        [data-theme="dark"] .rating-fast   { color: #34d399; }
 
         .rating-emoji { font-size: 24px; }
         .rating-label { font-size: 13px; }
         .rating-days  { font-size: 11px; opacity: 0.6; font-weight: 600; }
 
         /* Review done screen */
-        .review-done {
-            text-align: center;
-            padding: 60px 20px;
-            animation: fadeIn 0.4s ease;
-        }
-
+        .review-done { text-align: center; padding: 60px 20px; animation: fadeIn 0.4s ease; }
         .review-done-icon  { font-size: 72px; margin-bottom: 20px; }
         .review-done-title { font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
         .review-done-sub   { font-size: 16px; opacity: 0.7; margin-bottom: 32px; line-height: 1.6; }
         .review-done-btns  { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         /* ===== PROGRESS VIEW ===== */
-        .progress-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .progress-container { max-width: 800px; margin: 0 auto; }
 
         .progress-section {
             background: var(--surface);
@@ -808,11 +825,7 @@
             margin-bottom: 16px;
         }
 
-        .progress-label {
-            min-width: 120px;
-            font-weight: 600;
-            font-size: 14px;
-        }
+        .progress-label { min-width: 120px; font-weight: 600; font-size: 14px; }
 
         .progress-bar {
             flex: 1;
@@ -836,35 +849,17 @@
             min-width: 32px;
         }
 
-        .progress-fill-green {
-            background: linear-gradient(90deg, #059669, #10b981);
-        }
+        .progress-fill-green { background: linear-gradient(90deg, #059669, #10b981); }
+        .progress-fill-amber { background: linear-gradient(90deg, #d97706, #f59e0b); }
 
-        .progress-fill-amber {
-            background: linear-gradient(90deg, #d97706, #f59e0b);
-        }
+        .progress-count { min-width: 50px; text-align: right; font-weight: 700; font-size: 16px; }
 
-        .progress-count {
-            min-width: 50px;
-            text-align: right;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .export-section {
-            display: flex;
-            gap: 12px;
-        }
+        .export-section { display: flex; gap: 12px; }
 
         /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            opacity: 0.6;
-        }
-
-        .empty-icon { font-size: 72px; margin-bottom: 16px; }
-        .empty-text { font-size: 18px; font-weight: 600; }
+        .empty-state { text-align: center; padding: 80px 20px; opacity: 0.6; }
+        .empty-icon  { font-size: 72px; margin-bottom: 16px; }
+        .empty-text  { font-size: 18px; font-weight: 600; }
 
         /* ===== TOAST ===== */
         .toast {
@@ -891,14 +886,14 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header-controls { flex-direction: column; gap: 8px; }
-            .lesson-grid { grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); }
-            .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-            .modal { padding: 32px 24px; }
-            .modal-word { font-size: 30px; }
-            .type-selector { flex-direction: column; }
-            .type-btn { width: 100%; }
-            .review-word { font-size: 36px; }
-            .review-card { padding: 28px 20px 24px; }
+            .lesson-grid     { grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); }
+            .vocab-grid      { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .modal           { padding: 32px 24px; }
+            .modal-word      { font-size: 30px; }
+            .type-selector   { flex-direction: column; }
+            .type-btn        { width: 100%; }
+            .review-word     { font-size: 36px; }
+            .review-card     { padding: 28px 20px 24px; }
         }
     </style>
 </head>
@@ -918,7 +913,6 @@
         </div>
     </header>
 
-    <!-- Streak + stats chips -->
     <div id="streakBar" class="streak-bar"></div>
 
     <nav class="main-nav" id="mainNav">
@@ -931,10 +925,8 @@
     <div id="mainContent"></div>
 </div>
 
-<!-- Load vocab data first -->
 <script src="vocab-data.js"></script>
 
-<!-- Main application -->
 <script>
 // ==========================================
 // URL HASH MANAGER
@@ -965,7 +957,7 @@ const URLHashManager = {
 
 // ==========================================
 // SRS — SM-2+ algorithm
-// rating: 0=Khó, 1=Được, 2=Dễ
+// rating: 0=Hơi lâu, 1=Bình thường, 2=Rất nhanh
 // ==========================================
 function defaultSRS() {
     return { interval: 1, easeFactor: 2.5, reviewCount: 0, nextReview: new Date().toISOString() };
@@ -974,13 +966,11 @@ function defaultSRS() {
 function calcNextReview(srs, rating) {
     let { interval, easeFactor, reviewCount } = srs;
 
-    // Update ease factor (clamped 1.3–3.0)
     easeFactor = Math.min(3.0, Math.max(1.3,
         easeFactor + 0.1 - (2 - rating) * (0.08 + (2 - rating) * 0.02)
     ));
 
     if (rating === 0) {
-        // Hard: restart interval
         interval = 1;
         reviewCount = 0;
     } else if (reviewCount === 0) {
@@ -1014,19 +1004,15 @@ function isDue(srs) {
 // STATE
 // ==========================================
 let state = {
-    // Navigation
     currentView: 'reading',
     currentLesson: 1,
     currentType: 'inclass',
     currentPassage: null,
-    // Persistent data
     viewedWords: new Set(),
-    reviewSchedule: {},     // word → { interval, easeFactor, reviewCount, nextReview }
+    reviewSchedule: {},
     streak: 0,
-    lastVisit: null,        // Date.toDateString()
-    // Transient
+    lastVisit: null,
     currentModalWord: null,
-    // Review session (transient — reset on tab entry)
     reviewQueue: [],
     reviewIdx: 0,
     reviewRevealed: false,
@@ -1055,17 +1041,14 @@ function saveState() {
 }
 
 function loadState() {
-    // Try new key
     let raw = localStorage.getItem(STORAGE_KEY);
 
     if (!raw) {
-        // Migrate from old key if exists
         const oldRaw = localStorage.getItem('ieltsVocabProgress');
         if (oldRaw) {
             try {
                 const old = JSON.parse(oldRaw);
                 state.viewedWords = new Set(old.viewedWords || []);
-                // Old key had no SRS data — start fresh SRS
             } catch (e) {}
         }
         return;
@@ -1090,7 +1073,7 @@ function updateStreak() {
         saveState();
         return;
     }
-    if (state.lastVisit === today) return; // already updated today
+    if (state.lastVisit === today) return;
 
     const msPerDay = 1000 * 60 * 60 * 24;
     const diffDays = Math.round((new Date() - new Date(state.lastVisit)) / msPerDay);
@@ -1101,23 +1084,20 @@ function updateStreak() {
 }
 
 // ==========================================
-// DUE WORDS HELPERS
+// DUE WORDS
 // ==========================================
 function getDueWords() {
     return Object.keys(state.reviewSchedule).filter(w => isDue(state.reviewSchedule[w]));
 }
 
 function buildReviewQueue() {
-    // Priority 1: due words (scheduled and overdue)
     const due = getDueWords();
     if (due.length > 0) return due;
 
-    // Priority 2: viewed words that have never been reviewed
     const unreviewed = Array.from(state.viewedWords).filter(w => {
         const s = state.reviewSchedule[w];
         return !s || s.reviewCount === 0;
     });
-    // Shuffle, cap at 10
     return unreviewed.sort(() => Math.random() - 0.5).slice(0, 10);
 }
 
@@ -1166,14 +1146,13 @@ function toggleTheme() {
 function setView(view) {
     state.currentView = view;
 
-    // Reset review session state when entering review tab
     if (view === 'review') {
         state.reviewSessionStarted = false;
-        state.reviewDone = false;
-        state.reviewQueue = [];
-        state.reviewIdx = 0;
-        state.reviewRevealed = false;
-        state.reviewSessionCount = 0;
+        state.reviewDone           = false;
+        state.reviewQueue          = [];
+        state.reviewIdx            = 0;
+        state.reviewRevealed       = false;
+        state.reviewSessionCount   = 0;
     }
 
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -1190,7 +1169,7 @@ function setLesson(num) {
 }
 
 function setType(type) {
-    state.currentType = type;
+    state.currentType   = type;
     state.currentPassage = null;
     URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
     render();
@@ -1205,22 +1184,34 @@ function setPassage(passageName) {
 // DATA HELPERS
 // ==========================================
 
-// Returns true if data is nested (passage → words), false if flat (word → data)
+/*
+ * FIX: hasNestedPassages checks strictly that first value is a plain object
+ * WITHOUT 'ipa' field — meaning it's a passage container, not a word entry.
+ * This correctly handles:
+ *   - Flat:   { "word": { ipa, meaning, ... } }         → false
+ *   - Nested: { "Passage Title": { "word": { ipa, ... } } } → true
+ *   - Empty:  {}                                         → false
+ *
+ * The check is applied to the CURRENT category/lesson/type combination,
+ * so listening L7 (which is flat) will never show passage selectors.
+ */
 function hasNestedPassages(category, lesson, type) {
     const data = VOCAB_DATA[category]?.[lesson]?.[type];
     if (!data || Object.keys(data).length === 0) return false;
     const firstVal = data[Object.keys(data)[0]];
-    return firstVal && typeof firstVal === 'object' && !('ipa' in firstVal);
+    // Must be a plain object AND must NOT have 'ipa' (word entries always have ipa)
+    return firstVal !== null &&
+           typeof firstVal === 'object' &&
+           !Array.isArray(firstVal) &&
+           !('ipa' in firstVal);
 }
 
-// Get vocab dict for current selection {word: wordData}
 function getCurrentVocabData() {
     const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
     if (!data) return {};
 
     if (hasNestedPassages(state.currentView, state.currentLesson, state.currentType)) {
         if (state.currentPassage) return data[state.currentPassage] || {};
-        // All passages combined
         let combined = {};
         Object.values(data).forEach(passage => Object.assign(combined, passage));
         return combined;
@@ -1228,25 +1219,22 @@ function getCurrentVocabData() {
     return data;
 }
 
-// Extract flat word list from any data object (handles nested + flat)
 function getAllWordsFromData(data) {
     if (!data || Object.keys(data).length === 0) return [];
     const firstVal = data[Object.keys(data)[0]];
     if (firstVal && 'ipa' in firstVal) return Object.keys(data);
-    // Nested
     let words = [];
     Object.values(data).forEach(passage => words.push(...Object.keys(passage)));
     return words;
 }
 
-// Find word data anywhere in VOCAB_DATA (needed for review queue which spans all lessons)
+// Find word data anywhere in VOCAB_DATA (used by review queue)
 function findWordDataGlobal(word) {
     for (const cat of ['reading', 'listening']) {
         for (const lesson of Object.keys(VOCAB_DATA[cat])) {
             for (const type of ['inclass', 'homework']) {
                 const data = VOCAB_DATA[cat][lesson][type];
                 if (!data) continue;
-                // Nested
                 if (hasNestedPassages(cat, parseInt(lesson), type)) {
                     for (const passage of Object.values(data)) {
                         if (passage[word]) return passage[word];
@@ -1261,6 +1249,24 @@ function findWordDataGlobal(word) {
 }
 
 // ==========================================
+// FIX: Safe HTML render for paraphrase
+// Paraphrase field may contain <strong>word</strong> to highlight
+// the target word in its example sentence. We render this as HTML
+// but sanitize by only allowing <strong> tags — nothing else.
+// ==========================================
+function safeParaphraseHTML(text) {
+    if (!text) return '';
+    // Strip all tags except <strong> and </strong>
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        // Re-allow only <strong> and </strong>
+        .replace(/&lt;strong&gt;/g, '<strong>')
+        .replace(/&lt;\/strong&gt;/g, '</strong>');
+}
+
+// ==========================================
 // STREAK BAR
 // ==========================================
 function renderStreakBar() {
@@ -1268,13 +1274,11 @@ function renderStreakBar() {
     if (!bar) return;
     bar.innerHTML = '';
 
-    // Streak chip (always show)
     const fireChip = document.createElement('div');
     fireChip.className = 'streak-chip streak-chip-fire';
     fireChip.textContent = '🔥 ' + state.streak + ' ngày';
     bar.appendChild(fireChip);
 
-    // Due words chip (only when > 0)
     const dueCount = getDueWords().length;
     if (dueCount > 0) {
         const dueChip = document.createElement('div');
@@ -1284,7 +1288,6 @@ function renderStreakBar() {
         bar.appendChild(dueChip);
     }
 
-    // Mastered chip (only when > 0)
     const masteredCount = Object.values(state.reviewSchedule).filter(s => s.reviewCount >= 5).length;
     if (masteredCount > 0) {
         const mastChip = document.createElement('div');
@@ -1313,10 +1316,14 @@ function render() {
 // VOCAB VIEW
 // ==========================================
 function renderVocabView(container) {
-    const maxLessons = state.currentView === 'reading' ? 7 : 8;
+    // Reading: L1–L7 (or however many entries exist in VOCAB_DATA.reading)
+    // Listening: L1–L8 (or however many entries exist in VOCAB_DATA.listening)
+    // This reads the actual count from data so Minh only needs to add new lessons
+    // to vocab-data.js and the buttons appear automatically.
+    const maxLessons = Object.keys(VOCAB_DATA[state.currentView]).length;
     container.innerHTML = '';
 
-    // --- Lesson selector ---
+    // Lesson selector
     const lessonsDiv = document.createElement('div');
     lessonsDiv.className = 'lesson-grid';
     for (let i = 1; i <= maxLessons; i++) {
@@ -1330,22 +1337,27 @@ function renderVocabView(container) {
     }
     container.appendChild(lessonsDiv);
 
-    // --- Type selector ---
+    // Type selector
     const typeDiv = document.createElement('div');
     typeDiv.className = 'type-selector';
+
     const inclassBtn = document.createElement('button');
     inclassBtn.className = 'type-btn' + (state.currentType === 'inclass' ? ' active' : '');
     inclassBtn.textContent = 'In-Class';
     inclassBtn.addEventListener('click', () => setType('inclass'));
+
     const homeworkBtn = document.createElement('button');
     homeworkBtn.className = 'type-btn' + (state.currentType === 'homework' ? ' active' : '');
     homeworkBtn.textContent = 'Homework';
     homeworkBtn.addEventListener('click', () => setType('homework'));
+
     typeDiv.appendChild(inclassBtn);
     typeDiv.appendChild(homeworkBtn);
     container.appendChild(typeDiv);
 
-    // --- Passage selector (nested only) ---
+    // Passage selector — shown for BOTH reading and listening if data is nested.
+    // A lesson is "nested" when its vocab is grouped under passage titles
+    // (see hasNestedPassages for the detection logic).
     const rawData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
     if (hasNestedPassages(state.currentView, state.currentLesson, state.currentType) && rawData) {
         const passageDiv = document.createElement('div');
@@ -1367,11 +1379,11 @@ function renderVocabView(container) {
         container.appendChild(passageDiv);
     }
 
-    // --- Stats bar ---
-    const data = getCurrentVocabData();
-    const words = Object.keys(data);
-    const viewedCount    = words.filter(w => state.viewedWords.has(w)).length;
-    const masteredCount  = words.filter(w => getMastery(state.reviewSchedule[w]) === 'mastered').length;
+    // Stats bar
+    const data        = getCurrentVocabData();
+    const words       = Object.keys(data);
+    const viewedCount   = words.filter(w => state.viewedWords.has(w)).length;
+    const masteredCount = words.filter(w => getMastery(state.reviewSchedule[w]) === 'mastered').length;
 
     const statsDiv = document.createElement('div');
     statsDiv.className = 'stats-bar';
@@ -1381,7 +1393,7 @@ function renderVocabView(container) {
         '<div class="stat-card"><div class="stat-value">' + masteredCount + '</div><div class="stat-label">Thành thạo ⭐</div></div>';
     container.appendChild(statsDiv);
 
-    // --- Vocab grid ---
+    // Vocab grid
     const gridDiv = document.createElement('div');
     if (words.length === 0) {
         gridDiv.className = 'empty-state';
@@ -1389,7 +1401,6 @@ function renderVocabView(container) {
     } else {
         gridDiv.className = 'vocab-grid';
 
-        // Sort by paragraph letter (words without paragraph go last)
         const sorted = [...words].sort((a, b) => {
             const pA = data[a]?.paragraph || 'Z';
             const pB = data[b]?.paragraph || 'Z';
@@ -1408,13 +1419,14 @@ function renderVocabView(container) {
             if (mastery === 'mastered') card.classList.add('card-mastered');
             card.dataset.word = word;
 
-            // Word text
             const wordDiv = document.createElement('div');
             wordDiv.className = 'vocab-word';
             wordDiv.textContent = word;
             card.appendChild(wordDiv);
 
-            // Paragraph badge (top-right)
+            // Paragraph badge — only if word has a paragraph field
+            // This ONLY appears for reading passages that have paragraph: "A","B" etc.
+            // Listening words without paragraph field will never get this badge.
             if (data[word]?.paragraph) {
                 const pbadge = document.createElement('div');
                 pbadge.className = 'paragraph-badge';
@@ -1423,7 +1435,7 @@ function renderVocabView(container) {
                 card.appendChild(pbadge);
             }
 
-            // Mastery badge (bottom-center) — only if viewed
+            // Mastery badge — only if viewed
             if (viewed) {
                 const mbadge = document.createElement('div');
                 mbadge.className = 'mastery-badge mastery-' + mastery;
@@ -1434,7 +1446,6 @@ function renderVocabView(container) {
             gridDiv.appendChild(card);
         });
 
-        // Single delegated listener for the whole grid
         gridDiv.addEventListener('click', e => {
             const card = e.target.closest('.vocab-card');
             if (card && card.dataset.word) showWord(card.dataset.word);
@@ -1451,17 +1462,16 @@ function renderReview(container) {
     const wrap = document.createElement('div');
     wrap.className = 'review-wrap';
 
-    // --- Build queue on first entry ---
     if (!state.reviewSessionStarted) {
-        state.reviewQueue         = buildReviewQueue();
-        state.reviewIdx           = 0;
-        state.reviewRevealed      = false;
-        state.reviewDone          = state.reviewQueue.length === 0;
-        state.reviewSessionCount  = 0;
+        state.reviewQueue          = buildReviewQueue();
+        state.reviewIdx            = 0;
+        state.reviewRevealed       = false;
+        state.reviewDone           = state.reviewQueue.length === 0;
+        state.reviewSessionCount   = 0;
         state.reviewSessionStarted = true;
     }
 
-    // --- Empty queue ---
+    // Done / empty state
     if (state.reviewQueue.length === 0 || state.reviewDone) {
         const icon  = state.reviewSessionCount > 0 ? '🎉' : '✨';
         const title = state.reviewSessionCount > 0 ? 'Ôn xong rồi!' : 'Không có gì để ôn!';
@@ -1501,13 +1511,12 @@ function renderReview(container) {
         return;
     }
 
-    // --- Active review card ---
+    // Active review card
     const total = state.reviewQueue.length;
     const idx   = state.reviewIdx;
     const word  = state.reviewQueue[idx];
     const wdata = findWordDataGlobal(word);
 
-    // Word missing from vocab data — skip silently
     if (!wdata) {
         state.reviewIdx++;
         if (state.reviewIdx >= total) state.reviewDone = true;
@@ -1515,12 +1524,12 @@ function renderReview(container) {
         return;
     }
 
-    const srs        = state.reviewSchedule[word] || defaultSRS();
-    const pct        = Math.round((idx / total) * 100);
-    const nextOk     = Math.round(srs.interval * Math.max(1.3, srs.easeFactor - 0.06));
-    const nextEasy   = Math.round(srs.interval * srs.easeFactor);
+    const srs      = state.reviewSchedule[word] || defaultSRS();
+    const pct      = Math.round((idx / total) * 100);
+    const nextOk   = Math.round(srs.interval * Math.max(1.3, srs.easeFactor - 0.06));
+    const nextEasy = Math.round(srs.interval * srs.easeFactor);
 
-    // Progress bar + counter
+    // Progress bar
     const metaDiv = document.createElement('div');
     metaDiv.className = 'review-meta';
     metaDiv.innerHTML =
@@ -1545,7 +1554,7 @@ function renderReview(container) {
     ipaEl.className = 'review-ipa';
     ipaEl.textContent = wdata.ipa || '';
 
-    // Answer block (hidden until revealed)
+    // Answer block — hidden until revealed
     const answerDiv = document.createElement('div');
     answerDiv.className = 'review-answer';
     answerDiv.id = 'reviewAnswer';
@@ -1557,9 +1566,11 @@ function renderReview(container) {
     meaningEl.className = 'review-meaning';
     meaningEl.textContent = wdata.meaning || '';
 
+    // FIX: use innerHTML with safeParaphraseHTML so <strong>word</strong>
+    // renders as bold instead of showing literal tag text
     const paraEl = document.createElement('div');
     paraEl.className = 'review-paraphrase';
-    paraEl.textContent = wdata.paraphrase || '';
+    paraEl.innerHTML = safeParaphraseHTML(wdata.paraphrase || '');
 
     answerDiv.appendChild(hr);
     answerDiv.appendChild(meaningEl);
@@ -1577,15 +1588,23 @@ function renderReview(container) {
     revealBtn.textContent = '👁 Hiện đáp án';
     wrap.appendChild(revealBtn);
 
-    // Rating buttons (hidden until revealed)
+    // FIX: Recall question label — shown after reveal
+    // "Em nhớ ra từ này có lâu không?"
+    const recallQ = document.createElement('div');
+    recallQ.className = 'recall-question';
+    recallQ.id = 'recallQuestion';
+    recallQ.innerHTML = 'Em nhớ ra từ này <span>có lâu không?</span>';
+    wrap.appendChild(recallQ);
+
+    // FIX: Rating buttons — renamed from Khó/Được/Dễ → Hơi lâu / Bình thường / Rất nhanh
     const ratingsDiv = document.createElement('div');
     ratingsDiv.className = 'review-ratings';
     ratingsDiv.id = 'reviewRatings';
 
     const ratings = [
-        { cls: 'rating-hard', emoji: '😕', label: 'Khó',  days: '+1 ngày',           val: 0 },
-        { cls: 'rating-ok',   emoji: '🤔', label: 'Được', days: '+' + nextOk + ' ngày', val: 1 },
-        { cls: 'rating-easy', emoji: '😊', label: 'Dễ',   days: '+' + nextEasy + ' ngày', val: 2 }
+        { cls: 'rating-slow',   emoji: '😕', label: 'Hơi lâu',     days: '+1 ngày',              val: 0 },
+        { cls: 'rating-normal', emoji: '🤔', label: 'Bình thường', days: '+' + nextOk + ' ngày', val: 1 },
+        { cls: 'rating-fast',   emoji: '😊', label: 'Rất nhanh',   days: '+' + nextEasy + ' ngày', val: 2 }
     ];
 
     ratings.forEach(r => {
@@ -1602,21 +1621,22 @@ function renderReview(container) {
     wrap.appendChild(ratingsDiv);
     container.appendChild(wrap);
 
-    // --- Event listeners ---
+    // Event: reveal
     revealBtn.addEventListener('click', () => {
         state.reviewRevealed = true;
         document.getElementById('reviewAnswer').classList.add('visible');
         document.getElementById('revealBtn').style.display = 'none';
+        document.getElementById('recallQuestion').classList.add('visible');
         document.getElementById('reviewRatings').classList.add('visible');
         speak(word);
     });
 
+    // Event: rate
     ratingsDiv.addEventListener('click', e => {
         const btn = e.target.closest('.rating-btn');
         if (!btn) return;
         const rating = parseInt(btn.dataset.rating);
 
-        // Update SRS
         state.reviewSchedule[word] = calcNextReview(
             state.reviewSchedule[word] || defaultSRS(),
             rating
@@ -1625,7 +1645,6 @@ function renderReview(container) {
         state.reviewSessionCount++;
         saveState();
 
-        // Advance queue
         state.reviewIdx++;
         state.reviewRevealed = false;
         if (state.reviewIdx >= state.reviewQueue.length) state.reviewDone = true;
@@ -1637,17 +1656,17 @@ function renderReview(container) {
 // PROGRESS VIEW
 // ==========================================
 function renderProgress(container) {
-    const totalWords     = getTotalWords();
-    const viewedWords    = state.viewedWords.size;
-    const pct            = totalWords > 0 ? Math.round((viewedWords / totalWords) * 100) : 0;
-    const readingTotal   = getCategoryTotal('reading');
-    const listeningTotal = getCategoryTotal('listening');
-    const readingViewed  = getCategoryViewed('reading');
+    const totalWords      = getTotalWords();
+    const viewedWords     = state.viewedWords.size;
+    const pct             = totalWords > 0 ? Math.round((viewedWords / totalWords) * 100) : 0;
+    const readingTotal    = getCategoryTotal('reading');
+    const listeningTotal  = getCategoryTotal('listening');
+    const readingViewed   = getCategoryViewed('reading');
     const listeningViewed = getCategoryViewed('listening');
-    const readingPct     = readingTotal   > 0 ? Math.round((readingViewed   / readingTotal)   * 100) : 0;
-    const listeningPct   = listeningTotal > 0 ? Math.round((listeningViewed / listeningTotal) * 100) : 0;
+    const readingPct      = readingTotal   > 0 ? Math.round((readingViewed   / readingTotal)   * 100) : 0;
+    const listeningPct    = listeningTotal > 0 ? Math.round((listeningViewed / listeningTotal) * 100) : 0;
 
-    const allSRS       = Object.values(state.reviewSchedule);
+    const allSRS        = Object.values(state.reviewSchedule);
     const masteredCount = allSRS.filter(s => s.reviewCount >= 5).length;
     const learningCount = allSRS.filter(s => s.reviewCount > 0 && s.reviewCount < 5).length;
     const mastPct       = viewedWords > 0 ? Math.round((masteredCount / viewedWords) * 100) : 0;
@@ -1665,7 +1684,6 @@ function renderProgress(container) {
                     <div class="progress-count">${viewedWords}/${totalWords}</div>
                 </div>
             </div>
-
             <div class="progress-section">
                 <div class="progress-title">📚 Theo loại</div>
                 <div class="progress-row">
@@ -1683,7 +1701,6 @@ function renderProgress(container) {
                     <div class="progress-count">${listeningViewed}</div>
                 </div>
             </div>
-
             <div class="progress-section">
                 <div class="progress-title">⭐ Thành thạo</div>
                 <div class="progress-row">
@@ -1701,7 +1718,6 @@ function renderProgress(container) {
                     <div class="progress-count">${learningCount}</div>
                 </div>
             </div>
-
             <div class="progress-section">
                 <div class="progress-title">💾 Export / Import</div>
                 <div class="export-section">
@@ -1725,7 +1741,6 @@ function showWord(word) {
     if (!data) return;
 
     state.viewedWords.add(word);
-    // Initialise SRS entry on first view (reviewCount stays 0 — will appear in review queue)
     if (!state.reviewSchedule[word]) {
         state.reviewSchedule[word] = defaultSRS();
     }
@@ -1756,9 +1771,11 @@ function showWord(word) {
     meaningElem.className = 'modal-meaning';
     meaningElem.textContent = data.meaning;
 
+    // FIX: use innerHTML with safeParaphraseHTML so <strong>word</strong>
+    // renders correctly instead of showing literal "<strong>" text
     const paraphraseElem = document.createElement('div');
     paraphraseElem.className = 'modal-paraphrase';
-    paraphraseElem.textContent = data.paraphrase;
+    paraphraseElem.innerHTML = safeParaphraseHTML(data.paraphrase);
 
     wrapper.appendChild(wordElem);
     wrapper.appendChild(typeElem);
@@ -1800,10 +1817,9 @@ function closeModal() {
 // UTILITY FUNCTIONS
 // ==========================================
 function hasLessonProgress(category, lesson) {
-    // Save and temporarily override navigation state
     const sv = state.currentView, sl = state.currentLesson, st = state.currentType, sp = state.currentPassage;
-    state.currentView = category;
-    state.currentLesson = lesson;
+    state.currentView    = category;
+    state.currentLesson  = lesson;
     state.currentPassage = null;
 
     let found = false;
@@ -1914,7 +1930,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadState();
     updateStreak();
 
-    // Restore state from URL hash
     const hashState = URLHashManager.load();
     if (hashState) {
         state.currentView = hashState.view;
@@ -1922,17 +1937,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hashState.type)   state.currentType   = hashState.type;
     }
 
-    // Apply saved theme
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
 
-    // Speech synthesis
     if ('speechSynthesis' in window) {
         loadVoices();
         window.speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    // Event listeners
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('modalOverlay').addEventListener('click', closeModal);
