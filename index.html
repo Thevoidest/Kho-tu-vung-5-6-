@@ -4,140 +4,901 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IELTS Vocab Stream</title>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Crimson+Pro:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Crimson+Pro:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
 
         :root {
-            --bg: #fdfcfa; --text: #1a1614; --primary: #2d5016; --primary-light: #4a7c2e;
-            --accent: #f59e0b; --accent-light: #fbbf24; --surface: #ffffff;
-            --surface-elevated: #f8f7f5; --border: #e8e6e3; --success: #10b981;
-            --shadow: rgba(26,22,20,0.08);
+            --bg: #fdfcfa;
+            --text: #1a1614;
+            --primary: #2d5016;
+            --primary-light: #4a7c2e;
+            --accent: #f59e0b;
+            --accent-light: #fbbf24;
+            --surface: #ffffff;
+            --surface-elevated: #f8f7f5;
+            --border: #e8e6e3;
+            --success: #10b981;
+            --shadow: rgba(26, 22, 20, 0.08);
         }
+
         [data-theme="dark"] {
-            --bg: #0f0e0d; --text: #e8e6e3; --primary: #6b9b4d; --primary-light: #8bb56a;
-            --accent: #fbbf24; --accent-light: #fcd34d; --surface: #1a1614;
-            --surface-elevated: #252220; --border: #3a3632; --shadow: rgba(0,0,0,0.3);
+            --bg: #0f0e0d;
+            --text: #e8e6e3;
+            --primary: #6b9b4d;
+            --primary-light: #8bb56a;
+            --accent: #fbbf24;
+            --accent-light: #fcd34d;
+            --surface: #1a1614;
+            --surface-elevated: #252220;
+            --border: #3a3632;
+            --shadow: rgba(0, 0, 0, 0.3);
         }
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family:'Be Vietnam Pro',sans-serif; background:var(--bg); color:var(--text);
-            line-height:1.6; font-size:17px; transition:background 0.3s,color 0.3s; overflow-x:hidden;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
-        .app-container { max-width:1400px; margin:0 auto; padding:20px; min-height:100vh; }
 
-        /* HEADER */
-        header { display:flex; justify-content:space-between; align-items:center; margin-bottom:40px; padding-bottom:20px; border-bottom:2px solid var(--border); }
-        .logo { font-family:'Crimson Pro',serif; font-size:clamp(28px,5vw,42px); font-weight:700; color:var(--primary); letter-spacing:-1px; }
-        .theme-switch { width:56px; height:30px; background:var(--border); border-radius:15px; cursor:pointer; position:relative; transition:background 0.3s; }
-        .theme-switch::before { content:'☀️'; position:absolute; left:4px; top:50%; transform:translateY(-50%); font-size:18px; transition:all 0.3s; }
-        [data-theme="dark"] .theme-switch::before { content:'🌙'; left:30px; }
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
 
-        /* NAV */
-        .main-nav { display:flex; gap:12px; margin-bottom:30px; background:var(--surface); padding:8px; border-radius:12px; border:1px solid var(--border); }
-        .nav-item { flex:1; padding:14px 20px; background:transparent; border:none; border-radius:8px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:15px; font-weight:600; transition:all 0.2s; color:var(--text); }
-        .nav-item.active { background:var(--primary); color:white; }
-        .nav-item:not(.active):hover { background:var(--surface-elevated); }
+        /* ===== HEADER ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
 
-        /* LESSON GRID */
-        .lesson-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:10px; margin-bottom:25px; }
-        .lesson-btn { padding:18px 12px; background:var(--surface); border:2px solid var(--border); border-radius:10px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:14px; font-weight:700; text-align:center; transition:all 0.25s cubic-bezier(0.4,0,0.2,1); color:var(--text); position:relative; }
-        .lesson-btn:hover { transform:translateY(-3px); box-shadow:0 6px 20px var(--shadow); }
-        .lesson-btn.active { background:var(--primary); color:white; border-color:var(--primary); transform:scale(1.05); }
-        .lesson-btn.has-progress::after { content:'✓'; position:absolute; top:6px; right:6px; width:18px; height:18px; background:var(--success); color:white; border-radius:50%; font-size:11px; display:flex; align-items:center; justify-content:center; }
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
 
-        /* TYPE TABS */
-        .type-selector { display:flex; gap:12px; margin-bottom:25px; }
-        .type-btn { flex:1; padding:12px 32px; background:var(--surface); border:2px solid var(--border); border-radius:25px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:14px; font-weight:600; transition:all 0.2s; color:var(--text); }
-        .type-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
-        .type-btn:hover:not(.active) { border-color:var(--accent-light); }
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
 
-        /* PASSAGE SELECTOR */
-        .passage-selector { display:flex; gap:10px; margin-bottom:25px; flex-wrap:wrap; }
-        .passage-btn { padding:10px 20px; background:var(--surface); border:2px solid var(--border); border-radius:20px; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; font-size:13px; font-weight:600; transition:all 0.2s; color:var(--text); white-space:nowrap; }
-        .passage-btn.active { background:var(--primary-light); color:white; border-color:var(--primary-light); }
-        .passage-btn:hover:not(.active) { border-color:var(--primary-light); background:var(--surface-elevated); }
+        .theme-switch {
+            width: 56px;
+            height: 30px;
+            background: var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+        }
 
-        /* PARAGRAPH BADGE - left side so it doesn't cover word */
-        .paragraph-badge { position:absolute; top:8px; left:8px; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; font-family:'JetBrains Mono',monospace; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
-        .paragraph-badge[data-para="A"] { background:#e74c3c; }
-        .paragraph-badge[data-para="B"] { background:#3498db; }
-        .paragraph-badge[data-para="C"] { background:#2ecc71; }
-        .paragraph-badge[data-para="D"] { background:#f39c12; }
-        .paragraph-badge[data-para="E"] { background:#9b59b6; }
-        .paragraph-badge[data-para="F"] { background:#1abc9c; }
-        .paragraph-badge[data-para="G"] { background:#e67e22; }
-        .paragraph-badge[data-para="H"] { background:#34495e; }
-        .paragraph-badge[data-para="I"] { background:#c0392b; }
-        .paragraph-badge[data-para="J"] { background:#16a085; }
+        .theme-switch::before {
+            content: '☀️';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            transition: all 0.3s;
+        }
 
-        /* STATS */
-        .stats-bar { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:15px; margin-bottom:30px; }
-        .stat-card { background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:center; }
-        .stat-value { font-size:32px; font-weight:700; color:var(--primary); margin-bottom:5px; }
-        .stat-label { font-size:13px; opacity:0.7; font-weight:500; }
+        [data-theme="dark"] .theme-switch::before {
+            content: '🌙';
+            left: 30px;
+        }
 
-        /* VOCAB GRID */
-        .vocab-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; animation:fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        /* ===== STREAK BAR ===== */
+        .streak-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            min-height: 20px;
+        }
 
-        .vocab-card { background:var(--surface); border:2px solid var(--border); border-radius:12px; padding:20px 16px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4,0,0.2,1); text-align:center; position:relative; min-height:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-        /* cards with a paragraph badge get left padding so badge doesn't cover text */
-        .vocab-card.has-badge { padding-left:44px; }
-        .vocab-card:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 12px 30px var(--shadow); border-color:var(--primary); }
-        .vocab-card.viewed { opacity:0.7; }
-        .vocab-card.viewed::after { content:'✓'; position:absolute; top:6px; right:6px; width:22px; height:22px; background:var(--success); color:white; border-radius:50%; font-size:13px; display:flex; align-items:center; justify-content:center; font-weight:700; }
-        .vocab-card.viewed:hover { opacity:1; }
-        .vocab-word { font-size:16px; font-weight:700; color:var(--text); line-height:1.3; }
-        .vocab-meaning { font-size:12px; color:var(--text); opacity:0.6; margin-top:4px; line-height:1.3; }
+        .streak-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            white-space: nowrap;
+        }
 
-        /* MODAL */
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:999; display:none; }
-        .modal-overlay.active { display:block; }
-        .modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.9); width:92%; max-width:500px; background:var(--surface); border-radius:24px; padding:40px 32px; z-index:1000; display:none; box-shadow:0 24px 60px rgba(0,0,0,0.2); animation:modalEnter 0.3s cubic-bezier(0.4,0,0.2,1) forwards; }
-        .modal.active { display:block; }
-        @keyframes modalEnter { from{opacity:0;transform:translate(-50%,-50%) scale(0.9)} to{opacity:1;transform:translate(-50%,-50%) scale(1)} }
-        .modal-close { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; border:none; background:var(--surface-elevated); cursor:pointer; font-size:20px; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
-        .modal-close:hover { background:var(--border); transform:rotate(90deg); }
-        .modal-word { font-family:'Crimson Pro',serif; font-size:42px; font-weight:700; color:var(--primary); margin-bottom:8px; text-align:center; }
-        .modal-type { display:inline-block; background:var(--accent); color:white; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; }
-        .modal-ipa { font-family:'JetBrains Mono',monospace; font-size:16px; color:var(--primary-light); margin-bottom:24px; text-align:center; background:var(--surface-elevated); padding:10px 16px; border-radius:8px; display:inline-block; }
-        .modal-meaning { font-size:24px; font-weight:700; color:var(--text); margin-bottom:16px; text-align:center; }
-        .modal-paraphrase { font-size:17px; line-height:1.8; opacity:0.9; margin-bottom:30px; text-align:center; background:var(--surface-elevated); padding:16px 20px; border-radius:12px; border-left:3px solid var(--accent); }
-        .modal-actions { display:flex; gap:12px; }
+        .streak-chip-fire {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-color: transparent;
+            color: white;
+        }
 
-        .btn { flex:1; padding:16px 24px; border:none; border-radius:12px; font-family:'Be Vietnam Pro',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-        .btn-primary { background:var(--primary); color:white; }
-        .btn-primary:hover { background:var(--primary-light); transform:translateY(-2px); box-shadow:0 6px 20px var(--shadow); }
-        .btn-secondary { background:var(--accent); color:white; }
-        .btn-secondary:hover { background:var(--accent-light); transform:translateY(-2px); }
+        .streak-chip-due {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-color: transparent;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-        /* PROGRESS */
-        .progress-container { max-width:800px; margin:0 auto; }
-        .progress-section { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:30px; }
-        .progress-title { font-size:20px; font-weight:700; color:var(--primary); margin-bottom:20px; }
-        .progress-row { display:flex; align-items:center; gap:15px; margin-bottom:16px; }
-        .progress-label { min-width:120px; font-weight:600; font-size:14px; }
-        .progress-bar { flex:1; height:32px; background:var(--surface-elevated); border-radius:16px; overflow:hidden; border:1px solid var(--border); }
-        .progress-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--primary-light)); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:13px; transition:width 0.5s cubic-bezier(0.4,0,0.2,1); }
-        .progress-count { min-width:50px; text-align:right; font-weight:700; font-size:16px; }
-        .export-section { display:flex; gap:12px; }
+        .streak-chip-due:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow);
+        }
 
-        /* EMPTY */
-        .empty-state { text-align:center; padding:80px 20px; opacity:0.6; }
-        .empty-icon { font-size:72px; margin-bottom:16px; }
-        .empty-text { font-size:18px; font-weight:600; }
+        .streak-chip-mastered {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #047857;
+        }
 
-        /* TOAST */
-        .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--primary); color:white; padding:12px 24px; border-radius:12px; font-weight:600; z-index:9999; box-shadow:0 8px 24px var(--shadow); transition:transform 0.3s,opacity 0.3s; opacity:0; }
-        .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+        [data-theme="dark"] .streak-chip-mastered {
+            color: var(--success);
+        }
 
-        @media (max-width:768px) {
-            .lesson-grid { grid-template-columns:repeat(auto-fit,minmax(70px,1fr)); }
-            .vocab-grid { grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
-            .modal { padding:32px 24px; }
-            .modal-word { font-size:30px; }
-            .type-selector { flex-direction:column; }
-            .type-btn { width:100%; }
+        /* ===== NAVIGATION ===== */
+        .main-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            background: var(--surface);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 12px 10px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-item:not(.active):hover {
+            background: var(--surface-elevated);
+        }
+
+        /* ===== LESSON SELECTOR ===== */
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .lesson-btn {
+            padding: 18px 12px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text);
+            position: relative;
+        }
+
+        .lesson-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .lesson-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .lesson-btn.has-progress::after {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 18px;
+            height: 18px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== TYPE SELECTOR ===== */
+        .type-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 12px 32px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .type-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .type-btn:hover:not(.active) {
+            border-color: var(--accent-light);
+        }
+
+        /* ===== PASSAGE SELECTOR ===== */
+        .passage-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .passage-btn {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .passage-btn.active {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        .passage-btn:hover:not(.active) {
+            border-color: var(--primary-light);
+            background: var(--surface-elevated);
+        }
+
+        /* ===== PARAGRAPH BADGE ===== */
+        .paragraph-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .paragraph-badge[data-para="A"] { background: #e74c3c; }
+        .paragraph-badge[data-para="B"] { background: #3498db; }
+        .paragraph-badge[data-para="C"] { background: #2ecc71; }
+        .paragraph-badge[data-para="D"] { background: #f39c12; }
+        .paragraph-badge[data-para="E"] { background: #9b59b6; }
+        .paragraph-badge[data-para="F"] { background: #1abc9c; }
+        .paragraph-badge[data-para="G"] { background: #e67e22; }
+        .paragraph-badge[data-para="H"] { background: #34495e; }
+        .paragraph-badge[data-para="I"] { background: #c0392b; }
+        .paragraph-badge[data-para="J"] { background: #16a085; }
+
+        /* ===== MASTERY BADGE (bottom of vocab card) ===== */
+        .mastery-badge {
+            position: absolute;
+            bottom: 7px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 8px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .mastery-new    { background: var(--surface-elevated); color: var(--text); border: 1px solid var(--border); opacity: 0.6; }
+        .mastery-learning { background: rgba(245,158,11,0.15); color: #b45309; border: 1px solid rgba(245,158,11,0.35); }
+        .mastery-mastered { background: rgba(16,185,129,0.15); color: #047857; border: 1px solid rgba(16,185,129,0.4); }
+
+        [data-theme="dark"] .mastery-learning { color: var(--accent-light); }
+        [data-theme="dark"] .mastery-mastered { color: #34d399; }
+
+        .vocab-card {
+            position: relative;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        /* ===== VOCAB GRID ===== */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .vocab-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 16px 30px; /* extra bottom for mastery badge */
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        /* Mastery border tints */
+        .vocab-card.card-learning  { border-color: rgba(245,158,11,0.45); }
+        .vocab-card.card-mastered  { border-color: rgba(16,185,129,0.5); }
+
+        .vocab-card.viewed {
+            opacity: 0.75;
+        }
+
+        .vocab-card.viewed:hover {
+            opacity: 1;
+        }
+
+        .vocab-word {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            animation: fadeInOverlay 0.25s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 92%;
+            max-width: 500px;
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 40px 32px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+            animation: modalEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        @keyframes modalEnter {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--surface-elevated);
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+            transform: rotate(90deg);
+        }
+
+        .modal-word {
+            font-family: 'Crimson Pro', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal-type {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .modal-ipa {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            color: var(--primary-light);
+            margin-bottom: 24px;
+            text-align: center;
+            background: var(--surface-elevated);
+            padding: 10px 16px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .modal-meaning {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .modal-paraphrase {
+            font-size: 17px;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            text-align: center;
+            background: var(--surface-elevated);
+            padding: 16px 20px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-ghost:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ===== REVIEW VIEW ===== */
+        .review-wrap {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .review-meta-text {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.65;
+        }
+
+        .review-prog-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .review-prog-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .review-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 32px 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .review-word {
+            font-family: 'Crimson Pro', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.1;
+        }
+
+        .review-ipa {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            color: var(--primary-light);
+            background: var(--surface-elevated);
+            padding: 8px 14px;
+            border-radius: 8px;
+        }
+
+        .review-divider {
+            width: 100%;
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 4px 0;
+        }
+
+        .review-meaning {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .review-paraphrase {
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.85;
+            background: var(--surface-elevated);
+            padding: 12px 16px;
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+            text-align: left;
+            width: 100%;
+        }
+
+        /* hidden until revealed */
+        .review-answer { display: none; width: 100%; }
+        .review-answer.visible { display: contents; animation: fadeIn 0.25s ease; }
+
+        .review-reveal-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .review-reveal-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        /* Rating buttons — 3 col */
+        .review-ratings {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        .review-ratings.visible { display: grid; animation: fadeIn 0.25s ease; }
+
+        .rating-btn {
+            padding: 16px 8px;
+            border: 2px solid;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+        }
+
+        .rating-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
+
+        .rating-hard  { border-color: rgba(239,68,68,0.4);  color: #dc2626; }
+        .rating-hard:hover  { background: rgba(239,68,68,0.08); }
+        .rating-ok    { border-color: rgba(245,158,11,0.4); color: #b45309; }
+        .rating-ok:hover    { background: rgba(245,158,11,0.08); }
+        .rating-easy  { border-color: rgba(16,185,129,0.4); color: #047857; }
+        .rating-easy:hover  { background: rgba(16,185,129,0.08); }
+
+        [data-theme="dark"] .rating-ok   { color: var(--accent-light); }
+        [data-theme="dark"] .rating-easy { color: #34d399; }
+
+        .rating-emoji { font-size: 24px; }
+        .rating-label { font-size: 13px; }
+        .rating-days  { font-size: 11px; opacity: 0.6; font-weight: 600; }
+
+        /* Review done screen */
+        .review-done {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .review-done-icon  { font-size: 72px; margin-bottom: 20px; }
+        .review-done-title { font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+        .review-done-sub   { font-size: 16px; opacity: 0.7; margin-bottom: 32px; line-height: 1.6; }
+        .review-done-btns  { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        /* ===== PROGRESS VIEW ===== */
+        .progress-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .progress-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 16px;
+        }
+
+        .progress-label {
+            min-width: 120px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 32px;
+            background: var(--surface-elevated);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 32px;
+        }
+
+        .progress-fill-green {
+            background: linear-gradient(90deg, #059669, #10b981);
+        }
+
+        .progress-fill-amber {
+            background: linear-gradient(90deg, #d97706, #f59e0b);
+        }
+
+        .progress-count {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .export-section {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            opacity: 0.6;
+        }
+
+        .empty-icon { font-size: 72px; margin-bottom: 16px; }
+        .empty-text { font-size: 18px; font-weight: 600; }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 8px 24px var(--shadow);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            opacity: 0;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-controls { flex-direction: column; gap: 8px; }
+            .lesson-grid { grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); }
+            .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .modal { padding: 32px 24px; }
+            .modal-word { font-size: 30px; }
+            .type-selector { flex-direction: column; }
+            .type-btn { width: 100%; }
+            .review-word { font-size: 36px; }
+            .review-card { padding: 28px 20px 24px; }
         }
     </style>
 </head>
@@ -156,199 +917,437 @@
             <div class="theme-switch" id="themeToggle"></div>
         </div>
     </header>
-    <nav class="main-nav">
+
+    <!-- Streak + stats chips -->
+    <div id="streakBar" class="streak-bar"></div>
+
+    <nav class="main-nav" id="mainNav">
         <button class="nav-item active" data-view="reading">📖 Reading</button>
         <button class="nav-item" data-view="listening">🎧 Listening</button>
+        <button class="nav-item" data-view="review">🔁 Ôn tập</button>
         <button class="nav-item" data-view="progress">📊 Progress</button>
     </nav>
+
     <div id="mainContent"></div>
 </div>
 
+<!-- Load vocab data first -->
 <script src="vocab-data.js"></script>
+
+<!-- Main application -->
 <script>
+// ==========================================
+// URL HASH MANAGER
+// ==========================================
+const URLHashManager = {
+    update(view, lesson, type) {
+        if (view === 'review' || view === 'progress') {
+            window.history.replaceState(null, '', '#' + view);
+        } else {
+            window.history.replaceState(null, '', '#' + view + '-' + lesson + '-' + type);
+        }
+    },
+    load() {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return null;
+        if (hash === 'review' || hash === 'progress') return { view: hash };
+        const parts = hash.split('-');
+        if (parts.length !== 3) return null;
+        const [view, lesson, type] = parts;
+        const lessonNum = parseInt(lesson);
+        if ((view !== 'reading' && view !== 'listening') ||
+            isNaN(lessonNum) ||
+            !VOCAB_DATA[view][lessonNum] ||
+            (type !== 'inclass' && type !== 'homework')) return null;
+        return { view, lesson: lessonNum, type };
+    }
+};
+
+// ==========================================
+// SRS — SM-2+ algorithm
+// rating: 0=Khó, 1=Được, 2=Dễ
+// ==========================================
+function defaultSRS() {
+    return { interval: 1, easeFactor: 2.5, reviewCount: 0, nextReview: new Date().toISOString() };
+}
+
+function calcNextReview(srs, rating) {
+    let { interval, easeFactor, reviewCount } = srs;
+
+    // Update ease factor (clamped 1.3–3.0)
+    easeFactor = Math.min(3.0, Math.max(1.3,
+        easeFactor + 0.1 - (2 - rating) * (0.08 + (2 - rating) * 0.02)
+    ));
+
+    if (rating === 0) {
+        // Hard: restart interval
+        interval = 1;
+        reviewCount = 0;
+    } else if (reviewCount === 0) {
+        interval = 1;
+    } else if (reviewCount === 1) {
+        interval = 6;
+    } else {
+        interval = Math.round(interval * easeFactor);
+    }
+
+    reviewCount++;
+
+    const next = new Date();
+    next.setDate(next.getDate() + interval);
+
+    return { interval, easeFactor, reviewCount, nextReview: next.toISOString() };
+}
+
+function getMastery(srs) {
+    if (!srs || srs.reviewCount === 0) return 'new';
+    if (srs.reviewCount >= 5) return 'mastered';
+    return 'learning';
+}
+
+function isDue(srs) {
+    if (!srs || srs.reviewCount === 0) return false;
+    return new Date(srs.nextReview) <= new Date();
+}
+
 // ==========================================
 // STATE
 // ==========================================
-const state = {
+let state = {
+    // Navigation
     currentView: 'reading',
     currentLesson: 1,
     currentType: 'inclass',
     currentPassage: null,
-    viewedWords: new Set()
+    // Persistent data
+    viewedWords: new Set(),
+    reviewSchedule: {},     // word → { interval, easeFactor, reviewCount, nextReview }
+    streak: 0,
+    lastVisit: null,        // Date.toDateString()
+    // Transient
+    currentModalWord: null,
+    // Review session (transient — reset on tab entry)
+    reviewQueue: [],
+    reviewIdx: 0,
+    reviewRevealed: false,
+    reviewDone: false,
+    reviewSessionCount: 0,
+    reviewSessionStarted: false
 };
 
 // ==========================================
 // STORAGE
 // ==========================================
+const STORAGE_KEY = 'ieltsVocabProgress_v3';
+
 function saveState() {
-    localStorage.setItem('ieltsVocabProgress', JSON.stringify({
-        viewedWords: Array.from(state.viewedWords)
-    }));
-}
-function loadState() {
+    const data = {
+        viewedWords: Array.from(state.viewedWords),
+        reviewSchedule: state.reviewSchedule,
+        streak: state.streak,
+        lastVisit: state.lastVisit
+    };
     try {
-        const saved = localStorage.getItem('ieltsVocabProgress');
-        if (saved) state.viewedWords = new Set(JSON.parse(saved).viewedWords || []);
-    } catch(e) {}
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+        showToast('⚠️ Bộ nhớ đầy! Hãy xuất tiến độ.');
+    }
+}
+
+function loadState() {
+    // Try new key
+    let raw = localStorage.getItem(STORAGE_KEY);
+
+    if (!raw) {
+        // Migrate from old key if exists
+        const oldRaw = localStorage.getItem('ieltsVocabProgress');
+        if (oldRaw) {
+            try {
+                const old = JSON.parse(oldRaw);
+                state.viewedWords = new Set(old.viewedWords || []);
+                // Old key had no SRS data — start fresh SRS
+            } catch (e) {}
+        }
+        return;
+    }
+
+    try {
+        const data = JSON.parse(raw);
+        state.viewedWords    = new Set(data.viewedWords || []);
+        state.reviewSchedule = data.reviewSchedule || {};
+        state.streak         = typeof data.streak === 'number' ? data.streak : 0;
+        state.lastVisit      = data.lastVisit || null;
+    } catch (e) {
+        console.error('loadState error:', e);
+    }
+}
+
+function updateStreak() {
+    const today = new Date().toDateString();
+    if (!state.lastVisit) {
+        state.streak    = 1;
+        state.lastVisit = today;
+        saveState();
+        return;
+    }
+    if (state.lastVisit === today) return; // already updated today
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const diffDays = Math.round((new Date() - new Date(state.lastVisit)) / msPerDay);
+
+    state.streak    = diffDays <= 2 ? state.streak + 1 : 1;
+    state.lastVisit = today;
+    saveState();
+}
+
+// ==========================================
+// DUE WORDS HELPERS
+// ==========================================
+function getDueWords() {
+    return Object.keys(state.reviewSchedule).filter(w => isDue(state.reviewSchedule[w]));
+}
+
+function buildReviewQueue() {
+    // Priority 1: due words (scheduled and overdue)
+    const due = getDueWords();
+    if (due.length > 0) return due;
+
+    // Priority 2: viewed words that have never been reviewed
+    const unreviewed = Array.from(state.viewedWords).filter(w => {
+        const s = state.reviewSchedule[w];
+        return !s || s.reviewCount === 0;
+    });
+    // Shuffle, cap at 10
+    return unreviewed.sort(() => Math.random() - 0.5).slice(0, 10);
 }
 
 // ==========================================
 // AUDIO
 // ==========================================
-let voices = [];
+let speechSynthesisVoices = [];
+
 function loadVoices() {
-    if ('speechSynthesis' in window) voices = window.speechSynthesis.getVoices();
+    if ('speechSynthesis' in window) {
+        speechSynthesisVoices = window.speechSynthesis.getVoices();
+    }
 }
-function speak(word) {
-    if (!('speechSynthesis' in window)) return;
+
+function speak(text) {
+    if (!('speechSynthesis' in window)) {
+        showToast('⚠️ Browser không hỗ trợ phát âm. Vui lòng dùng Chrome!');
+        return;
+    }
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(word);
-    u.lang = 'en-GB';
-    u.rate = 0.85;
-    const v = voices.find(v => v.lang.startsWith('en-GB'));
-    if (v) u.voice = v;
-    window.speechSynthesis.speak(u);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-GB';
+    utterance.rate = 0.85;
+    if (speechSynthesisVoices.length > 0) {
+        const ukVoice = speechSynthesisVoices.find(v =>
+            v.lang.includes('GB') && (v.name.includes('Google') || v.name.includes('Female'))
+        ) || speechSynthesisVoices.find(v => v.lang.includes('GB'));
+        if (ukVoice) utterance.voice = ukVoice;
+    }
+    window.speechSynthesis.speak(utterance);
 }
 
 // ==========================================
 // THEME
 // ==========================================
 function toggleTheme() {
-    const dark = document.body.getAttribute('data-theme') === 'dark';
-    document.body.setAttribute('data-theme', dark ? '' : 'dark');
-    localStorage.setItem('theme', dark ? 'light' : 'dark');
+    const current = document.body.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', newTheme === 'dark' ? 'dark' : '');
+    localStorage.setItem('theme', newTheme);
+}
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+function setView(view) {
+    state.currentView = view;
+
+    // Reset review session state when entering review tab
+    if (view === 'review') {
+        state.reviewSessionStarted = false;
+        state.reviewDone = false;
+        state.reviewQueue = [];
+        state.reviewIdx = 0;
+        state.reviewRevealed = false;
+        state.reviewSessionCount = 0;
+    }
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.view === view);
+    });
+    URLHashManager.update(view, state.currentLesson, state.currentType);
+    render();
+}
+
+function setLesson(num) {
+    state.currentLesson = num;
+    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
+    render();
+}
+
+function setType(type) {
+    state.currentType = type;
+    state.currentPassage = null;
+    URLHashManager.update(state.currentView, state.currentLesson, state.currentType);
+    render();
+}
+
+function setPassage(passageName) {
+    state.currentPassage = passageName;
+    render();
 }
 
 // ==========================================
 // DATA HELPERS
 // ==========================================
 
-/**
- * THE KEY FIX:
- * Reading L7 homework has nested passages (keys point to objects WITHOUT 'ipa').
- * Listening L6 homework is flat (keys point to objects WITH 'ipa').
- * This function reliably distinguishes the two.
- */
-function isNestedPassages(data) {
+// Returns true if data is nested (passage → words), false if flat (word → data)
+function hasNestedPassages(category, lesson, type) {
+    const data = VOCAB_DATA[category]?.[lesson]?.[type];
     if (!data || Object.keys(data).length === 0) return false;
     const firstVal = data[Object.keys(data)[0]];
     return firstVal && typeof firstVal === 'object' && !('ipa' in firstVal);
 }
 
+// Get vocab dict for current selection {word: wordData}
 function getCurrentVocabData() {
-    const raw = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
-    if (!raw) return {};
-    if (isNestedPassages(raw)) {
-        if (state.currentPassage) return raw[state.currentPassage] || {};
-        // Combine all passages
-        const combined = {};
-        Object.values(raw).forEach(p => Object.assign(combined, p));
+    const data = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
+    if (!data) return {};
+
+    if (hasNestedPassages(state.currentView, state.currentLesson, state.currentType)) {
+        if (state.currentPassage) return data[state.currentPassage] || {};
+        // All passages combined
+        let combined = {};
+        Object.values(data).forEach(passage => Object.assign(combined, passage));
         return combined;
     }
-    return raw;
+    return data;
 }
 
+// Extract flat word list from any data object (handles nested + flat)
 function getAllWordsFromData(data) {
     if (!data || Object.keys(data).length === 0) return [];
-    if (isNestedPassages(data)) return Object.values(data).flatMap(p => Object.keys(p));
-    return Object.keys(data);
+    const firstVal = data[Object.keys(data)[0]];
+    if (firstVal && 'ipa' in firstVal) return Object.keys(data);
+    // Nested
+    let words = [];
+    Object.values(data).forEach(passage => words.push(...Object.keys(passage)));
+    return words;
 }
 
-function hasLessonProgress(view, lesson) {
-    for (const type of ['inclass', 'homework']) {
-        const words = getAllWordsFromData(VOCAB_DATA[view]?.[lesson]?.[type]);
-        if (words.some(w => state.viewedWords.has(w))) return true;
+// Find word data anywhere in VOCAB_DATA (needed for review queue which spans all lessons)
+function findWordDataGlobal(word) {
+    for (const cat of ['reading', 'listening']) {
+        for (const lesson of Object.keys(VOCAB_DATA[cat])) {
+            for (const type of ['inclass', 'homework']) {
+                const data = VOCAB_DATA[cat][lesson][type];
+                if (!data) continue;
+                // Nested
+                if (hasNestedPassages(cat, parseInt(lesson), type)) {
+                    for (const passage of Object.values(data)) {
+                        if (passage[word]) return passage[word];
+                    }
+                } else {
+                    if (data[word]) return data[word];
+                }
+            }
+        }
     }
-    return false;
-}
-
-function getCategoryTotal(cat) {
-    let n = 0;
-    for (const lesson of Object.keys(VOCAB_DATA[cat]))
-        for (const type of ['inclass','homework'])
-            n += getAllWordsFromData(VOCAB_DATA[cat][lesson][type]).length;
-    return n;
-}
-function getCategoryViewed(cat) {
-    let n = 0;
-    for (const lesson of Object.keys(VOCAB_DATA[cat]))
-        for (const type of ['inclass','homework'])
-            getAllWordsFromData(VOCAB_DATA[cat][lesson][type]).forEach(w => { if (state.viewedWords.has(w)) n++; });
-    return n;
-}
-function getTotalWords() { return getCategoryTotal('reading') + getCategoryTotal('listening'); }
-
-// ==========================================
-// NAVIGATION — THE BUG FIX
-// Switching Reading ↔ Listening resets lesson to 1.
-// This prevents Listening inheriting Reading L7's nested-passage state.
-// ==========================================
-function setView(view) {
-    state.currentView = view;
-    state.currentLesson = 1;       // ← reset
-    state.currentType = 'inclass'; // ← reset
-    state.currentPassage = null;   // ← reset
-    document.querySelectorAll('.nav-item').forEach(b =>
-        b.classList.toggle('active', b.dataset.view === view)
-    );
-    render();
-}
-
-function setLesson(num) {
-    state.currentLesson = num;
-    state.currentPassage = null;
-    render();
-}
-function setType(type) {
-    state.currentType = type;
-    state.currentPassage = null;
-    render();
-}
-function setPassage(name) {
-    state.currentPassage = name;
-    render();
+    return null;
 }
 
 // ==========================================
-// RENDER
+// STREAK BAR
+// ==========================================
+function renderStreakBar() {
+    const bar = document.getElementById('streakBar');
+    if (!bar) return;
+    bar.innerHTML = '';
+
+    // Streak chip (always show)
+    const fireChip = document.createElement('div');
+    fireChip.className = 'streak-chip streak-chip-fire';
+    fireChip.textContent = '🔥 ' + state.streak + ' ngày';
+    bar.appendChild(fireChip);
+
+    // Due words chip (only when > 0)
+    const dueCount = getDueWords().length;
+    if (dueCount > 0) {
+        const dueChip = document.createElement('div');
+        dueChip.className = 'streak-chip streak-chip-due';
+        dueChip.textContent = '🔁 ' + dueCount + ' từ cần ôn';
+        dueChip.addEventListener('click', () => setView('review'));
+        bar.appendChild(dueChip);
+    }
+
+    // Mastered chip (only when > 0)
+    const masteredCount = Object.values(state.reviewSchedule).filter(s => s.reviewCount >= 5).length;
+    if (masteredCount > 0) {
+        const mastChip = document.createElement('div');
+        mastChip.className = 'streak-chip streak-chip-mastered';
+        mastChip.textContent = '⭐ ' + masteredCount + ' thành thạo';
+        bar.appendChild(mastChip);
+    }
+}
+
+// ==========================================
+// RENDER DISPATCHER
 // ==========================================
 function render() {
+    renderStreakBar();
     const content = document.getElementById('mainContent');
-    state.currentView === 'progress' ? renderProgress(content) : renderVocabView(content);
+    if (state.currentView === 'progress') {
+        renderProgress(content);
+    } else if (state.currentView === 'review') {
+        renderReview(content);
+    } else {
+        renderVocabView(content);
+    }
 }
 
+// ==========================================
+// VOCAB VIEW
+// ==========================================
 function renderVocabView(container) {
     const maxLessons = state.currentView === 'reading' ? 7 : 8;
     container.innerHTML = '';
 
-    // Lesson grid
+    // --- Lesson selector ---
     const lessonsDiv = document.createElement('div');
     lessonsDiv.className = 'lesson-grid';
     for (let i = 1; i <= maxLessons; i++) {
         const btn = document.createElement('button');
-        btn.className = 'lesson-btn' + (i === state.currentLesson ? ' active' : '');
-        btn.textContent = `Lesson ${i}`;
+        btn.className = 'lesson-btn';
+        btn.textContent = 'L' + i;
+        if (i === state.currentLesson) btn.classList.add('active');
         if (hasLessonProgress(state.currentView, i)) btn.classList.add('has-progress');
         btn.addEventListener('click', () => setLesson(i));
         lessonsDiv.appendChild(btn);
     }
     container.appendChild(lessonsDiv);
 
-    // In Class / Homework
+    // --- Type selector ---
     const typeDiv = document.createElement('div');
     typeDiv.className = 'type-selector';
-    for (const [t, label] of [['inclass','In Class'],['homework','Homework']]) {
-        const btn = document.createElement('button');
-        btn.className = 'type-btn' + (state.currentType === t ? ' active' : '');
-        btn.textContent = label;
-        btn.addEventListener('click', () => setType(t));
-        typeDiv.appendChild(btn);
-    }
+    const inclassBtn = document.createElement('button');
+    inclassBtn.className = 'type-btn' + (state.currentType === 'inclass' ? ' active' : '');
+    inclassBtn.textContent = 'In-Class';
+    inclassBtn.addEventListener('click', () => setType('inclass'));
+    const homeworkBtn = document.createElement('button');
+    homeworkBtn.className = 'type-btn' + (state.currentType === 'homework' ? ' active' : '');
+    homeworkBtn.textContent = 'Homework';
+    homeworkBtn.addEventListener('click', () => setType('homework'));
+    typeDiv.appendChild(inclassBtn);
+    typeDiv.appendChild(homeworkBtn);
     container.appendChild(typeDiv);
 
-    // Passage selector — ONLY shown when data is truly nested (has passages)
+    // --- Passage selector (nested only) ---
     const rawData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
-    if (rawData && isNestedPassages(rawData)) {
+    if (hasNestedPassages(state.currentView, state.currentLesson, state.currentType) && rawData) {
         const passageDiv = document.createElement('div');
         passageDiv.className = 'passage-selector';
 
@@ -368,100 +1367,343 @@ function renderVocabView(container) {
         container.appendChild(passageDiv);
     }
 
-    // Stats
+    // --- Stats bar ---
     const data = getCurrentVocabData();
     const words = Object.keys(data);
-    const viewedCount = words.filter(w => state.viewedWords.has(w)).length;
+    const viewedCount    = words.filter(w => state.viewedWords.has(w)).length;
+    const masteredCount  = words.filter(w => getMastery(state.reviewSchedule[w]) === 'mastered').length;
+
     const statsDiv = document.createElement('div');
     statsDiv.className = 'stats-bar';
-    statsDiv.innerHTML = `
-        <div class="stat-card"><div class="stat-value">${words.length}</div><div class="stat-label">Tổng từ</div></div>
-        <div class="stat-card"><div class="stat-value">${viewedCount}</div><div class="stat-label">Đã xem</div></div>
-        <div class="stat-card"><div class="stat-value">${state.currentView === 'reading' ? 'Reading' : 'Listening'} L${state.currentLesson}</div><div class="stat-label">Bộ hiện tại</div></div>
-    `;
+    statsDiv.innerHTML =
+        '<div class="stat-card"><div class="stat-value">' + words.length + '</div><div class="stat-label">Tổng từ</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + viewedCount + '</div><div class="stat-label">Đã xem</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + masteredCount + '</div><div class="stat-label">Thành thạo ⭐</div></div>';
     container.appendChild(statsDiv);
 
-    // Vocab grid
+    // --- Vocab grid ---
     const gridDiv = document.createElement('div');
     if (words.length === 0) {
         gridDiv.className = 'empty-state';
-        gridDiv.innerHTML = `<div class="empty-icon">🔭</div><div class="empty-text">Chưa có từ vựng cho bài này</div>`;
+        gridDiv.innerHTML = '<div class="empty-icon">🔭</div><div class="empty-text">Chưa có từ vựng cho bài này</div>';
     } else {
         gridDiv.className = 'vocab-grid';
-        const sorted = [...words].sort((a,b) => {
+
+        // Sort by paragraph letter (words without paragraph go last)
+        const sorted = [...words].sort((a, b) => {
             const pA = data[a]?.paragraph || 'Z';
             const pB = data[b]?.paragraph || 'Z';
             return pA.localeCompare(pB);
         });
+
         sorted.forEach(word => {
-            const hasBadge = !!(data[word]?.paragraph);
+            const srs     = state.reviewSchedule[word];
+            const mastery = getMastery(srs);
+            const viewed  = state.viewedWords.has(word);
+
             const card = document.createElement('div');
-            card.className = 'vocab-card'
-                + (state.viewedWords.has(word) ? ' viewed' : '')
-                + (hasBadge ? ' has-badge' : '');
+            card.className = 'vocab-card';
+            if (viewed)                 card.classList.add('viewed');
+            if (mastery === 'learning') card.classList.add('card-learning');
+            if (mastery === 'mastered') card.classList.add('card-mastered');
             card.dataset.word = word;
 
-            if (hasBadge) {
-                const badge = document.createElement('div');
-                badge.className = 'paragraph-badge';
-                badge.setAttribute('data-para', data[word].paragraph);
-                badge.textContent = data[word].paragraph;
-                card.appendChild(badge);
+            // Word text
+            const wordDiv = document.createElement('div');
+            wordDiv.className = 'vocab-word';
+            wordDiv.textContent = word;
+            card.appendChild(wordDiv);
+
+            // Paragraph badge (top-right)
+            if (data[word]?.paragraph) {
+                const pbadge = document.createElement('div');
+                pbadge.className = 'paragraph-badge';
+                pbadge.setAttribute('data-para', data[word].paragraph);
+                pbadge.textContent = data[word].paragraph;
+                card.appendChild(pbadge);
             }
 
-            const wordEl = document.createElement('div');
-            wordEl.className = 'vocab-word';
-            wordEl.textContent = word;
-            card.appendChild(wordEl);
-
-            const meaningEl = document.createElement('div');
-            meaningEl.className = 'vocab-meaning';
-            meaningEl.textContent = data[word]?.meaning || '';
-            card.appendChild(meaningEl);
+            // Mastery badge (bottom-center) — only if viewed
+            if (viewed) {
+                const mbadge = document.createElement('div');
+                mbadge.className = 'mastery-badge mastery-' + mastery;
+                mbadge.textContent = mastery === 'new' ? 'Mới' : mastery === 'learning' ? 'Đang học' : 'Thành thạo ⭐';
+                card.appendChild(mbadge);
+            }
 
             gridDiv.appendChild(card);
         });
 
+        // Single delegated listener for the whole grid
         gridDiv.addEventListener('click', e => {
             const card = e.target.closest('.vocab-card');
-            if (card?.dataset.word) showWord(card.dataset.word);
+            if (card && card.dataset.word) showWord(card.dataset.word);
         });
     }
     container.appendChild(gridDiv);
 }
 
+// ==========================================
+// REVIEW VIEW
+// ==========================================
+function renderReview(container) {
+    container.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'review-wrap';
+
+    // --- Build queue on first entry ---
+    if (!state.reviewSessionStarted) {
+        state.reviewQueue         = buildReviewQueue();
+        state.reviewIdx           = 0;
+        state.reviewRevealed      = false;
+        state.reviewDone          = state.reviewQueue.length === 0;
+        state.reviewSessionCount  = 0;
+        state.reviewSessionStarted = true;
+    }
+
+    // --- Empty queue ---
+    if (state.reviewQueue.length === 0 || state.reviewDone) {
+        const icon  = state.reviewSessionCount > 0 ? '🎉' : '✨';
+        const title = state.reviewSessionCount > 0 ? 'Ôn xong rồi!' : 'Không có gì để ôn!';
+        const sub   = state.reviewSessionCount > 0
+            ? 'Đã ôn ' + state.reviewSessionCount + ' từ. Quay lại ngày mai nhé!'
+            : 'Hãy xem thêm từ mới trước, rồi quay lại đây ôn.';
+
+        wrap.innerHTML =
+            '<div class="review-done">' +
+            '<div class="review-done-icon">' + icon + '</div>' +
+            '<div class="review-done-title">' + title + '</div>' +
+            '<div class="review-done-sub">' + sub + '</div>' +
+            '<div class="review-done-btns"></div>' +
+            '</div>';
+
+        const btnsDiv = wrap.querySelector('.review-done-btns');
+
+        if (state.reviewSessionCount > 0) {
+            const moreBtn = document.createElement('button');
+            moreBtn.className = 'btn btn-primary';
+            moreBtn.textContent = '🔁 Ôn thêm';
+            moreBtn.addEventListener('click', () => {
+                state.reviewSessionStarted = false;
+                state.reviewDone = false;
+                render();
+            });
+            btnsDiv.appendChild(moreBtn);
+        }
+
+        const homeBtn = document.createElement('button');
+        homeBtn.className = 'btn btn-ghost';
+        homeBtn.textContent = '📖 Xem từ mới';
+        homeBtn.addEventListener('click', () => setView('reading'));
+        btnsDiv.appendChild(homeBtn);
+
+        container.appendChild(wrap);
+        return;
+    }
+
+    // --- Active review card ---
+    const total = state.reviewQueue.length;
+    const idx   = state.reviewIdx;
+    const word  = state.reviewQueue[idx];
+    const wdata = findWordDataGlobal(word);
+
+    // Word missing from vocab data — skip silently
+    if (!wdata) {
+        state.reviewIdx++;
+        if (state.reviewIdx >= total) state.reviewDone = true;
+        render();
+        return;
+    }
+
+    const srs        = state.reviewSchedule[word] || defaultSRS();
+    const pct        = Math.round((idx / total) * 100);
+    const nextOk     = Math.round(srs.interval * Math.max(1.3, srs.easeFactor - 0.06));
+    const nextEasy   = Math.round(srs.interval * srs.easeFactor);
+
+    // Progress bar + counter
+    const metaDiv = document.createElement('div');
+    metaDiv.className = 'review-meta';
+    metaDiv.innerHTML =
+        '<span class="review-meta-text">' + (idx + 1) + ' / ' + total + '</span>' +
+        '<span class="review-meta-text">🔥 ' + state.streak + ' ngày</span>';
+    wrap.appendChild(metaDiv);
+
+    const progBar = document.createElement('div');
+    progBar.className = 'review-prog-bar';
+    progBar.innerHTML = '<div class="review-prog-fill" style="width:' + pct + '%"></div>';
+    wrap.appendChild(progBar);
+
+    // Card
+    const card = document.createElement('div');
+    card.className = 'review-card';
+
+    const wordEl = document.createElement('div');
+    wordEl.className = 'review-word';
+    wordEl.textContent = word;
+
+    const ipaEl = document.createElement('div');
+    ipaEl.className = 'review-ipa';
+    ipaEl.textContent = wdata.ipa || '';
+
+    // Answer block (hidden until revealed)
+    const answerDiv = document.createElement('div');
+    answerDiv.className = 'review-answer';
+    answerDiv.id = 'reviewAnswer';
+
+    const hr = document.createElement('hr');
+    hr.className = 'review-divider';
+
+    const meaningEl = document.createElement('div');
+    meaningEl.className = 'review-meaning';
+    meaningEl.textContent = wdata.meaning || '';
+
+    const paraEl = document.createElement('div');
+    paraEl.className = 'review-paraphrase';
+    paraEl.textContent = wdata.paraphrase || '';
+
+    answerDiv.appendChild(hr);
+    answerDiv.appendChild(meaningEl);
+    answerDiv.appendChild(paraEl);
+
+    card.appendChild(wordEl);
+    card.appendChild(ipaEl);
+    card.appendChild(answerDiv);
+    wrap.appendChild(card);
+
+    // Reveal button
+    const revealBtn = document.createElement('button');
+    revealBtn.className = 'review-reveal-btn';
+    revealBtn.id = 'revealBtn';
+    revealBtn.textContent = '👁 Hiện đáp án';
+    wrap.appendChild(revealBtn);
+
+    // Rating buttons (hidden until revealed)
+    const ratingsDiv = document.createElement('div');
+    ratingsDiv.className = 'review-ratings';
+    ratingsDiv.id = 'reviewRatings';
+
+    const ratings = [
+        { cls: 'rating-hard', emoji: '😕', label: 'Khó',  days: '+1 ngày',           val: 0 },
+        { cls: 'rating-ok',   emoji: '🤔', label: 'Được', days: '+' + nextOk + ' ngày', val: 1 },
+        { cls: 'rating-easy', emoji: '😊', label: 'Dễ',   days: '+' + nextEasy + ' ngày', val: 2 }
+    ];
+
+    ratings.forEach(r => {
+        const btn = document.createElement('button');
+        btn.className = 'rating-btn ' + r.cls;
+        btn.dataset.rating = r.val;
+        btn.innerHTML =
+            '<span class="rating-emoji">' + r.emoji + '</span>' +
+            '<span class="rating-label">' + r.label + '</span>' +
+            '<span class="rating-days">' + r.days + '</span>';
+        ratingsDiv.appendChild(btn);
+    });
+
+    wrap.appendChild(ratingsDiv);
+    container.appendChild(wrap);
+
+    // --- Event listeners ---
+    revealBtn.addEventListener('click', () => {
+        state.reviewRevealed = true;
+        document.getElementById('reviewAnswer').classList.add('visible');
+        document.getElementById('revealBtn').style.display = 'none';
+        document.getElementById('reviewRatings').classList.add('visible');
+        speak(word);
+    });
+
+    ratingsDiv.addEventListener('click', e => {
+        const btn = e.target.closest('.rating-btn');
+        if (!btn) return;
+        const rating = parseInt(btn.dataset.rating);
+
+        // Update SRS
+        state.reviewSchedule[word] = calcNextReview(
+            state.reviewSchedule[word] || defaultSRS(),
+            rating
+        );
+        state.viewedWords.add(word);
+        state.reviewSessionCount++;
+        saveState();
+
+        // Advance queue
+        state.reviewIdx++;
+        state.reviewRevealed = false;
+        if (state.reviewIdx >= state.reviewQueue.length) state.reviewDone = true;
+        render();
+    });
+}
+
+// ==========================================
+// PROGRESS VIEW
+// ==========================================
 function renderProgress(container) {
-    const total = getTotalWords(), viewed = state.viewedWords.size;
-    const pct = total > 0 ? Math.round(viewed/total*100) : 0;
-    const rT = getCategoryTotal('reading'), lT = getCategoryTotal('listening');
-    const rV = getCategoryViewed('reading'), lV = getCategoryViewed('listening');
-    const rP = rT > 0 ? Math.round(rV/rT*100) : 0;
-    const lP = lT > 0 ? Math.round(lV/lT*100) : 0;
+    const totalWords     = getTotalWords();
+    const viewedWords    = state.viewedWords.size;
+    const pct            = totalWords > 0 ? Math.round((viewedWords / totalWords) * 100) : 0;
+    const readingTotal   = getCategoryTotal('reading');
+    const listeningTotal = getCategoryTotal('listening');
+    const readingViewed  = getCategoryViewed('reading');
+    const listeningViewed = getCategoryViewed('listening');
+    const readingPct     = readingTotal   > 0 ? Math.round((readingViewed   / readingTotal)   * 100) : 0;
+    const listeningPct   = listeningTotal > 0 ? Math.round((listeningViewed / listeningTotal) * 100) : 0;
+
+    const allSRS       = Object.values(state.reviewSchedule);
+    const masteredCount = allSRS.filter(s => s.reviewCount >= 5).length;
+    const learningCount = allSRS.filter(s => s.reviewCount > 0 && s.reviewCount < 5).length;
+    const mastPct       = viewedWords > 0 ? Math.round((masteredCount / viewedWords) * 100) : 0;
+    const learnPct      = viewedWords > 0 ? Math.round((learningCount / viewedWords) * 100) : 0;
+
     container.innerHTML = `
         <div class="progress-container">
             <div class="progress-section">
                 <div class="progress-title">📊 Tiến độ tổng thể</div>
                 <div class="progress-row">
                     <div class="progress-label">Tổng</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%">${pct}%</div></div>
-                    <div class="progress-count">${viewed}/${total}</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:${pct}%">${pct}%</div>
+                    </div>
+                    <div class="progress-count">${viewedWords}/${totalWords}</div>
                 </div>
             </div>
+
             <div class="progress-section">
-                <div class="progress-title">📚 Theo kỹ năng</div>
+                <div class="progress-title">📚 Theo loại</div>
                 <div class="progress-row">
                     <div class="progress-label">📖 Reading</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:${rP}%">${rV}/${rT}</div></div>
-                    <div class="progress-count">${rV}</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:${readingPct}%">${readingViewed}/${readingTotal}</div>
+                    </div>
+                    <div class="progress-count">${readingViewed}</div>
                 </div>
                 <div class="progress-row">
                     <div class="progress-label">🎧 Listening</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:${lP}%">${lV}/${lT}</div></div>
-                    <div class="progress-count">${lV}</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:${listeningPct}%">${listeningViewed}/${listeningTotal}</div>
+                    </div>
+                    <div class="progress-count">${listeningViewed}</div>
                 </div>
             </div>
+
             <div class="progress-section">
-                <div class="progress-title">💾 Lưu tiến độ</div>
+                <div class="progress-title">⭐ Thành thạo</div>
+                <div class="progress-row">
+                    <div class="progress-label">Thành thạo</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-fill-green" style="width:${mastPct}%">${masteredCount}</div>
+                    </div>
+                    <div class="progress-count">${masteredCount}</div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-label">Đang học</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-fill-amber" style="width:${learnPct}%">${learningCount}</div>
+                    </div>
+                    <div class="progress-count">${learningCount}</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-title">💾 Export / Import</div>
                 <div class="export-section">
                     <button class="btn btn-primary" id="exportBtn">📤 Xuất tiến độ</button>
                     <button class="btn btn-secondary" id="importBtn">📥 Nhập tiến độ</button>
@@ -469,18 +1711,28 @@ function renderProgress(container) {
             </div>
         </div>
     `;
-    document.getElementById('exportBtn').addEventListener('click', exportProgress);
-    document.getElementById('importBtn').addEventListener('click', importProgress);
+
+    container.querySelector('#exportBtn').addEventListener('click', exportProgress);
+    container.querySelector('#importBtn').addEventListener('click', importProgress);
 }
 
 // ==========================================
-// MODAL
+// MODAL (word detail)
 // ==========================================
 function showWord(word) {
-    const data = getCurrentVocabData()[word];
+    const vocabData = getCurrentVocabData();
+    const data = vocabData[word];
     if (!data) return;
+
     state.viewedWords.add(word);
+    // Initialise SRS entry on first view (reviewCount stays 0 — will appear in review queue)
+    if (!state.reviewSchedule[word]) {
+        state.reviewSchedule[word] = defaultSRS();
+    }
     saveState();
+
+    state.currentModalWord = word;
+    const youglishUrl = 'https://youglish.com/pronounce/' + encodeURIComponent(word) + '/english/uk';
 
     const content = document.getElementById('modalContent');
     content.innerHTML = '';
@@ -488,34 +1740,53 @@ function showWord(word) {
     const wrapper = document.createElement('div');
     wrapper.style.textAlign = 'center';
 
-    const els = {
-        word: Object.assign(document.createElement('div'), {className:'modal-word', textContent:word}),
-        type: Object.assign(document.createElement('span'), {className:'modal-type', textContent:data.type}),
-        ipa:  Object.assign(document.createElement('div'), {className:'modal-ipa', textContent:data.ipa}),
-        meaning: Object.assign(document.createElement('div'), {className:'modal-meaning', textContent:data.meaning}),
-        para: Object.assign(document.createElement('div'), {className:'modal-paraphrase', textContent:data.paraphrase})
-    };
-    Object.values(els).forEach(el => wrapper.appendChild(el));
+    const wordElem = document.createElement('div');
+    wordElem.className = 'modal-word';
+    wordElem.textContent = word;
 
-    const actions = document.createElement('div');
-    actions.className = 'modal-actions';
+    const typeElem = document.createElement('span');
+    typeElem.className = 'modal-type';
+    typeElem.textContent = data.type;
+
+    const ipaElem = document.createElement('div');
+    ipaElem.className = 'modal-ipa';
+    ipaElem.textContent = data.ipa;
+
+    const meaningElem = document.createElement('div');
+    meaningElem.className = 'modal-meaning';
+    meaningElem.textContent = data.meaning;
+
+    const paraphraseElem = document.createElement('div');
+    paraphraseElem.className = 'modal-paraphrase';
+    paraphraseElem.textContent = data.paraphrase;
+
+    wrapper.appendChild(wordElem);
+    wrapper.appendChild(typeElem);
+    wrapper.appendChild(ipaElem);
+    wrapper.appendChild(meaningElem);
+    wrapper.appendChild(paraphraseElem);
+
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'modal-actions';
 
     const listenBtn = document.createElement('button');
     listenBtn.className = 'btn btn-primary';
-    listenBtn.textContent = '🔊 Listen';
+    listenBtn.innerHTML = '🔊 Listen';
     listenBtn.addEventListener('click', () => speak(word));
 
     const youglishBtn = document.createElement('button');
     youglishBtn.className = 'btn btn-secondary';
-    youglishBtn.textContent = '▶️ YouGlish';
-    youglishBtn.addEventListener('click', () =>
-        window.open(`https://youglish.com/pronounce/${encodeURIComponent(word)}/english/uk`, '_blank'));
+    youglishBtn.innerHTML = '▶️ YouGlish';
+    youglishBtn.addEventListener('click', () => window.open(youglishUrl, '_blank'));
 
-    actions.append(listenBtn, youglishBtn);
-    content.append(wrapper, actions);
+    actionsDiv.appendChild(listenBtn);
+    actionsDiv.appendChild(youglishBtn);
+    content.appendChild(wrapper);
+    content.appendChild(actionsDiv);
 
     document.getElementById('modalOverlay').classList.add('active');
     document.getElementById('vocabModal').classList.add('active');
+
     setTimeout(() => speak(word), 100);
     render();
 }
@@ -526,41 +1797,114 @@ function closeModal() {
 }
 
 // ==========================================
-// EXPORT / IMPORT
+// UTILITY FUNCTIONS
 // ==========================================
-function exportProgress() {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([JSON.stringify({
-        viewedWords: Array.from(state.viewedWords),
-        exportDate: new Date().toISOString()
-    }, null, 2)], {type:'application/json'}));
-    a.download = `ielts-vocab-progress-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
+function hasLessonProgress(category, lesson) {
+    // Save and temporarily override navigation state
+    const sv = state.currentView, sl = state.currentLesson, st = state.currentType, sp = state.currentPassage;
+    state.currentView = category;
+    state.currentLesson = lesson;
+    state.currentPassage = null;
+
+    let found = false;
+    for (const type of ['inclass', 'homework']) {
+        state.currentType = type;
+        const words = Object.keys(getCurrentVocabData());
+        if (words.some(w => state.viewedWords.has(w))) { found = true; break; }
+    }
+
+    state.currentView = sv; state.currentLesson = sl; state.currentType = st; state.currentPassage = sp;
+    return found;
 }
+
+function getTotalWords() {
+    let total = 0;
+    ['reading', 'listening'].forEach(cat => {
+        Object.keys(VOCAB_DATA[cat]).forEach(lesson => {
+            ['inclass', 'homework'].forEach(type => {
+                total += getAllWordsFromData(VOCAB_DATA[cat][lesson][type]).length;
+            });
+        });
+    });
+    return total;
+}
+
+function getCategoryTotal(category) {
+    let total = 0;
+    Object.keys(VOCAB_DATA[category]).forEach(lesson => {
+        ['inclass', 'homework'].forEach(type => {
+            total += getAllWordsFromData(VOCAB_DATA[category][lesson][type]).length;
+        });
+    });
+    return total;
+}
+
+function getCategoryViewed(category) {
+    let viewed = 0;
+    Object.keys(VOCAB_DATA[category]).forEach(lesson => {
+        ['inclass', 'homework'].forEach(type => {
+            getAllWordsFromData(VOCAB_DATA[category][lesson][type]).forEach(w => {
+                if (state.viewedWords.has(w)) viewed++;
+            });
+        });
+    });
+    return viewed;
+}
+
+function exportProgress() {
+    const data = {
+        version: 3,
+        viewedWords: Array.from(state.viewedWords),
+        reviewSchedule: state.reviewSchedule,
+        streak: state.streak,
+        lastVisit: state.lastVisit,
+        exportDate: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'ielts-vocab-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 function importProgress() {
-    const input = document.createElement('input');
-    input.type = 'file'; input.accept = 'application/json';
+    const input    = document.createElement('input');
+    input.type     = 'file';
+    input.accept   = 'application/json';
     input.onchange = e => {
-        const file = e.target.files[0]; if (!file) return;
+        const file = e.target.files[0];
+        if (!file) return;
         const reader = new FileReader();
         reader.onload = ev => {
             try {
-                state.viewedWords = new Set(JSON.parse(ev.target.result).viewedWords || []);
-                saveState(); render(); showToast('✅ Nhập tiến độ thành công!');
-            } catch { showToast('❌ File không hợp lệ.'); }
+                const data = JSON.parse(ev.target.result);
+                state.viewedWords    = new Set(data.viewedWords || []);
+                state.reviewSchedule = data.reviewSchedule || {};
+                state.streak         = typeof data.streak === 'number' ? data.streak : 0;
+                state.lastVisit      = data.lastVisit || null;
+                saveState();
+                render();
+                showToast('✅ Nhập tiến độ thành công!');
+            } catch (err) {
+                showToast('❌ File lỗi. Vui lòng thử lại.');
+            }
         };
         reader.readAsText(file);
     };
     input.click();
 }
 
-function showToast(msg) {
-    document.querySelector('.toast')?.remove();
-    const t = document.createElement('div');
-    t.className = 'toast'; t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.classList.add('show'), 10);
-    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+function showToast(message) {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 2500);
 }
 
 // ==========================================
@@ -568,15 +1912,35 @@ function showToast(msg) {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
-    if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme','dark');
-    if ('speechSynthesis' in window) { loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices; }
+    updateStreak();
 
+    // Restore state from URL hash
+    const hashState = URLHashManager.load();
+    if (hashState) {
+        state.currentView = hashState.view;
+        if (hashState.lesson) state.currentLesson = hashState.lesson;
+        if (hashState.type)   state.currentType   = hashState.type;
+    }
+
+    // Apply saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
+
+    // Speech synthesis
+    if ('speechSynthesis' in window) {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    // Event listeners
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('modalOverlay').addEventListener('click', closeModal);
-    document.querySelectorAll('.nav-item').forEach(btn =>
-        btn.addEventListener('click', () => setView(btn.dataset.view))
-    );
+
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
+
     render();
 });
 </script>
