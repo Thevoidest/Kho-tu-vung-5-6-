@@ -1259,21 +1259,27 @@
         }
 
         function renderNav() {
-            const views = [
-                { id: 'reading', label: 'Reading', icon: '📖' },
-                { id: 'listening', label: 'Listening', icon: '🎧' },
-                { id: 'review', label: 'Quick Review', icon: '⚡' },
-                { id: 'quiz', label: 'Quiz', icon: '🎯' }
+            const items = [
+                { id: 'reading',  label: 'Reading',      icon: '📖', isBrowse: true  },
+                { id: 'listening',label: 'Listening',     icon: '🎧', isBrowse: true  },
+                { id: 'review',   label: 'Quick Review',  icon: '⚡', isBrowse: false },
+                { id: 'quiz',     label: 'Quiz',          icon: '🎯', isBrowse: false }
             ];
-            
-            const html = views.map(view => `
-                <button class="nav-item ${state.currentMode === view.id ? 'active' : ''}" 
-                        data-view="${view.id}"
-                        onclick="setMode('${view.id}')">
-                    ${view.icon} ${view.label}
-                </button>
-            `).join('');
-            
+
+            const html = items.map(item => {
+                const isActive = item.isBrowse
+                    ? (state.currentMode === 'browse' && state.currentView === item.id)
+                    : (state.currentMode === item.id);
+                const handler = item.isBrowse
+                    ? `setView('${item.id}')`
+                    : `setMode('${item.id}')`;
+                return `
+                    <button class="nav-item ${isActive ? 'active' : ''}" onclick="${handler}">
+                        ${item.icon} ${item.label}
+                    </button>
+                `;
+            }).join('');
+
             document.getElementById('mainNav').innerHTML = html;
         }
 
@@ -1285,7 +1291,9 @@
 
         function setView(view) {
             state.currentView = view;
+            state.currentMode = 'browse';
             state.currentLesson = null;
+            state.currentPassage = null;
             trackEvent('view_change', { view });
             render();
         }
@@ -1757,6 +1765,7 @@
             } else if (state.currentMode === 'quiz') {
                 content = renderQuizMode();
             } else {
+                // browse mode: reading or listening
                 content = renderBrowseMode();
             }
             
