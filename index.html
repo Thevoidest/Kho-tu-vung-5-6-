@@ -226,7 +226,7 @@
         }
 
         .lesson-btn.has-progress::after {
-            content: 'âœ“';
+            content: '✓';
             position: absolute;
             top: 6px;
             right: 6px;
@@ -751,7 +751,7 @@
             margin-top: 4px;
         }
 
-        /* Rating buttons â€” 3 col */
+        /* Rating buttons — 3 col */
         .review-ratings {
             display: none;
             grid-template-columns: repeat(3, 1fr);
@@ -778,7 +778,7 @@
 
         .rating-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
 
-        /* FIX: renamed from KhÃ³/ÄÆ°á»£c/Dá»… â†’ HÆ¡i lÃ¢u / BÃ¬nh thÆ°á»ng / Ráº¥t nhanh */
+        /* FIX: renamed from Khó/Được/Dễ → Hơi lâu / Bình thường / Rất nhanh */
         .rating-slow   { border-color: rgba(239,68,68,0.4);   color: #dc2626; }
         .rating-slow:hover   { background: rgba(239,68,68,0.08); }
         .rating-normal { border-color: rgba(245,158,11,0.4);  color: #b45309; }
@@ -883,175 +883,58 @@
             opacity: 1;
         }
 
+        
         /* ===== QUIZ ===== */
         .quiz-wrap { max-width: 640px; margin: 0 auto; }
+        .quiz-locked { text-align:center; padding:60px 20px; background:var(--surface); border:1px solid var(--border); border-radius:20px; }
+        .quiz-locked-icon { font-size:64px; margin-bottom:16px; }
+        .quiz-locked-title { font-family:'Crimson Pro',serif; font-size:28px; font-weight:700; color:var(--primary); margin-bottom:10px; }
+        .quiz-locked-sub { font-size:15px; opacity:0.7; margin-bottom:28px; line-height:1.7; }
+        .quiz-unlock-bars { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+        .quiz-unlock-row { display:flex; align-items:center; gap:12px; }
+        .quiz-unlock-label { min-width:110px; font-size:13px; font-weight:700; text-align:left; }
+        .quiz-unlock-bar { flex:1; height:12px; background:var(--surface-elevated); border-radius:6px; overflow:hidden; border:1px solid var(--border); }
+        .quiz-unlock-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); border-radius:6px; transition:width 0.5s ease; }
+        .quiz-unlock-count { min-width:60px; font-size:13px; font-weight:700; text-align:right; opacity:0.7; }
+        .quiz-start { text-align:center; padding:48px 24px; background:var(--surface); border:1px solid var(--border); border-radius:20px; }
+        .quiz-start-icon { font-size:64px; margin-bottom:16px; }
+        .quiz-start-title { font-family:'Crimson Pro',serif; font-size:28px; font-weight:700; color:var(--primary); margin-bottom:10px; }
+        .quiz-start-sub { font-size:15px; opacity:0.7; margin-bottom:28px; line-height:1.7; }
+        .quiz-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .quiz-counter { font-size:14px; font-weight:700; opacity:0.6; }
+        .quiz-score-live { font-size:14px; font-weight:700; color:var(--success); }
+        .quiz-prog-bar { height:6px; background:var(--border); border-radius:3px; margin-bottom:28px; overflow:hidden; }
+        .quiz-prog-fill { height:100%; background:var(--accent); border-radius:3px; transition:width 0.4s ease; }
+        .quiz-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:32px 28px; margin-bottom:20px; }
+        .quiz-question-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+        .quiz-question-word { font-family:'Crimson Pro',serif; font-size:36px; font-weight:700; color:var(--primary); text-align:center; margin-bottom:4px; }
+        .quiz-question-ipa { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--primary-light); text-align:center; margin-bottom:24px; opacity:0.8; }
+        .quiz-options { display:flex; flex-direction:column; gap:10px; }
+        .quiz-option { padding:16px 20px; background:var(--surface-elevated); border:2px solid var(--border); border-radius:12px; cursor:pointer; font-size:15px; font-weight:600; text-align:left; transition:all 0.2s; color:var(--text); display:flex; align-items:center; gap:12px; }
+        .quiz-option:hover:not(.disabled) { border-color:var(--primary); background:var(--surface); transform:translateX(4px); }
+        .quiz-option.selected { border-color:var(--primary); background:rgba(45,80,22,0.08); }
+        .quiz-option.correct { border-color:var(--success); background:rgba(16,185,129,0.1); color:#047857; }
+        .quiz-option.wrong { border-color:#ef4444; background:rgba(239,68,68,0.08); color:#dc2626; }
+        .quiz-option.disabled { cursor:default; }
+        .quiz-option-letter { width:28px; height:28px; border-radius:50%; background:var(--border); color:var(--text); font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .quiz-option.correct .quiz-option-letter { background:var(--success); color:white; }
+        .quiz-option.wrong   .quiz-option-letter { background:#ef4444; color:white; }
+        .quiz-option.selected:not(.correct):not(.wrong) .quiz-option-letter { background:var(--primary); color:white; }
+        .quiz-feedback { display:none; padding:14px 18px; border-radius:12px; font-size:14px; font-weight:700; margin-top:12px; line-height:1.5; }
+        .quiz-feedback.show { display:block; animation:fadeIn 0.25s ease; }
+        .quiz-feedback.correct { background:rgba(16,185,129,0.12); color:#047857; border:1px solid rgba(16,185,129,0.3); }
+        .quiz-feedback.wrong   { background:rgba(239,68,68,0.08); color:#dc2626; border:1px solid rgba(239,68,68,0.2); }
+        .quiz-next-btn { width:100%; padding:18px; background:var(--primary); color:white; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; transition:all 0.2s; display:none; }
+        .quiz-next-btn.show { display:block; animation:fadeIn 0.2s ease; }
+        .quiz-next-btn:hover { background:var(--primary-light); transform:translateY(-2px); }
+        .quiz-results { text-align:center; padding:48px 24px; background:var(--surface); border:1px solid var(--border); border-radius:20px; animation:fadeIn 0.4s ease; }
+        .quiz-results-score { font-family:'Crimson Pro',serif; font-size:80px; font-weight:700; color:var(--primary); line-height:1; margin-bottom:8px; }
+        .quiz-results-label { font-size:16px; font-weight:600; opacity:0.6; margin-bottom:16px; }
+        .quiz-results-msg { font-size:22px; font-weight:700; margin-bottom:8px; }
+        .quiz-results-sub { font-size:15px; opacity:0.65; margin-bottom:32px; }
+        .quiz-results-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
 
-        .quiz-locked {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-        }
-        .quiz-locked-icon  { font-size: 64px; margin-bottom: 16px; }
-        .quiz-locked-title { font-family: 'Crimson Pro', serif; font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-        .quiz-locked-sub   { font-size: 15px; opacity: 0.7; margin-bottom: 28px; line-height: 1.7; }
-
-        .quiz-unlock-bars { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
-        .quiz-unlock-row  { display: flex; align-items: center; gap: 12px; }
-        .quiz-unlock-label { min-width: 100px; font-size: 13px; font-weight: 700; text-align: left; }
-        .quiz-unlock-bar  { flex: 1; height: 12px; background: var(--surface-elevated); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
-        .quiz-unlock-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 6px; transition: width 0.5s ease; }
-        .quiz-unlock-count { min-width: 60px; font-size: 13px; font-weight: 700; text-align: right; opacity: 0.7; }
-
-        .quiz-start {
-            text-align: center;
-            padding: 48px 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-        }
-        .quiz-start-icon  { font-size: 64px; margin-bottom: 16px; }
-        .quiz-start-title { font-family: 'Crimson Pro', serif; font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-        .quiz-start-sub   { font-size: 15px; opacity: 0.7; margin-bottom: 28px; line-height: 1.7; }
-
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .quiz-counter { font-size: 14px; font-weight: 700; opacity: 0.6; }
-        .quiz-score-live { font-size: 14px; font-weight: 700; color: var(--success); }
-
-        .quiz-prog-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 28px; overflow: hidden; }
-        .quiz-prog-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; }
-
-        .quiz-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px 28px;
-            margin-bottom: 20px;
-        }
-        .quiz-question-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 12px;
-        }
-        .quiz-question-text {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-        .quiz-question-word {
-            font-family: 'Crimson Pro', serif;
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 4px;
-        }
-        .quiz-question-ipa {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--primary-light);
-            text-align: center;
-            margin-bottom: 24px;
-            opacity: 0.8;
-        }
-
-        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-        .quiz-option {
-            padding: 16px 20px;
-            background: var(--surface-elevated);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            text-align: left;
-            transition: all 0.2s;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .quiz-option:hover:not(.disabled) {
-            border-color: var(--primary);
-            background: var(--surface);
-            transform: translateX(4px);
-        }
-        .quiz-option.selected { border-color: var(--primary); background: rgba(45,80,22,0.08); }
-        .quiz-option.correct  { border-color: var(--success); background: rgba(16,185,129,0.1); color: #047857; }
-        .quiz-option.wrong    { border-color: #ef4444; background: rgba(239,68,68,0.08); color: #dc2626; }
-        .quiz-option.disabled { cursor: default; }
-        .quiz-option-letter {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            background: var(--border);
-            color: var(--text);
-            font-size: 12px;
-            font-weight: 800;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        .quiz-option.correct .quiz-option-letter { background: var(--success); color: white; }
-        .quiz-option.wrong   .quiz-option-letter { background: #ef4444; color: white; }
-        .quiz-option.selected:not(.correct):not(.wrong) .quiz-option-letter { background: var(--primary); color: white; }
-
-        .quiz-feedback {
-            display: none;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-top: 12px;
-            line-height: 1.5;
-        }
-        .quiz-feedback.show { display: block; animation: fadeIn 0.25s ease; }
-        .quiz-feedback.correct { background: rgba(16,185,129,0.12); color: #047857; border: 1px solid rgba(16,185,129,0.3); }
-        .quiz-feedback.wrong   { background: rgba(239,68,68,0.08);  color: #dc2626; border: 1px solid rgba(239,68,68,0.2); }
-
-        .quiz-next-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: none;
-        }
-        .quiz-next-btn.show { display: block; animation: fadeIn 0.2s ease; }
-        .quiz-next-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
-
-        /* Quiz results */
-        .quiz-results {
-            text-align: center;
-            padding: 48px 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            animation: fadeIn 0.4s ease;
-        }
-        .quiz-results-score {
-            font-family: 'Crimson Pro', serif;
-            font-size: 80px;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .quiz-results-label { font-size: 16px; font-weight: 600; opacity: 0.6; margin-bottom: 16px; }
-        .quiz-results-msg { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-        .quiz-results-sub { font-size: 15px; opacity: 0.65; margin-bottom: 32px; }
-        .quiz-results-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-        /* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header-controls { flex-direction: column; gap: 8px; }
             .lesson-grid     { grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); }
@@ -1069,7 +952,7 @@
 
 <div class="modal-overlay" id="modalOverlay"></div>
 <div class="modal" id="vocabModal">
-    <button class="modal-close" id="modalClose">âœ•</button>
+    <button class="modal-close" id="modalClose">✕</button>
     <div id="modalContent"></div>
 </div>
 
@@ -1103,12 +986,12 @@
 const URLHashManager = {
     update(view, lesson, type) {
         try {
-            if (view === 'review' || view === 'progress' || view === 'quiz') {
-                window.history.replaceState(null, '', '#' + view);
-            } else {
-                window.history.replaceState(null, '', '#' + view + '-' + lesson + '-' + type);
-            }
-        } catch(e) { /* iframe preview: replaceState blocked, ignore */ }
+        if (view === 'review' || view === 'progress' || view === 'quiz') {
+            window.history.replaceState(null, '', '#' + view);
+        } else {
+            window.history.replaceState(null, '', '#' + view + '-' + lesson + '-' + type);
+        }
+        } catch(e) {} /* iframe: ignore replaceState error */
     },
     load() {
         const hash = window.location.hash.slice(1);
@@ -1127,8 +1010,8 @@ const URLHashManager = {
 };
 
 // ==========================================
-// SRS â€” SM-2+ algorithm
-// rating: 0=HÆ¡i lÃ¢u, 1=BÃ¬nh thÆ°á»ng, 2=Ráº¥t nhanh
+// SRS — SM-2+ algorithm
+// rating: 0=Hơi lâu, 1=Bình thường, 2=Rất nhanh
 // ==========================================
 function defaultSRS() {
     return { interval: 1, easeFactor: 2.5, reviewCount: 0, nextReview: new Date().toISOString() };
@@ -1214,7 +1097,7 @@ function saveState() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
-        showToast('âš ï¸ Bá»™ nhá»› Ä‘áº§y! HÃ£y xuáº¥t tiáº¿n Ä‘á»™.');
+        showToast('⚠️ Bộ nhớ đầy! Hãy xuất tiến độ.');
     }
 }
 
@@ -1292,7 +1175,7 @@ function loadVoices() {
 
 function speak(text) {
     if (!('speechSynthesis' in window)) {
-        showToast('âš ï¸ Browser khÃ´ng há»— trá»£ phÃ¡t Ã¢m. Vui lÃ²ng dÃ¹ng Chrome!');
+        showToast('⚠️ Browser không hỗ trợ phát âm. Vui lòng dùng Chrome!');
         return;
     }
     window.speechSynthesis.cancel();
@@ -1324,6 +1207,11 @@ function toggleTheme() {
 function setView(view) {
     state.currentView = view;
 
+    if (view === 'quiz') {
+        state.quizStarted = false; state.quizDone = false;
+        state.quizQuestions = []; state.quizIdx = 0;
+        state.quizScore = 0; state.quizAnswered = false; state.quizSelected = null;
+    }
     if (view === 'review') {
         state.reviewSessionStarted = false;
         state.reviewDone           = false;
@@ -1331,15 +1219,6 @@ function setView(view) {
         state.reviewIdx            = 0;
         state.reviewRevealed       = false;
         state.reviewSessionCount   = 0;
-    }
-    if (view === 'quiz') {
-        state.quizStarted   = false;
-        state.quizDone      = false;
-        state.quizQuestions = [];
-        state.quizIdx       = 0;
-        state.quizScore     = 0;
-        state.quizAnswered  = false;
-        state.quizSelected  = null;
     }
 
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -1373,11 +1252,11 @@ function setPassage(passageName) {
 
 /*
  * FIX: hasNestedPassages checks strictly that first value is a plain object
- * WITHOUT 'ipa' field â€” meaning it's a passage container, not a word entry.
+ * WITHOUT 'ipa' field — meaning it's a passage container, not a word entry.
  * This correctly handles:
- *   - Flat:   { "word": { ipa, meaning, ... } }         â†’ false
- *   - Nested: { "Passage Title": { "word": { ipa, ... } } } â†’ true
- *   - Empty:  {}                                         â†’ false
+ *   - Flat:   { "word": { ipa, meaning, ... } }         → false
+ *   - Nested: { "Passage Title": { "word": { ipa, ... } } } → true
+ *   - Empty:  {}                                         → false
  *
  * The check is applied to the CURRENT category/lesson/type combination,
  * so listening L7 (which is flat) will never show passage selectors.
@@ -1439,7 +1318,7 @@ function findWordDataGlobal(word) {
 // FIX: Safe HTML render for paraphrase
 // Paraphrase field may contain <strong>word</strong> to highlight
 // the target word in its example sentence. We render this as HTML
-// but sanitize by only allowing <strong> tags â€” nothing else.
+// but sanitize by only allowing <strong> tags — nothing else.
 // ==========================================
 function safeParaphraseHTML(text) {
     if (!text) return '';
@@ -1463,14 +1342,14 @@ function renderStreakBar() {
 
     const fireChip = document.createElement('div');
     fireChip.className = 'streak-chip streak-chip-fire';
-    fireChip.textContent = 'ðŸ”¥ ' + state.streak + ' ngÃ y';
+    fireChip.textContent = '🔥 ' + state.streak + ' ngày';
     bar.appendChild(fireChip);
 
     const dueCount = getDueWords().length;
     if (dueCount > 0) {
         const dueChip = document.createElement('div');
         dueChip.className = 'streak-chip streak-chip-due';
-        dueChip.textContent = 'ðŸ” ' + dueCount + ' tá»« cáº§n Ã´n';
+        dueChip.textContent = '🔁 ' + dueCount + ' từ cần ôn';
         dueChip.addEventListener('click', () => setView('review'));
         bar.appendChild(dueChip);
     }
@@ -1479,7 +1358,7 @@ function renderStreakBar() {
     if (masteredCount > 0) {
         const mastChip = document.createElement('div');
         mastChip.className = 'streak-chip streak-chip-mastered';
-        mastChip.textContent = 'â­ ' + masteredCount + ' thÃ nh tháº¡o';
+        mastChip.textContent = '⭐ ' + masteredCount + ' thành thạo';
         bar.appendChild(mastChip);
     }
 }
@@ -1505,8 +1384,8 @@ function render() {
 // VOCAB VIEW
 // ==========================================
 function renderVocabView(container) {
-    // Reading: L1â€“L7 (or however many entries exist in VOCAB_DATA.reading)
-    // Listening: L1â€“L8 (or however many entries exist in VOCAB_DATA.listening)
+    // Reading: L1–L7 (or however many entries exist in VOCAB_DATA.reading)
+    // Listening: L1–L8 (or however many entries exist in VOCAB_DATA.listening)
     // This reads the actual count from data so Minh only needs to add new lessons
     // to vocab-data.js and the buttons appear automatically.
     const maxLessons = Object.keys(VOCAB_DATA[state.currentView]).length;
@@ -1544,7 +1423,7 @@ function renderVocabView(container) {
     typeDiv.appendChild(homeworkBtn);
     container.appendChild(typeDiv);
 
-    // Passage selector â€” shown for BOTH reading and listening if data is nested.
+    // Passage selector — shown for BOTH reading and listening if data is nested.
     // A lesson is "nested" when its vocab is grouped under passage titles
     // (see hasNestedPassages for the detection logic).
     const rawData = VOCAB_DATA[state.currentView]?.[state.currentLesson]?.[state.currentType];
@@ -1554,7 +1433,7 @@ function renderVocabView(container) {
 
         const allBtn = document.createElement('button');
         allBtn.className = 'passage-btn' + (state.currentPassage === null ? ' active' : '');
-        allBtn.textContent = 'ðŸ“š All Passages';
+        allBtn.textContent = '📚 All Passages';
         allBtn.addEventListener('click', () => setPassage(null));
         passageDiv.appendChild(allBtn);
 
@@ -1577,16 +1456,16 @@ function renderVocabView(container) {
     const statsDiv = document.createElement('div');
     statsDiv.className = 'stats-bar';
     statsDiv.innerHTML =
-        '<div class="stat-card"><div class="stat-value">' + words.length + '</div><div class="stat-label">Tá»•ng tá»«</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + viewedCount + '</div><div class="stat-label">ÄÃ£ xem</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + masteredCount + '</div><div class="stat-label">ThÃ nh tháº¡o â­</div></div>';
+        '<div class="stat-card"><div class="stat-value">' + words.length + '</div><div class="stat-label">Tổng từ</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + viewedCount + '</div><div class="stat-label">Đã xem</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + masteredCount + '</div><div class="stat-label">Thành thạo ⭐</div></div>';
     container.appendChild(statsDiv);
 
     // Vocab grid
     const gridDiv = document.createElement('div');
     if (words.length === 0) {
         gridDiv.className = 'empty-state';
-        gridDiv.innerHTML = '<div class="empty-icon">ðŸ”­</div><div class="empty-text">ChÆ°a cÃ³ tá»« vá»±ng cho bÃ i nÃ y</div>';
+        gridDiv.innerHTML = '<div class="empty-icon">🔭</div><div class="empty-text">Chưa có từ vựng cho bài này</div>';
     } else {
         gridDiv.className = 'vocab-grid';
 
@@ -1613,7 +1492,7 @@ function renderVocabView(container) {
             wordDiv.textContent = word;
             card.appendChild(wordDiv);
 
-            // Paragraph badge â€” only if word has a paragraph field
+            // Paragraph badge — only if word has a paragraph field
             // This ONLY appears for reading passages that have paragraph: "A","B" etc.
             // Listening words without paragraph field will never get this badge.
             if (data[word]?.paragraph) {
@@ -1624,11 +1503,11 @@ function renderVocabView(container) {
                 card.appendChild(pbadge);
             }
 
-            // Mastery badge â€” only if viewed
+            // Mastery badge — only if viewed
             if (viewed) {
                 const mbadge = document.createElement('div');
                 mbadge.className = 'mastery-badge mastery-' + mastery;
-                mbadge.textContent = mastery === 'new' ? 'Má»›i' : mastery === 'learning' ? 'Äang há»c' : 'ThÃ nh tháº¡o â­';
+                mbadge.textContent = mastery === 'new' ? 'Mới' : mastery === 'learning' ? 'Đang học' : 'Thành thạo ⭐';
                 card.appendChild(mbadge);
             }
 
@@ -1662,14 +1541,12 @@ function renderReview(container) {
 
     // Done / empty state
     if (state.reviewQueue.length === 0 || state.reviewDone) {
+        const icon  = state.reviewSessionCount > 0 ? '🎉' : '✨';
         const noWords = state.reviewQueue.length === 0 && state.reviewSessionCount === 0;
-        const icon  = state.reviewSessionCount > 0 ? '🎉' : (noWords ? '📚' : '✨');
         const title = state.reviewSessionCount > 0 ? 'Ôn xong rồi!' : (noWords ? 'Chưa có từ để ôn!' : 'Không có gì để ôn!');
         const sub   = state.reviewSessionCount > 0
             ? 'Đã ôn ' + state.reviewSessionCount + ' từ. Quay lại ngày mai nhé!'
-            : (noWords
-                ? 'Hãy xem từ vựng trong bài trước — mỗi từ em bấm vào sẽ được lưu vào hàng ôn tập.'
-                : 'Hãy xem thêm từ mới trước, rồi quay lại đây ôn.');
+            : 'Hãy xem thêm từ mới trước, rồi quay lại đây ôn.';
 
         wrap.innerHTML =
             '<div class="review-done">' +
@@ -1693,17 +1570,17 @@ function renderReview(container) {
             btnsDiv.appendChild(moreBtn);
         }
 
-        const readingBtn = document.createElement('button');
-        readingBtn.className = 'btn btn-primary';
-        readingBtn.textContent = '📖 Xem từ Reading';
-        readingBtn.addEventListener('click', () => setView('reading'));
-        btnsDiv.appendChild(readingBtn);
+        const homeBtn = document.createElement('button');
+        homeBtn.className = 'btn btn-primary';
+        homeBtn.textContent = '📖 Reading';
+        homeBtn.addEventListener('click', () => setView('reading'));
+        btnsDiv.appendChild(homeBtn);
 
-        const listenBtn2 = document.createElement('button');
-        listenBtn2.className = 'btn btn-ghost';
-        listenBtn2.textContent = '🎧 Xem từ Listening';
-        listenBtn2.addEventListener('click', () => setView('listening'));
-        btnsDiv.appendChild(listenBtn2);
+        const listeningBtn = document.createElement('button');
+        listeningBtn.className = 'btn btn-ghost';
+        listeningBtn.textContent = '🎧 Listening';
+        listeningBtn.addEventListener('click', () => setView('listening'));
+        btnsDiv.appendChild(listeningBtn);
 
         container.appendChild(wrap);
         return;
@@ -1732,7 +1609,7 @@ function renderReview(container) {
     metaDiv.className = 'review-meta';
     metaDiv.innerHTML =
         '<span class="review-meta-text">' + (idx + 1) + ' / ' + total + '</span>' +
-        '<span class="review-meta-text">ðŸ”¥ ' + state.streak + ' ngÃ y</span>';
+        '<span class="review-meta-text">🔥 ' + state.streak + ' ngày</span>';
     wrap.appendChild(metaDiv);
 
     const progBar = document.createElement('div');
@@ -1752,7 +1629,7 @@ function renderReview(container) {
     ipaEl.className = 'review-ipa';
     ipaEl.textContent = wdata.ipa || '';
 
-    // Answer block â€” hidden until revealed
+    // Answer block — hidden until revealed
     const answerDiv = document.createElement('div');
     answerDiv.className = 'review-answer';
     answerDiv.id = 'reviewAnswer';
@@ -1783,26 +1660,26 @@ function renderReview(container) {
     const revealBtn = document.createElement('button');
     revealBtn.className = 'review-reveal-btn';
     revealBtn.id = 'revealBtn';
-    revealBtn.textContent = 'ðŸ‘ Hiá»‡n Ä‘Ã¡p Ã¡n';
+    revealBtn.textContent = '👁 Hiện đáp án';
     wrap.appendChild(revealBtn);
 
-    // FIX: Recall question label â€” shown after reveal
-    // "Em nhá»› ra tá»« nÃ y cÃ³ lÃ¢u khÃ´ng?"
+    // FIX: Recall question label — shown after reveal
+    // "Em nhớ ra từ này có lâu không?"
     const recallQ = document.createElement('div');
     recallQ.className = 'recall-question';
     recallQ.id = 'recallQuestion';
-    recallQ.innerHTML = 'Em nhá»› ra tá»« nÃ y <span>cÃ³ lÃ¢u khÃ´ng?</span>';
+    recallQ.innerHTML = 'Em nhớ ra từ này <span>có lâu không?</span>';
     wrap.appendChild(recallQ);
 
-    // FIX: Rating buttons â€” renamed from KhÃ³/ÄÆ°á»£c/Dá»… â†’ HÆ¡i lÃ¢u / BÃ¬nh thÆ°á»ng / Ráº¥t nhanh
+    // FIX: Rating buttons — renamed from Khó/Được/Dễ → Hơi lâu / Bình thường / Rất nhanh
     const ratingsDiv = document.createElement('div');
     ratingsDiv.className = 'review-ratings';
     ratingsDiv.id = 'reviewRatings';
 
     const ratings = [
-        { cls: 'rating-slow',   emoji: 'ðŸ˜•', label: 'HÆ¡i lÃ¢u',     days: '+1 ngÃ y',              val: 0 },
-        { cls: 'rating-normal', emoji: 'ðŸ¤”', label: 'BÃ¬nh thÆ°á»ng', days: '+' + nextOk + ' ngÃ y', val: 1 },
-        { cls: 'rating-fast',   emoji: 'ðŸ˜Š', label: 'Ráº¥t nhanh',   days: '+' + nextEasy + ' ngÃ y', val: 2 }
+        { cls: 'rating-slow',   emoji: '😕', label: 'Hơi lâu',     days: '+1 ngày',              val: 0 },
+        { cls: 'rating-normal', emoji: '🤔', label: 'Bình thường', days: '+' + nextOk + ' ngày', val: 1 },
+        { cls: 'rating-fast',   emoji: '😊', label: 'Rất nhanh',   days: '+' + nextEasy + ' ngày', val: 2 }
     ];
 
     ratings.forEach(r => {
@@ -1850,188 +1727,148 @@ function renderReview(container) {
     });
 }
 
+
 // ==========================================
 // QUIZ SYSTEM
 // ==========================================
-
-// CONFIG
-const QUIZ_UNLOCK_MASTERED = 10; // mastered words required
-const QUIZ_UNLOCK_STREAK   = 3;  // OR streak days required
+const QUIZ_UNLOCK_MASTERED = 10;
+const QUIZ_UNLOCK_STREAK   = 3;
 const QUIZ_QUESTION_COUNT  = 10;
 
-// Build MCQ questions dynamically from vocab data
+function isQuizUnlocked() {
+    const mastered = Object.values(state.reviewSchedule).filter(s => s.reviewCount >= 5).length;
+    return mastered >= QUIZ_UNLOCK_MASTERED || state.streak >= QUIZ_UNLOCK_STREAK;
+}
+
 function buildQuizQuestions() {
-    // Collect all viewed words that have data
-    const viewedArr = Array.from(state.viewedWords).filter(w => findWordDataGlobal(w));
-    if (viewedArr.length < 4) return []; // need at least 4 for distractors
-
-    // Shuffle and pick up to QUIZ_QUESTION_COUNT
-    const shuffled = viewedArr.sort(() => Math.random() - 0.5);
+    const viewed = Array.from(state.viewedWords).filter(w => findWordDataGlobal(w));
+    if (viewed.length < 4) return [];
+    const shuffled = viewed.sort(() => Math.random() - 0.5);
     const targets  = shuffled.slice(0, QUIZ_QUESTION_COUNT);
-
     return targets.map(word => {
         const wdata = findWordDataGlobal(word);
-        // Pick 3 random wrong meanings from other viewed words
-        const others = viewedArr.filter(w => w !== word);
-        const distractors = others.sort(() => Math.random() - 0.5).slice(0, 3)
-            .map(w => findWordDataGlobal(w)?.meaning || '???');
-
+        const others = viewed.filter(w => w !== word);
+        const distractors = others.sort(() => Math.random() - 0.5)
+            .slice(0, 3).map(w => findWordDataGlobal(w)?.meaning || '???');
         const options = [wdata.meaning, ...distractors].sort(() => Math.random() - 0.5);
-        const correctIdx = options.indexOf(wdata.meaning);
-
-        return { word, ipa: wdata.ipa, meaning: wdata.meaning, options, correctIdx };
+        return { word, ipa: wdata.ipa, meaning: wdata.meaning, options, correctIdx: options.indexOf(wdata.meaning) };
     });
 }
 
-function isQuizUnlocked() {
-    const masteredCount = Object.values(state.reviewSchedule).filter(s => s.reviewCount >= 5).length;
-    return masteredCount >= QUIZ_UNLOCK_MASTERED || state.streak >= QUIZ_UNLOCK_STREAK;
-}
-
-// ==========================================
-// RENDER QUIZ
-// ==========================================
 function renderQuiz(container) {
     container.innerHTML = '';
     const wrap = document.createElement('div');
     wrap.className = 'quiz-wrap';
+    const mastered   = Object.values(state.reviewSchedule).filter(s => s.reviewCount >= 5).length;
+    const viewedCount = state.viewedWords.size;
 
-    const masteredCount = Object.values(state.reviewSchedule).filter(s => s.reviewCount >= 5).length;
-    const viewedCount   = state.viewedWords.size;
-
-    // --- LOCKED STATE ---
+    // LOCKED
     if (!isQuizUnlocked()) {
-        const mastPct   = Math.min(100, Math.round((masteredCount / QUIZ_UNLOCK_MASTERED) * 100));
-        const streakPct = Math.min(100, Math.round((state.streak   / QUIZ_UNLOCK_STREAK)   * 100));
-        wrap.innerHTML = `
-            <div class="quiz-locked">
-                <div class="quiz-locked-icon">🔒</div>
-                <div class="quiz-locked-title">Quiz chưa mở khoá</div>
-                <div class="quiz-locked-sub">
-                    Ôn tập thêm để mở Quiz — chỉ cần đạt một trong hai điều kiện dưới đây:
+        const mPct = Math.min(100, Math.round(mastered / QUIZ_UNLOCK_MASTERED * 100));
+        const sPct = Math.min(100, Math.round(state.streak / QUIZ_UNLOCK_STREAK * 100));
+        wrap.innerHTML = `<div class="quiz-locked">
+            <div class="quiz-locked-icon">🔒</div>
+            <div class="quiz-locked-title">Quiz chưa mở khoá</div>
+            <div class="quiz-locked-sub">Đạt một trong hai điều kiện để mở:</div>
+            <div class="quiz-unlock-bars">
+                <div class="quiz-unlock-row">
+                    <div class="quiz-unlock-label">⭐ Thành thạo</div>
+                    <div class="quiz-unlock-bar"><div class="quiz-unlock-fill" style="width:${mPct}%"></div></div>
+                    <div class="quiz-unlock-count">${mastered}/${QUIZ_UNLOCK_MASTERED}</div>
                 </div>
-                <div class="quiz-unlock-bars">
-                    <div class="quiz-unlock-row">
-                        <div class="quiz-unlock-label">⭐ Thành thạo</div>
-                        <div class="quiz-unlock-bar">
-                            <div class="quiz-unlock-fill" style="width:${mastPct}%"></div>
-                        </div>
-                        <div class="quiz-unlock-count">${masteredCount}/${QUIZ_UNLOCK_MASTERED}</div>
-                    </div>
-                    <div class="quiz-unlock-row">
-                        <div class="quiz-unlock-label">🔥 Streak</div>
-                        <div class="quiz-unlock-bar">
-                            <div class="quiz-unlock-fill" style="width:${streakPct}%"></div>
-                        </div>
-                        <div class="quiz-unlock-count">${state.streak}/${QUIZ_UNLOCK_STREAK} ngày</div>
-                    </div>
+                <div class="quiz-unlock-row">
+                    <div class="quiz-unlock-label">🔥 Streak</div>
+                    <div class="quiz-unlock-bar"><div class="quiz-unlock-fill" style="width:${sPct}%"></div></div>
+                    <div class="quiz-unlock-count">${state.streak}/${QUIZ_UNLOCK_STREAK} ngày</div>
                 </div>
-                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-                    <button class="btn btn-primary" onclick="setView('review')">🔁 Bắt đầu ôn tập</button>
-                    <button class="btn btn-ghost" onclick="setView('reading')">📖 Xem từ vựng</button>
-                </div>
-            </div>`;
+            </div>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                <button class="btn btn-primary" onclick="setView('review')">🔁 Ôn tập ngay</button>
+                <button class="btn btn-ghost" onclick="setView('reading')">📖 Xem từ vựng</button>
+            </div>
+        </div>`;
         container.appendChild(wrap);
         return;
     }
 
-    // --- START SCREEN ---
+    // START
     if (!state.quizStarted) {
-        const canQuiz = viewedCount >= 4;
-        wrap.innerHTML = `
-            <div class="quiz-start">
-                <div class="quiz-start-icon">🧠</div>
-                <div class="quiz-start-title">Kiểm tra từ vựng</div>
-                <div class="quiz-start-sub">
-                    ${QUIZ_QUESTION_COUNT} câu hỏi · Chọn đúng nghĩa của từ<br>
-                    Từ được lấy từ <strong>${viewedCount}</strong> từ em đã xem
-                </div>
-                ${canQuiz
-                    ? `<button class="btn btn-primary" style="max-width:280px;margin:0 auto" id="quizStartBtn">🚀 Bắt đầu Quiz</button>`
-                    : `<div style="opacity:0.6;font-size:14px">Hãy xem ít nhất 4 từ trước khi làm quiz</div>`
-                }
-            </div>`;
-        if (canQuiz) {
-            wrap.querySelector('#quizStartBtn').addEventListener('click', () => {
-                state.quizQuestions = buildQuizQuestions();
-                if (state.quizQuestions.length === 0) { showToast('Không đủ từ để tạo quiz!'); return; }
-                state.quizStarted  = true;
-                state.quizDone     = false;
-                state.quizIdx      = 0;
-                state.quizScore    = 0;
-                state.quizAnswered = false;
-                state.quizSelected = null;
-                render();
-            });
-        }
-        container.appendChild(wrap);
-        return;
-    }
-
-    // --- RESULTS SCREEN ---
-    if (state.quizDone) {
-        const total  = state.quizQuestions.length;
-        const pct    = Math.round((state.quizScore / total) * 100);
-        let msg, sub;
-        if (pct >= 90)      { msg = '🏆 Xuất sắc!';     sub = 'Em đỉnh thật sự!'; }
-        else if (pct >= 70) { msg = '👏 Tốt lắm!';      sub = 'Gần hoàn hảo rồi!'; }
-        else if (pct >= 50) { msg = '💪 Ổn đấy!';       sub = 'Ôn thêm chút nữa nhé.'; }
-        else                { msg = '📚 Cần cố gắng!';  sub = 'Đừng nản, ôn lại rồi thử tiếp!'; }
-
-        wrap.innerHTML = `
-            <div class="quiz-results">
-                <div class="quiz-results-score">${pct}%</div>
-                <div class="quiz-results-label">${state.quizScore}/${total} câu đúng</div>
-                <div class="quiz-results-msg">${msg}</div>
-                <div class="quiz-results-sub">${sub}</div>
-                <div class="quiz-results-btns">
-                    <button class="btn btn-primary" id="quizRetryBtn">🔄 Làm lại</button>
-                    <button class="btn btn-ghost" onclick="setView('review')">🔁 Ôn tập</button>
-                </div>
-            </div>`;
-        wrap.querySelector('#quizRetryBtn').addEventListener('click', () => {
-            state.quizStarted   = false;
-            state.quizDone      = false;
-            state.quizQuestions = [];
-            state.quizIdx       = 0;
-            state.quizScore     = 0;
-            state.quizAnswered  = false;
-            state.quizSelected  = null;
+        wrap.innerHTML = `<div class="quiz-start">
+            <div class="quiz-start-icon">🧠</div>
+            <div class="quiz-start-title">Kiểm tra từ vựng</div>
+            <div class="quiz-start-sub">${QUIZ_QUESTION_COUNT} câu · Chọn đúng nghĩa của từ<br>
+                Từ lấy từ <strong>${viewedCount}</strong> từ em đã xem</div>
+            ${viewedCount >= 4
+                ? `<button class="btn btn-primary" style="max-width:280px;margin:0 auto" id="quizStartBtn">🚀 Bắt đầu</button>`
+                : `<div style="opacity:0.6;font-size:14px">Hãy xem ít nhất 4 từ trước</div>`}
+        </div>`;
+        const startBtn = wrap.querySelector('#quizStartBtn');
+        if (startBtn) startBtn.addEventListener('click', () => {
+            state.quizQuestions = buildQuizQuestions();
+            if (!state.quizQuestions.length) { showToast('Không đủ từ để tạo quiz!'); return; }
+            state.quizStarted = true; state.quizDone = false;
+            state.quizIdx = 0; state.quizScore = 0;
+            state.quizAnswered = false; state.quizSelected = null;
             render();
         });
         container.appendChild(wrap);
         return;
     }
 
-    // --- ACTIVE QUESTION ---
+    // RESULTS
+    if (state.quizDone) {
+        const total = state.quizQuestions.length;
+        const pct   = Math.round(state.quizScore / total * 100);
+        const msgs  = pct >= 90 ? ['🏆 Xuất sắc!','Em đỉnh thật sự!']
+                    : pct >= 70 ? ['👏 Tốt lắm!','Gần hoàn hảo rồi!']
+                    : pct >= 50 ? ['💪 Ổn đấy!','Ôn thêm chút nữa nhé.']
+                    :             ['📚 Cần cố gắng!','Đừng nản, ôn lại rồi thử tiếp!'];
+        wrap.innerHTML = `<div class="quiz-results">
+            <div class="quiz-results-score">${pct}%</div>
+            <div class="quiz-results-label">${state.quizScore}/${total} câu đúng</div>
+            <div class="quiz-results-msg">${msgs[0]}</div>
+            <div class="quiz-results-sub">${msgs[1]}</div>
+            <div class="quiz-results-btns">
+                <button class="btn btn-primary" id="quizRetryBtn">🔄 Làm lại</button>
+                <button class="btn btn-ghost" onclick="setView('review')">🔁 Ôn tập</button>
+            </div>
+        </div>`;
+        wrap.querySelector('#quizRetryBtn').addEventListener('click', () => {
+            state.quizStarted = false; state.quizDone = false;
+            state.quizQuestions = []; state.quizIdx = 0;
+            state.quizScore = 0; state.quizAnswered = false; state.quizSelected = null;
+            render();
+        });
+        container.appendChild(wrap);
+        return;
+    }
+
+    // ACTIVE QUESTION
     const total = state.quizQuestions.length;
     const idx   = state.quizIdx;
     const q     = state.quizQuestions[idx];
-    const pct   = Math.round((idx / total) * 100);
+    const pct   = Math.round(idx / total * 100);
 
-    // Header
     const hdr = document.createElement('div');
     hdr.className = 'quiz-header';
-    hdr.innerHTML = `<span class="quiz-counter">Câu ${idx + 1} / ${total}</span>
+    hdr.innerHTML = `<span class="quiz-counter">Câu ${idx+1} / ${total}</span>
                      <span class="quiz-score-live">✅ ${state.quizScore} đúng</span>`;
     wrap.appendChild(hdr);
 
-    const pgBar = document.createElement('div');
-    pgBar.className = 'quiz-prog-bar';
-    pgBar.innerHTML = `<div class="quiz-prog-fill" style="width:${pct}%"></div>`;
-    wrap.appendChild(pgBar);
+    const pg = document.createElement('div');
+    pg.className = 'quiz-prog-bar';
+    pg.innerHTML = `<div class="quiz-prog-fill" style="width:${pct}%"></div>`;
+    wrap.appendChild(pg);
 
-    // Card
     const card = document.createElement('div');
     card.className = 'quiz-card';
-    card.innerHTML = `
-        <div class="quiz-question-label">Từ này nghĩa là gì?</div>
-        <div class="quiz-question-word">${q.word}</div>
-        <div class="quiz-question-ipa">${q.ipa || ''}</div>`;
+    card.innerHTML = `<div class="quiz-question-label">Từ này nghĩa là gì?</div>
+                      <div class="quiz-question-word">${q.word}</div>
+                      <div class="quiz-question-ipa">${q.ipa || ''}</div>`;
 
-    const letters = ['A', 'B', 'C', 'D'];
     const optsDiv = document.createElement('div');
     optsDiv.className = 'quiz-options';
+    const letters = ['A','B','C','D'];
 
     q.options.forEach((opt, i) => {
         const btn = document.createElement('button');
@@ -2041,24 +1878,17 @@ function renderQuiz(container) {
         btn.addEventListener('click', () => {
             if (state.quizAnswered) return;
             state.quizAnswered = true;
-            state.quizSelected = i;
-            const correct = (i === q.correctIdx);
+            const correct = i === q.correctIdx;
             if (correct) state.quizScore++;
-
-            // Style all options
             optsDiv.querySelectorAll('.quiz-option').forEach(b => {
                 b.classList.add('disabled');
                 const bi = parseInt(b.dataset.idx);
                 if (bi === q.correctIdx) b.classList.add('correct');
                 else if (bi === i && !correct) b.classList.add('wrong');
             });
-
-            // Feedback
             const fb = card.querySelector('.quiz-feedback');
             fb.classList.add('show', correct ? 'correct' : 'wrong');
-            fb.textContent = correct ? '✅ Chính xác!' : '❌ Sai rồi! Đáp án đúng: ' + q.meaning;
-
-            // Show next button
+            fb.textContent = correct ? '✅ Chính xác!' : '❌ Sai! Đáp án: ' + q.meaning;
             nextBtn.classList.add('show');
         });
         optsDiv.appendChild(btn);
@@ -2066,24 +1896,20 @@ function renderQuiz(container) {
 
     const feedback = document.createElement('div');
     feedback.className = 'quiz-feedback';
-
     card.appendChild(optsDiv);
     card.appendChild(feedback);
     wrap.appendChild(card);
 
-    // Next button
     const nextBtn = document.createElement('button');
     nextBtn.className = 'quiz-next-btn';
-    nextBtn.textContent = idx + 1 < total ? 'Câu tiếp theo →' : 'Xem kết quả 🏁';
+    nextBtn.textContent = idx+1 < total ? 'Câu tiếp theo →' : 'Xem kết quả 🏁';
     nextBtn.addEventListener('click', () => {
         state.quizIdx++;
-        state.quizAnswered = false;
-        state.quizSelected = null;
+        state.quizAnswered = false; state.quizSelected = null;
         if (state.quizIdx >= total) state.quizDone = true;
         render();
     });
     wrap.appendChild(nextBtn);
-
     container.appendChild(wrap);
 }
 
@@ -2110,9 +1936,9 @@ function renderProgress(container) {
     container.innerHTML = `
         <div class="progress-container">
             <div class="progress-section">
-                <div class="progress-title">ðŸ“Š Tiáº¿n Ä‘á»™ tá»•ng thá»ƒ</div>
+                <div class="progress-title">📊 Tiến độ tổng thể</div>
                 <div class="progress-row">
-                    <div class="progress-label">Tá»•ng</div>
+                    <div class="progress-label">Tổng</div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width:${pct}%">${pct}%</div>
                     </div>
@@ -2120,16 +1946,16 @@ function renderProgress(container) {
                 </div>
             </div>
             <div class="progress-section">
-                <div class="progress-title">ðŸ“š Theo loáº¡i</div>
+                <div class="progress-title">📚 Theo loại</div>
                 <div class="progress-row">
-                    <div class="progress-label">ðŸ“– Reading</div>
+                    <div class="progress-label">📖 Reading</div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width:${readingPct}%">${readingViewed}/${readingTotal}</div>
                     </div>
                     <div class="progress-count">${readingViewed}</div>
                 </div>
                 <div class="progress-row">
-                    <div class="progress-label">ðŸŽ§ Listening</div>
+                    <div class="progress-label">🎧 Listening</div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width:${listeningPct}%">${listeningViewed}/${listeningTotal}</div>
                     </div>
@@ -2137,16 +1963,16 @@ function renderProgress(container) {
                 </div>
             </div>
             <div class="progress-section">
-                <div class="progress-title">â­ ThÃ nh tháº¡o</div>
+                <div class="progress-title">⭐ Thành thạo</div>
                 <div class="progress-row">
-                    <div class="progress-label">ThÃ nh tháº¡o</div>
+                    <div class="progress-label">Thành thạo</div>
                     <div class="progress-bar">
                         <div class="progress-fill progress-fill-green" style="width:${mastPct}%">${masteredCount}</div>
                     </div>
                     <div class="progress-count">${masteredCount}</div>
                 </div>
                 <div class="progress-row">
-                    <div class="progress-label">Äang há»c</div>
+                    <div class="progress-label">Đang học</div>
                     <div class="progress-bar">
                         <div class="progress-fill progress-fill-amber" style="width:${learnPct}%">${learningCount}</div>
                     </div>
@@ -2154,10 +1980,10 @@ function renderProgress(container) {
                 </div>
             </div>
             <div class="progress-section">
-                <div class="progress-title">ðŸ’¾ Export / Import</div>
+                <div class="progress-title">💾 Export / Import</div>
                 <div class="export-section">
-                    <button class="btn btn-primary" id="exportBtn">ðŸ“¤ Xuáº¥t tiáº¿n Ä‘á»™</button>
-                    <button class="btn btn-secondary" id="importBtn">ðŸ“¥ Nháº­p tiáº¿n Ä‘á»™</button>
+                    <button class="btn btn-primary" id="exportBtn">📤 Xuất tiến độ</button>
+                    <button class="btn btn-secondary" id="importBtn">📥 Nhập tiến độ</button>
                 </div>
             </div>
         </div>
@@ -2223,14 +2049,18 @@ function showWord(word) {
 
     const listenBtn = document.createElement('button');
     listenBtn.className = 'btn btn-primary';
-    listenBtn.style.cssText = 'font-size:18px;';
-    listenBtn.innerHTML = '🔊 Phát âm UK';
+    listenBtn.style.cssText = 'font-size:18px; padding:18px 28px;';
+    listenBtn.innerHTML = '🔊 Phát âm';
     listenBtn.addEventListener('click', () => speak(word));
 
     const youglishBtn = document.createElement('button');
     youglishBtn.className = 'btn btn-secondary';
-    youglishBtn.innerHTML = '▶️ YouGlish';
-    youglishBtn.addEventListener('click', () => window.open(youglishUrl, '_blank'));
+    youglishBtn.innerHTML = '🎬 Bối cảnh thực tế';
+    youglishBtn.addEventListener('click', () => {
+        // Open after brief delay; use noopener to look less like automation
+        const url = 'https://youglish.com/pronounce/' + encodeURIComponent(state.currentModalWord) + '/english/uk';
+        window.open(url, '_blank', 'noopener,noreferrer');
+    });
 
     actionsDiv.appendChild(listenBtn);
     actionsDiv.appendChild(youglishBtn);
@@ -2239,7 +2069,6 @@ function showWord(word) {
 
     document.getElementById('modalOverlay').classList.add('active');
     document.getElementById('vocabModal').classList.add('active');
-
     render();
 }
 
@@ -2337,9 +2166,9 @@ function importProgress() {
                 state.lastVisit      = data.lastVisit || null;
                 saveState();
                 render();
-                showToast('âœ… Nháº­p tiáº¿n Ä‘á»™ thÃ nh cÃ´ng!');
+                showToast('✅ Nhập tiến độ thành công!');
             } catch (err) {
-                showToast('âŒ File lá»—i. Vui lÃ²ng thá»­ láº¡i.');
+                showToast('❌ File lỗi. Vui lòng thử lại.');
             }
         };
         reader.readAsText(file);
@@ -2362,14 +2191,6 @@ function showToast(message) {
 // INIT
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Guard: VOCAB_DATA must be loaded from vocab-data.js
-    if (typeof VOCAB_DATA === 'undefined') {
-        document.getElementById('mainContent').innerHTML =
-            '<div class="empty-state"><div class="empty-icon">⚠️</div>' +
-            '<div class="empty-text">Cần file vocab-data.js<br><small style="font-weight:400;font-size:14px;opacity:0.7">Deploy lên GitHub Pages để chạy đầy đủ</small></div></div>';
-        document.getElementById('streakBar').innerHTML = '';
-        return;
-    }
     loadState();
     updateStreak();
 
